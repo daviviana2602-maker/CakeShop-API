@@ -52,34 +52,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = header.replace("Bearer ", "");
+        try {
 
-        Long userId = Long.valueOf(jwtService.extractClaims(token).getUserId());
-        String role = jwtService.extractClaims(token).getRole();
+            String token = header.replace("Bearer ", "");
+
+            Long userId = Long.valueOf(jwtService.extractClaims(token).getUserId());
+            String role = jwtService.extractClaims(token).getRole();
 
 
-        UserEntity user = getCurrentUser(userId);
+            UserEntity user = getCurrentUser(userId);
 
-        // a way to return an error within the filter
-        if (user.getStatus() == UserStatusEnum.DISABLED) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            
+            if (user.getStatus() == UserStatusEnum.DISABLED) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("application/json");
+                response.getWriter().write("""
+            {"message":"User is disabled"}
+            """);
+                return;
+            }
+
+
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(   // create the object of the authenticated user
+                    userId,
+                    null,
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role))
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(auth);   // save in SecurityContext the object of the authenticated user
+
+            filterChain.doFilter(request, response);
+
+        } catch (Exception e) {
+
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write("""
-        {"message":"User is disabled"}
+        {"message":"Invalid token"}
         """);
-            return;
         }
-
-
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(   // create the object of the authenticated user
-                userId,
-                null,
-                List.of(new SimpleGrantedAuthority("ROLE_" + role))
-                );
-
-        SecurityContextHolder.getContext().setAuthentication(auth);   // save in SecurityContext the object of the authenticated user
-
-        filterChain.doFilter(request, response);
 
     }
 
