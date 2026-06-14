@@ -5,31 +5,31 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import org.springframework.transaction.annotation.Transactional;
+import jakarta.transaction.Transactional;
 
 
-public class DisableUserService {
+public class ReactivateUserService {
 
     private final UserRepository userRepository;
 
 
-    public DisableUserService(UserRepository userRepository) {
+    public ReactivateUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
 
-    private UserEntity findId(Long userId) {
+    private UserEntity findId(Long userId){
         return userRepository.findById(userId)
-            .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
 
     @Transactional
-    public UserStatusResponse disableUser(Long userId){
+    public UserStatusResponse reactivateUser(Long userId) {
 
         UserEntity user = findId(userId);
 
-        user.setStatus(UserStatusEnum.DISABLED);
+        user.setStatus(UserStatusEnum.ACTIVE);
 
         userRepository.save(user);
 
@@ -40,6 +40,7 @@ public class DisableUserService {
                 user.getEmail(),
                 user.getStatus()
         );
+
     }
 
 }

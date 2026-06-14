@@ -7,8 +7,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 
-public class DisableUserResponse {
-    private Long id;
+public class UserStatusResponse {
+    private Long userId;
     private String nome;
     private String email;
     private UserStatusEnum status;
