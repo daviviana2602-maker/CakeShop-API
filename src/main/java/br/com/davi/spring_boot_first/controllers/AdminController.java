@@ -2,12 +2,14 @@ package br.com.davi.spring_boot_first.controllers;
 
 import br.com.davi.spring_boot_first.dto.response.UserRoleResponse;
 import br.com.davi.spring_boot_first.dto.response.UserStatusResponse;
+import br.com.davi.spring_boot_first.service.DemoteUserService;
 import br.com.davi.spring_boot_first.service.DisableUserService;
 import br.com.davi.spring_boot_first.service.PromoteUserService;
 import br.com.davi.spring_boot_first.service.ReactivateUserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,7 @@ public class AdminController {
     private final DisableUserService disableUserService;
     private final ReactivateUserService reactivateUserService;
     private final PromoteUserService promoteUserService;
+    private final DemoteUserService demoteUserService;
 
 
     @PostMapping("/disable/{userId}")
@@ -58,6 +61,17 @@ public class AdminController {
         return promoteUserService.promoteUser(userId);
     }
 
+
+    @PostMapping("/demote/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
+    public UserRoleResponse demoteId(
+        @PathVariable Long userId,
+        Authentication authentication   // Spring add the object of the authenticated user
+    )
+    {
+        return demoteUserService.demoteUser(userId, authentication);
+    }
 
 
 }

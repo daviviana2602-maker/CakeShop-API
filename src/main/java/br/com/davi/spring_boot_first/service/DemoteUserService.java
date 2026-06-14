@@ -7,42 +7,50 @@ import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class PromoteUserService {
+public class DemoteUserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
 
-    public PromoteUserService(UserRepository userRepository) {
+    public DemoteUserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
 
-    private UserEntity findId(Long userId){
+    private UserEntity findId(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+            .orElseThrow(() -> new NotFoundException("user not found"));
     }
 
 
     @Transactional
-    public UserRoleResponse promoteUser(Long userId){
+    public UserRoleResponse demoteUser(Long userId, Authentication authentication) {
 
         UserEntity user = findId(userId);
 
+        Long loggedUserId = (Long) authentication.getPrincipal();
+
+
         if (user.getStatus().equals(UserStatusEnum.DISABLED) ||
             user.getStatus().equals(UserStatusEnum.DELETED)) {
-            throw new  BadRequestException("Cannot promote a disabled or deleted user");
+            throw new BadRequestException("Cannot demote a disabled or deleted user");
         }
 
-        if (user.getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new BadRequestException("The user already is an Administrator");
+        if (loggedUserId.equals(userId)) {
+            throw new BadRequestException("Cannot demote yourself");
         }
 
-        user.setRole(UserRoleEnum.ADMIN);
+        if (user.getRole().equals(UserRoleEnum.USER)) {
+            throw new BadRequestException("The user is not an administrator");
+        }
+
+        user.setRole(UserRoleEnum.USER);
         userRepository.save(user);
 
 
