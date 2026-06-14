@@ -2,7 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.CreateAccountResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
-import br.com.davi.spring_boot_first.enums.RoleEnum;
+import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
@@ -37,7 +37,7 @@ public class CreateAccountService {
         }
 
 
-        user.setRole(RoleEnum.USER);
+        user.setRole(UserRoleEnum.USER);
         user.setName(name);
         user.setEmail(email);
         user.setStatus(UserStatusEnum.ACTIVE);
@@ -49,7 +49,7 @@ public class CreateAccountService {
         userRepository.saveAndFlush(user);
 
         if (user.getId() == 1) {
-            user.setRole(RoleEnum.ADMIN);
+            user.setRole(UserRoleEnum.ADMIN);
         }
 
         userRepository.save(user);

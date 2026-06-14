@@ -1,6 +1,6 @@
 package br.com.davi.spring_boot_first.security;
 
-import br.com.davi.spring_boot_first.enums.RoleEnum;
+import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -48,7 +48,7 @@ public class JwtService {
     }
 
 
-    public String generateAccessToken(Long userId, RoleEnum role) {
+    public String generateAccessToken(Long userId, UserRoleEnum role) {
 
         Date now = new Date();
         Date expiration = new Date(now.getTime() + accessExpirationMinutes * 60 * 1000);
@@ -63,7 +63,7 @@ public class JwtService {
     }
 
 
-    public String generateRefreshToken(Long userId, RoleEnum role) {
+    public String generateRefreshToken(Long userId, UserRoleEnum role) {
 
         Date now = new Date();
         Date expiration = new Date(now.getTime() + refreshExpirationMinutes * 60 * 1000);

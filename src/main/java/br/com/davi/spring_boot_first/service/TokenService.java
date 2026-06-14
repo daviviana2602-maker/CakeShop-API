@@ -1,6 +1,6 @@
 package br.com.davi.spring_boot_first.service;
 
-import br.com.davi.spring_boot_first.enums.RoleEnum;
+import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.security.JwtDataFormat;
 import br.com.davi.spring_boot_first.security.JwtService;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class TokenService {
         JwtDataFormat data = jwtService.extractClaims(refreshToken);
 
         Long userId = Long.valueOf(data.getUserId());
-        RoleEnum role = RoleEnum.valueOf(data.getRole());
+        UserRoleEnum role = UserRoleEnum.valueOf(data.getRole());
 
         return jwtService.generateAccessToken(userId, role);
 

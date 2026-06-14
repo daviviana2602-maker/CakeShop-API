@@ -1,6 +1,6 @@
 package br.com.davi.spring_boot_first.entity;
 
-import br.com.davi.spring_boot_first.enums.RoleEnum;
+import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,7 +34,7 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private RoleEnum role;
+    private UserRoleEnum role;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
