@@ -4,9 +4,9 @@ import br.com.davi.spring_boot_first.dto.response.CreateAccountResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.RoleEnum;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service

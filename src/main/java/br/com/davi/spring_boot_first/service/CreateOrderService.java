@@ -9,8 +9,8 @@ import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

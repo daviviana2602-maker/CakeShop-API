@@ -4,9 +4,9 @@ import br.com.davi.spring_boot_first.entity.ProductEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.repository.ProductRepository;
 import br.com.davi.spring_boot_first.dto.response.CreateProductResponse;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 

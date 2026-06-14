@@ -11,12 +11,10 @@ import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.repository.ProductRepository;
-import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
-import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 

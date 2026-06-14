@@ -5,7 +5,7 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 
 public class ReactivateUserService {
