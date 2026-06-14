@@ -1,9 +1,15 @@
 package br.com.davi.spring_boot_first.security;
 
+import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.UserStatusEnum;
+import br.com.davi.spring_boot_first.exception.BadRequestException;
+import br.com.davi.spring_boot_first.exception.NotFoundException;
+import br.com.davi.spring_boot_first.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,10 +24,17 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final UserRepository userRepository;
 
 
-    public JwtAuthenticationFilter(JwtService jwtService) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
+    }
+
+    private UserEntity getCurrentUser(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
 
@@ -43,6 +56,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         Long userId = Long.valueOf(jwtService.extractClaims(token).getUserId());
         String role = jwtService.extractClaims(token).getRole();
+
+
+        UserEntity user = getCurrentUser(userId);
+
+        // a way to return an error within the filter
+        if (user.getStatus() == UserStatusEnum.DISABLED) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType("application/json");
+            response.getWriter().write("""
+        {"message":"User is disabled"}
+        """);
+            return;
+        }
 
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(   // create the object of the authenticated user

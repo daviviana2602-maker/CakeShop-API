@@ -77,7 +77,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/listar/{orderId}")
+    @GetMapping("/list/{orderId}")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public List<CartResponse> listOrder(
