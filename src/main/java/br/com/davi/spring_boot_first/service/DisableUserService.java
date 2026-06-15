@@ -5,6 +5,7 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
+import br.com.davi.spring_boot_first.exception.ForbiddenException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class DisableUserService {
         }
 
         if (user.getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new BadRequestException("Admins can't be disabled");
+            throw new ForbiddenException("Admins can't be disabled");
         }
 
         user.setStatus(UserStatusEnum.DISABLED);

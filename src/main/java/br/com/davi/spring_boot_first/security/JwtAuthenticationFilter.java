@@ -72,6 +72,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
+            if (user.getStatus() == UserStatusEnum.DELETED) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("application/json");
+                response.getWriter().write("""
+            {"message":"User is deleted"}
+            """);
+                return;
+            }
+
 
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(   // create the object of the authenticated user
                     userId,

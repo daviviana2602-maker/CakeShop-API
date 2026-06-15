@@ -52,7 +52,6 @@ public class ConcludeOrderService {
 
         
         order.setStatus(OrderStatusEnum.CONCLUDED);
-        orderRepository.save(order);
 
 
         List<CartEntity> cart = cartRepository.findByOrderId(orderId);

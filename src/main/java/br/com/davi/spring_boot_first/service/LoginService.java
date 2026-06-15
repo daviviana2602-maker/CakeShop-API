@@ -47,6 +47,10 @@ public class LoginService {
             throw new ForbiddenException("User is disabled");
         }
 
+        if (user.getStatus().equals(UserStatusEnum.DELETED)) {
+            throw new ForbiddenException("User is deleted");
+        }
+
 
         if (!passwordEncoder.matches(senha, user.getPassword())) {
             throw new BadRequestException("wrong email or password");

@@ -1,7 +1,9 @@
 package br.com.davi.spring_boot_first.controllers;
 
 import br.com.davi.spring_boot_first.service.DeleteAccountService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,8 @@ public class ProfileController {
 
 
     @PostMapping("delete/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    @SecurityRequirement(name = "bearerAuth")
     public Long deleteProfile(
         @PathVariable Long userId
     )
