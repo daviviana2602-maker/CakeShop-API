@@ -61,8 +61,6 @@ public class EditProductService {
         }
 
 
-        productRepository.save(product);
-
         return new EditProductResponse(
                 product.getId(),
                 product.getName(),

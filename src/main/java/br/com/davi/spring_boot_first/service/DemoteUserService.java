@@ -51,7 +51,6 @@ public class DemoteUserService {
         }
 
         user.setRole(UserRoleEnum.USER);
-        userRepository.save(user);
 
 
         return new UserRoleResponse(

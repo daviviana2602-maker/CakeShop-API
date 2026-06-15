@@ -38,20 +38,20 @@ public class CreateProductService {
         }
 
 
-        ProductEntity produto = new ProductEntity();
+        ProductEntity product = new ProductEntity();
 
-        produto.setName(name);
-        produto.setPrice(price);
-        produto.setQuantity(quantity);
+        product.setName(name);
+        product.setPrice(price);
+        product.setQuantity(quantity);
 
-        productRepository.save(produto);
+        productRepository.save(product);
 
 
         return new CreateProductResponse(
-                produto.getId(),
-                produto.getName(),
-                produto.getPrice(),
-                produto.getQuantity()
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getQuantity()
         );
 
     }

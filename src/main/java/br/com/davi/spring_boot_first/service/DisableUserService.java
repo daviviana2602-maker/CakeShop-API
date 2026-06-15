@@ -43,8 +43,6 @@ public class DisableUserService {
 
         user.setStatus(UserStatusEnum.DISABLED);
 
-        userRepository.save(user);
-
 
         return new UserStatusResponse(
                 user.getId(),

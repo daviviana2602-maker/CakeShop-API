@@ -43,7 +43,6 @@ public class PromoteUserService {
         }
 
         user.setRole(UserRoleEnum.ADMIN);
-        userRepository.save(user);
 
 
         return new UserRoleResponse(

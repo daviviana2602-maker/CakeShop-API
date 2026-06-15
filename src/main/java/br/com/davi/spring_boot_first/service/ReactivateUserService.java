@@ -38,8 +38,6 @@ public class ReactivateUserService {
 
         user.setStatus(UserStatusEnum.ACTIVE);
 
-        userRepository.save(user);
-
 
         return new UserStatusResponse(
                 user.getId(),

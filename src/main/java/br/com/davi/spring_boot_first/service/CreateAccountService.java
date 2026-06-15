@@ -52,8 +52,6 @@ public class CreateAccountService {
             user.setRole(UserRoleEnum.ADMIN);
         }
 
-        userRepository.save(user);
-
 
         return new CreateAccountResponse(
             user.getId(),

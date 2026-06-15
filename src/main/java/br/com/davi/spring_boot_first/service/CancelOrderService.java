@@ -45,7 +45,6 @@ public class CancelOrderService {
 
 
         order.setStatus(OrderStatusEnum.CANCELED);
-        orderRepository.save(order);
 
 
         List<CartEntity> cart = cartRepository.findByOrderId(orderId);
