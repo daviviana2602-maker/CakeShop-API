@@ -11,8 +11,6 @@ import br.com.davi.spring_boot_first.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 
 @Service
 public class LoginService {
@@ -38,7 +36,7 @@ public class LoginService {
     }
 
 
-    public LoginResponse systemLogin(String email, String senha){
+    public LoginResponse systemLogin(String email, String password){
 
         UserEntity user = findEmail(email);
 
@@ -52,7 +50,7 @@ public class LoginService {
         }
 
 
-        if (!passwordEncoder.matches(senha, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadRequestException("wrong email or password");
         }
 

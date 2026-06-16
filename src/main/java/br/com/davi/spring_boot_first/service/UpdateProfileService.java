@@ -6,9 +6,11 @@ import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@Service
 public class UpdateProfileService {
 
     private final UserRepository userRepository;
@@ -44,6 +46,11 @@ public class UpdateProfileService {
         }
 
         if (email != null) {
+
+            if (email.isBlank()) {
+                throw new BadRequestException("Email cannot be empty");
+            }
+
             user.setEmail(email);
         }
 

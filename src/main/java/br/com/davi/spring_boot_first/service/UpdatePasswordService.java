@@ -1,16 +1,16 @@
 package br.com.davi.spring_boot_first.service;
 
-import br.com.davi.spring_boot_first.dto.response.UpdateProfileResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
-import br.com.davi.spring_boot_first.exception.ForbiddenException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@Service
 public class UpdatePasswordService {
 
     private final UserRepository userRepository;
@@ -42,8 +42,8 @@ public class UpdatePasswordService {
 
         UserEntity user = findId(userId);
 
-        if (! passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw  new BadRequestException("Current password does not match old password");
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new BadRequestException("Current password is wrong");
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));

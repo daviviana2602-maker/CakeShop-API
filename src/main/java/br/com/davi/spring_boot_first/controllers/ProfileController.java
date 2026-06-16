@@ -7,6 +7,7 @@ import br.com.davi.spring_boot_first.service.DeleteAccountService;
 import br.com.davi.spring_boot_first.service.UpdatePasswordService;
 import br.com.davi.spring_boot_first.service.UpdateProfileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +36,11 @@ public class ProfileController {
     }
 
 
-    @PatchMapping("update/profile/{userId}")
+    @PatchMapping("update")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public UpdateProfileResponse updateProfile(
-        @RequestBody UpdateProfileRequest updateProfileRequest
+        @Valid @RequestBody UpdateProfileRequest updateProfileRequest
     )
     {
         return updateProfileService.changeProfile(
@@ -50,11 +51,11 @@ public class ProfileController {
     }
 
 
-    @PatchMapping("update/password/{userId}")
+    @PatchMapping("update/password")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public Long updatePassword(
-            @RequestBody UpdatePasswordRequest updatePasswordRequest
+        @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest
     )
     {
         return updatePasswordService.changePassword(
