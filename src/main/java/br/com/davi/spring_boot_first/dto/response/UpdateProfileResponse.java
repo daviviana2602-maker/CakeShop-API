@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 
 
-public class UpdateResponse {
+public class UpdateProfileResponse {
 
     private Long id;
     private String name;

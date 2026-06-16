@@ -3,56 +3,54 @@ package br.com.davi.spring_boot_first.service;
 import br.com.davi.spring_boot_first.dto.response.UpdateProfileResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
+import br.com.davi.spring_boot_first.exception.ForbiddenException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 
-public class UpdateProfileService {
+public class UpdatePasswordService {
 
     private final UserRepository userRepository;
     private final OwnershipService ownershipService;
+    private final PasswordEncoder passwordEncoder;
 
 
-    public UpdateProfileService(UserRepository userRepository, OwnershipService ownershipService) {
+    public UpdatePasswordService(UserRepository userRepository,
+                                 OwnershipService ownershipService,
+                                 PasswordEncoder passwordEncoder
+    )
+    {
         this.userRepository = userRepository;
         this.ownershipService = ownershipService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
-    private UserEntity findId(Long userId) {
+    private UserEntity findId(Long userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
 
     @Transactional
-    public UpdateProfileResponse changeProfile(Long userId, String name, String email) {
+    public Long changePassword(Long userId, String currentPassword, String newPassword) {
 
         ownershipService.checkOwnership(userId);
 
         UserEntity user = findId(userId);
 
-
-        if (name == null && email == null) {
-            throw new BadRequestException("at least one field is required");
+        if (! passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw  new BadRequestException("Current password does not match old password");
         }
 
-        if (name != null) {
-            user.setName(name);
-        }
-
-        if (email != null) {
-            user.setEmail(email);
-        }
+        user.setPassword(passwordEncoder.encode(newPassword));
 
 
-        return new UpdateProfileResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail()
-        );
+        return user.getId();
 
     }
+
 }
