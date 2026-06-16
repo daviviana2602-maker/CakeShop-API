@@ -1,13 +1,13 @@
 package br.com.davi.spring_boot_first.controllers;
 
+import br.com.davi.spring_boot_first.dto.request.UpdateProfileRequest;
+import br.com.davi.spring_boot_first.dto.response.UpdateResponse;
 import br.com.davi.spring_boot_first.service.DeleteAccountService;
+import br.com.davi.spring_boot_first.service.UpdateProfileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProfileController {
 
     private final DeleteAccountService deleteAccountService;
+    private final UpdateProfileService updateProfileService;
 
 
     @PostMapping("delete/{userId}")
@@ -29,5 +30,32 @@ public class ProfileController {
     {
         return deleteAccountService.deleteUser(userId);
     }
+
+
+    @PatchMapping("update/profile/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    @SecurityRequirement(name = "bearerAuth")
+    public UpdateResponse updateProfile(
+        @RequestBody UpdateProfileRequest updateProfileRequest
+    )
+    {
+        return updateProfileService.changeProfile(
+                updateProfileRequest.getUserId(),
+                updateProfileRequest.getName(),
+                updateProfileRequest.getEmail()
+        );
+    }
+
+
+    @PatchMapping("update/password/{userId}")
+    @PreAuthorize("isAuthenticated()")
+    @SecurityRequirement(name = "bearerAuth")
+    public Long updatePassword(
+            @PathVariable Long userId
+    )
+    {
+        return deleteAccountService.deleteUser(userId);
+    }
+
 
 }
