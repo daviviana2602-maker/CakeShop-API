@@ -9,6 +9,8 @@ import br.com.davi.spring_boot_first.security.OwnershipService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 public class UpdateProfileService {
@@ -49,6 +51,12 @@ public class UpdateProfileService {
 
             if (email.isBlank()) {
                 throw new BadRequestException("Email cannot be empty");
+            }
+
+            Optional<UserEntity> newEmail = userRepository.findByEmail(email);
+
+            if (newEmail.isPresent()) {
+                throw new BadRequestException("Email already exists");
             }
 
             user.setEmail(email);
