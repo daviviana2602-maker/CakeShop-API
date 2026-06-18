@@ -36,6 +36,10 @@ public class ReactivateUserService {
             throw new BadRequestException("The user already is activated");
         }
 
+        if (user.getStatus().equals(UserStatusEnum.DELETED)) {
+            throw new BadRequestException("The user already was deleted");
+        }
+
         user.setStatus(UserStatusEnum.ACTIVE);
 
 

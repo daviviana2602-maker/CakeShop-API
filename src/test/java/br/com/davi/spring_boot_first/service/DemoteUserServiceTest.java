@@ -1,12 +1,11 @@
 package br.com.davi.spring_boot_first.service;
 
-import br.com.davi.spring_boot_first.dto.response.LoginResponse;
+
 import br.com.davi.spring_boot_first.dto.response.UserRoleResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
-import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
