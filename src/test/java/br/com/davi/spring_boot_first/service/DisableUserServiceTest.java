@@ -25,10 +25,10 @@ import static org.mockito.Mockito.when;
 public class DisableUserServiceTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    DisableUserService disableUserService;
+    private DisableUserService disableUserService;
 
 
     @Test

@@ -1,12 +1,10 @@
 package br.com.davi.spring_boot_first.service;
 
-import br.com.davi.spring_boot_first.dto.response.UserRoleResponse;
 import br.com.davi.spring_boot_first.dto.response.UserStatusResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
-import br.com.davi.spring_boot_first.exception.ForbiddenException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,10 +23,10 @@ import static org.mockito.Mockito.when;
 public class ReactivateUserServiceTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    ReactivateUserService reactivateUserService;
+    private ReactivateUserService reactivateUserService;
 
 
     @Test
