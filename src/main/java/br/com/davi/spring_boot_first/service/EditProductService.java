@@ -2,6 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.entity.ProductEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
+import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.ProductRepository;
 import br.com.davi.spring_boot_first.dto.response.EditProductResponse;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Service
@@ -30,10 +32,12 @@ public class EditProductService {
 
 
     @Transactional
-    public EditProductResponse editProduct(long id, String name, BigDecimal price, Integer quantity) {
+    public EditProductResponse editProduct(Long id, String name, BigDecimal price, Integer quantity) {
 
 
         ProductEntity product = findId(id);
+
+        List<ProductEntity> products = productRepository.findAll();
 
 
         if (name != null) {
@@ -41,6 +45,15 @@ public class EditProductService {
                 throw new BadRequestException("Product name needs to be between 3 and 50 characters");
             }
             product.setName(name);
+        }
+
+
+        for (ProductEntity p : products) {
+
+            if  (p.getName().equals(name)) {
+                throw new ConflictException("Another product with this name already exists");
+            }
+
         }
 
 
