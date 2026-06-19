@@ -1,26 +1,27 @@
 # 🍰 CakeShop API
 
-REST API para gerenciamento de usuários, produtos e pedidos, desenvolvida com Java e Spring Boot, aplicando conceitos de autenticação, autorização, arquitetura em camadas e boas práticas de desenvolvimento backend.
+REST API for managing users, products and orders, built with Java and Spring Boot, applying backend engineering practices focused on security, maintainability and layered Architecture with separation of concerns.
 
 ---
 
-## 📖 Sobre o projeto
+## 📖 About
 
-A CakeShop API simula o backend de um e-commerce de bolos, tortas e produtos artesanais.
+CakeShop API is a backend system for an e-commerce platform focused on managing products, users and orders.
 
-O objetivo do projeto é praticar conceitos utilizados em aplicações reais, incluindo:
+The project implements concepts commonly used in real-world applications:
 
-* Autenticação com JWT
-* Controle de acesso baseado em papéis (RBAC)
-* Controle de ownership de recursos
-* Versionamento de banco de dados
-* Tratamento global de exceções
-* Containerização da aplicação
-* Arquitetura organizada e escalável
+* JWT Authentication
+* Role-Based Access Control (RBAC)
+* Resource Ownership Validation
+* DTO-based API contracts
+* Global Exception Handling
+* Database Versioning
+* Automated Testing
+* Containerized Environment
 
 ---
 
-## 🚀 Tecnologias
+## 🚀 Technologies
 
 ### Backend
 
@@ -29,72 +30,103 @@ O objetivo do projeto é praticar conceitos utilizados em aplicações reais, in
 * Spring Security
 * Spring Data JPA (Hibernate)
 
-### Banco de Dados
+### Database
 
 * PostgreSQL
-* Flyway
+* Flyway (Database Migration)
 
-### Infraestrutura
+### Infrastructure
 
 * Docker
 * Docker Compose
 
-### Documentação
+### Documentation
 
 * Swagger / OpenAPI
 
----
+### Testing
 
-## 🔐 Segurança
-
-### Autenticação
-
-* Registro de usuários
-* Login com JWT
-* BCrypt para armazenamento seguro de senhas
-
-### Autorização
-
-* Controle de acesso baseado em Roles:
-
-    * USER
-    * ADMIN
-
-### Ownership
-
-* Usuários só podem acessar e modificar recursos que lhes pertencem
-* Proteção contra acesso indevido a dados de terceiros
+* JUnit 5
+* Mockito
 
 ---
 
-## 👤 Módulo de Usuários
+## 🔐 Security
 
-* Cadastro de usuários e login
-* Proteção de informações sensíveis
+### Authentication
+
+* User registration
+* JWT login
+* BCrypt password encryption
+* Protected endpoints
+
+### Authorization
+
+Role-based permissions:
+
+* USER
+* ADMIN
+
+### Ownership Control
+
+Users can only access resources that belong to them.
+
+The API validates ownership before allowing operations on private resources.
 
 ---
 
-## 🍰 Módulo de Produtos
+## 👤 Users
 
-* Cadastro de produtos
-* Consulta de produtos
-* Atualização de produtos
-* Exclusão de produtos
+Features:
 
-### Regras de acesso
+* User registration
+* Authentication
+* Profile management
 
-* Apenas ADMIN pode criar, editar ou remover produtos
+Users can:
+
+* Update name
+* Update email
+* Change password
+* Delete account
 
 ---
 
-## 🛒 Módulo de Pedidos
+## 🛡️ Administration
 
-* Criação de pedidos
-* Carrinho baseado em estrutura temporária
-* Associação de produtos ao pedido
-* Controle de status utilizando ENUMs
+ADMIN users can:
 
-### Status disponíveis
+* Ban users
+* Unban users
+* Promote users
+* Demote users
+
+---
+
+## 🍰 Products
+
+Features:
+
+* Create products
+* List products
+* Update products
+* Delete products
+
+Access rules:
+
+* Only ADMIN users can manage products
+
+---
+
+## 🛒 Orders
+
+Features:
+
+* Create orders
+* Associate products with orders
+* Manage order status
+
+Available statuses:
 
 * PENDING
 * CONCLUDED
@@ -102,111 +134,48 @@ O objetivo do projeto é praticar conceitos utilizados em aplicações reais, in
 
 ---
 
-## ⚠️ Tratamento de Exceções
+## 🧪 Tests
 
-A aplicação possui tratamento global de erros para respostas padronizadas.
+The project contains automated tests using JUnit 5.
 
-### Exemplos utilizados na aplicação
+Current status:
+
+✔ 51 tests passing consistently
+
+Tests cover business rules and service layer behavior.
+
+---
+
+## ⚠️ Exception Handling
+
+The API uses centralized exception handling with standardized responses.
+
+Handled cases:
 
 * Bad Request (400)
 * Unauthorized (401)
 * Forbidden (403)
 * Not Found (404)
 * Conflict (409)
-* Erros de validação de DTOs (MethodArgumentNotValidException)
+* DTO Validation Errors
 
 ---
 
-## 🏗️ Arquitetura
+## 🏗 Architecture
 
-Estrutura baseada em separação de responsabilidades:
+Layered architecture with separation of responsibilities:
 
 ```text
 src
 └── main
     └── java
-        ├── controllers
-        ├── services
+        ├── controller
+        ├── service
         ├── repository
         ├── entity
         ├── security
         ├── dto
         │   ├── request
         │   └── response
-        ├── enums
-        └── exception
-```
-
----
-
-## 🐳 Executando com Docker
-
-```bash
-git clone https://github.com/daviviana2602-maker/CakeShop-API.git
-
-cd CakeShop-API
-
-docker compose up --build
-```
-
----
-
-## ▶️ Executando localmente
-
-### Pré-requisitos
-
-* Java 21
-* Maven
-* PostgreSQL
-
-### Instalação
-
-```bash
-git clone https://github.com/daviviana2602-maker/CakeShop-API.git
-
-cd CakeShop-API
-
-mvn clean install
-
-mvn spring-boot:run
-```
-
----
-
-## 📚 Documentação da API
-
-Após iniciar a aplicação:
-
-```text
-http://localhost:8080/swagger-ui/index.html
-```
-
----
-
-## 📈 Status atual
-
-✔ Autenticação JWT
-
-✔ Controle de acesso RBAC
-
-✔ CRUD de Usuários
-
-✔ CRUD de Produtos
-
-✔ Sistema de Pedidos
-
-✔ PostgreSQL
-
-✔ Flyway
-
-✔ Docker
-
-✔ Swagger/OpenAPI
-
-🚧 Novas funcionalidades em desenvolvimento
-
----
-
-## 👨‍💻 Autor
-
-Desenvolvido por Davi Viana como projeto de estudo e evolução profissional em desenvolvimento backend com Java e Spring Boot.
+        ├── exception
+        └── enums
