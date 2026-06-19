@@ -44,7 +44,6 @@ public class CreateOrderService {
 
         ownershipService.checkOwnership(userId);
 
-
         List<OrderEntity> orders = orderRepository.findByUserId(userId);
 
 
@@ -61,7 +60,6 @@ public class CreateOrderService {
         UserEntity user = findId(userId);
 
         OrderEntity order = new OrderEntity();
-
 
         order.setUserId(user.getId());
         order.setStatus(OrderStatusEnum.PENDING);
