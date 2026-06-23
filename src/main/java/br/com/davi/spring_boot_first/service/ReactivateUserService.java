@@ -21,7 +21,7 @@ public class ReactivateUserService {
     }
 
 
-    private UserEntity findId(Long userId){
+    private UserEntity findIUserByd(Long userId){
         return userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException("User not found"));
     }
@@ -30,7 +30,7 @@ public class ReactivateUserService {
     @Transactional
     public UserStatusResponse reactivateUser(Long userId) {
 
-        UserEntity user = findId(userId);
+        UserEntity user = findIUserByd(userId);
 
         if (user.getStatus().equals(UserStatusEnum.ACTIVE)) {
             throw new BadRequestException("The user already is activated");

@@ -30,7 +30,7 @@ public class CancelOrderService {
     }
 
 
-    private OrderEntity findOrderId(Long orderId) {
+    private OrderEntity findOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("order not found"));
     }
@@ -39,7 +39,7 @@ public class CancelOrderService {
     @Transactional
     public Long cancelOrder(Long orderId) {
 
-        OrderEntity order = findOrderId(orderId);
+        OrderEntity order = findOrderById(orderId);
 
         ownershipService.checkOwnership(order.getUserId());
 

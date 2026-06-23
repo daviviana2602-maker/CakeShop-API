@@ -23,7 +23,7 @@ public class DemoteUserService {
     }
 
 
-    private UserEntity findId(Long userId) {
+    private UserEntity findUserById(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new NotFoundException("user not found"));
     }
@@ -32,7 +32,7 @@ public class DemoteUserService {
     @Transactional
     public UserRoleResponse demoteUser(Long userId, Authentication authentication) {
 
-        UserEntity user = findId(userId);
+        UserEntity user = findUserById(userId);
 
         Long loggedUserId = (Long) authentication.getPrincipal();
 

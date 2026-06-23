@@ -25,6 +25,10 @@ public class CreateAccountService {
     }
 
 
+    private boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
 
     @Transactional
     public CreateAccountResponse createAccount(String name, String email, String password) {
@@ -32,8 +36,8 @@ public class CreateAccountService {
         UserEntity user = new UserEntity();
 
 
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new ConflictException("The email already exists");
+        if (existsByEmail(email)) {
+            throw new ConflictException("Email already exists");
         }
 
 

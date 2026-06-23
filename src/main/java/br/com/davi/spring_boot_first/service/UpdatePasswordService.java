@@ -29,7 +29,7 @@ public class UpdatePasswordService {
     }
 
 
-    private UserEntity findId(Long userId){
+    private UserEntity findUserById(Long userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
@@ -40,7 +40,7 @@ public class UpdatePasswordService {
 
         ownershipService.checkOwnership(userId);
 
-        UserEntity user = findId(userId);
+        UserEntity user = findUserById(userId);
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new BadRequestException("Current password is wrong");

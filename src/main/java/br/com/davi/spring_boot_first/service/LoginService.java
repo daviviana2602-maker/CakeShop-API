@@ -30,15 +30,15 @@ public class LoginService {
     }
 
 
-    private UserEntity findEmail(String email) {
+    private UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-            .orElseThrow(() -> new NotFoundException("User not found!"));
+            .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
 
     public LoginResponse systemLogin(String email, String password){
 
-        UserEntity user = findEmail(email);
+        UserEntity user = findUserByEmail(email);
 
 
         if (user.getStatus().equals(UserStatusEnum.DISABLED)) {

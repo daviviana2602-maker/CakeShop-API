@@ -22,7 +22,7 @@ public class PromoteUserService {
     }
 
 
-    private UserEntity findId(Long userId){
+    private UserEntity findUserById(Long userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
@@ -31,7 +31,8 @@ public class PromoteUserService {
     @Transactional
     public UserRoleResponse promoteUser(Long userId){
 
-        UserEntity user = findId(userId);
+        UserEntity user = findUserById(userId);
+
 
         if (user.getStatus().equals(UserStatusEnum.DISABLED) ||
             user.getStatus().equals(UserStatusEnum.DELETED)) {

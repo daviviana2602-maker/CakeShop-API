@@ -25,19 +25,21 @@ public class EditProductService {
     }
 
 
-    private ProductEntity findId(Long id) {
+    private ProductEntity findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
+    }
+
+
+    private boolean existsByName(String name){
+        return productRepository.existsByName(name);
     }
 
 
     @Transactional
     public EditProductResponse editProduct(Long id, String name, BigDecimal price, Integer quantity) {
 
-
-        ProductEntity product = findId(id);
-
-        List<ProductEntity> products = productRepository.findAll();
+        ProductEntity product = findProductById(id);
 
 
         if (name != null) {
@@ -48,12 +50,8 @@ public class EditProductService {
         }
 
 
-        for (ProductEntity p : products) {
-
-            if  (p.getName().equals(name)) {
-                throw new ConflictException("Another product with this name already exists");
-            }
-
+        if (existsByName(name)) {
+            throw new ConflictException("Product with this name already exists");
         }
 
 

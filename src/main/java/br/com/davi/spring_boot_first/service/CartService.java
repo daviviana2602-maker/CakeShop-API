@@ -39,19 +39,19 @@ public class CartService {
     }
 
 
-    private OrderEntity findOrderId(Long orderId) {
+    private OrderEntity findOrderById(Long orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("order not found"));
     }
 
 
-    private ProductEntity findProductId(Long productId) {
+    private ProductEntity findProductById(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("product not found"));
     }
 
     // discovering if the item already exists in the order
-    private Optional<CartEntity> findItemId(Long orderId, Long productId) {
+    private Optional<CartEntity> findItemInOrderById(Long orderId, Long productId) {
         return cartRepository.findByOrderIdAndProductId(orderId, productId);
     }
 
@@ -59,7 +59,7 @@ public class CartService {
     @Transactional
     public CartResponse editCart(Long orderId, Long productId, Integer quantity) {
 
-        OrderEntity order = findOrderId(orderId);
+        OrderEntity order = findOrderById(orderId);
 
         ownershipService.checkOwnership(order.getUserId());
 
@@ -69,9 +69,9 @@ public class CartService {
         }
 
 
-        ProductEntity product = findProductId(productId);
+        ProductEntity product = findProductById(productId);
 
-        Optional<CartEntity> item = findItemId(orderId, productId);
+        Optional<CartEntity> item = findItemInOrderById(orderId, productId);
 
         BigDecimal unitPrice = product.getPrice();
 

@@ -19,7 +19,7 @@ public class DeleteProductService {
     }
 
 
-    private ProductEntity findId(Long id) {
+    private ProductEntity findProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
     }
@@ -28,7 +28,7 @@ public class DeleteProductService {
     @Transactional
     public Long deleteProduct(Long id) {
 
-        ProductEntity product = findId(id);
+        ProductEntity product = findProductById(id);
         productRepository.delete(product);
 
         return id;

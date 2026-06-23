@@ -25,7 +25,7 @@ public class UpdateProfileService {
     }
 
 
-    private UserEntity findId(Long userId) {
+    private UserEntity findUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
@@ -36,16 +36,18 @@ public class UpdateProfileService {
 
         ownershipService.checkOwnership(userId);
 
-        UserEntity user = findId(userId);
+        UserEntity user = findUserById(userId);
 
 
         if (name == null && email == null) {
             throw new BadRequestException("at least one field is required");
         }
 
+
         if (name != null) {
             user.setName(name);
         }
+
 
         if (email != null) {
 
@@ -53,13 +55,16 @@ public class UpdateProfileService {
                 throw new BadRequestException("Email cannot be empty");
             }
 
+
             Optional<UserEntity> newEmail = userRepository.findByEmail(email);
 
             if (newEmail.isPresent()) {
                 throw new BadRequestException("Email already exists");
+
             }
 
             user.setEmail(email);
+
         }
 
 

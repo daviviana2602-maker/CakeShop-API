@@ -33,9 +33,14 @@ public class CreateOrderService {
     }
 
 
-    private UserEntity findId(Long userId) {
+    private UserEntity findUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+
+    private boolean existsPendingOrderByUserIdAndStatus(Long orderId, OrderStatusEnum status) {
+        return orderRepository.existsByUserIdAndStatus(orderId, status);
     }
 
 
@@ -44,20 +49,13 @@ public class CreateOrderService {
 
         ownershipService.checkOwnership(userId);
 
-        List<OrderEntity> orders = orderRepository.findByUserId(userId);
 
-
-        for (OrderEntity o : orders){
-
-            if (o.getStatus().equals(OrderStatusEnum.PENDING)) {
-
-                throw new ConflictException("You already have an order pending");
-
-            }
+        if (existsPendingOrderByUserIdAndStatus(userId, OrderStatusEnum.PENDING)) {
+            throw new ConflictException("pending order already exists");
         }
 
 
-        UserEntity user = findId(userId);
+        UserEntity user = findUserById(userId);
 
         OrderEntity order = new OrderEntity();
 
