@@ -33,13 +33,13 @@ public class CreateAccountService {
     @Transactional
     public CreateAccountResponse createAccount(String name, String email, String password) {
 
-        UserEntity user = new UserEntity();
-
 
         if (existsByEmail(email)) {
             throw new ConflictException("Email already exists");
         }
 
+
+        UserEntity user = new UserEntity();
 
         user.setRole(UserRoleEnum.USER);
         user.setName(name);

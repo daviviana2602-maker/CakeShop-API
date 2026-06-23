@@ -31,7 +31,7 @@ public class EditProductService {
     }
 
 
-    private boolean existsByName(String name){
+    private boolean existsByName(String name) {
         return productRepository.existsByName(name);
     }
 
@@ -43,31 +43,28 @@ public class EditProductService {
 
 
         if (name != null) {
-            if (name.length() < 3 || name.length() > 50) {
-                throw new BadRequestException("Product name needs to be between 3 and 50 characters");
+
+            if (existsByName(name)) {
+                throw new ConflictException("Product with this name already exists");
             }
+
             product.setName(name);
         }
 
 
-        if (existsByName(name)) {
-            throw new ConflictException("Product with this name already exists");
-        }
-
-
         if (quantity != null) {
-            if (quantity + product.getQuantity() < 0 || quantity > 100) {
+
+            Integer newQuantity = product.getQuantity() + quantity;
+
+            if (newQuantity < 0) {
                 throw new BadRequestException("Product quantity needs to be between 0 and 100");
             }
-            quantity += product.getQuantity();
-            product.setQuantity(quantity);
+
+            product.setQuantity(newQuantity);
         }
 
 
         if (price != null) {
-            if (price.compareTo(BigDecimal.valueOf(5000)) >= 0 || price.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new BadRequestException("Product price needs to be between 0 and 5000");
-            }
             product.setPrice(price);
         }
 

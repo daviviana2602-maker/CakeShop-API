@@ -30,16 +30,8 @@ public class CreateProductService {
     public CreateProductResponse createNewProduct(String name, BigDecimal price, int quantity) {
 
 
-        ProductEntity product = new ProductEntity();
-
-
         if (name.isBlank()) {
             throw new BadRequestException("Name is required");
-        }
-
-
-        if (existsProductByName(name)) {
-            throw new ConflictException("Product already exists");
         }
 
 
@@ -51,6 +43,13 @@ public class CreateProductService {
             throw new BadRequestException("Quantity must be between 0 and 100");
         }
 
+
+        if (existsProductByName(name)) {
+            throw new ConflictException("Product already exists");
+        }
+        
+
+        ProductEntity product = new ProductEntity();
 
         product.setName(name);
         product.setPrice(price);

@@ -40,7 +40,9 @@ public class UpdatePasswordService {
 
         ownershipService.checkOwnership(userId);
 
+
         UserEntity user = findUserById(userId);
+
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
             throw new BadRequestException("Current password is wrong");

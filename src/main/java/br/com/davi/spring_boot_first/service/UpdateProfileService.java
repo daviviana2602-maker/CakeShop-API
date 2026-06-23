@@ -36,12 +36,12 @@ public class UpdateProfileService {
 
         ownershipService.checkOwnership(userId);
 
-        UserEntity user = findUserById(userId);
-
-
         if (name == null && email == null) {
             throw new BadRequestException("at least one field is required");
         }
+
+
+        UserEntity user = findUserById(userId);
 
 
         if (name != null) {
@@ -56,11 +56,8 @@ public class UpdateProfileService {
             }
 
 
-            Optional<UserEntity> newEmail = userRepository.findByEmail(email);
-
-            if (newEmail.isPresent()) {
+            if (userRepository.existsByEmail(email)) {
                 throw new BadRequestException("Email already exists");
-
             }
 
             user.setEmail(email);
