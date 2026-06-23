@@ -26,7 +26,7 @@ public class OrderController {
     private final CartService cartService;
     private final CancelOrderService cancelOrderService;
     private final ConcludeOrderService concludeOrderService;
-    private final ListOrderService listOrderService;
+    private final ListCartService listCartService;
 
 
     @PostMapping("{userId}/create}")
@@ -85,7 +85,7 @@ public class OrderController {
         @PathVariable Long orderId
     )
     {
-        return listOrderService.listItems(orderId);
+        return listCartService.listItems(orderId);
     }
 
 

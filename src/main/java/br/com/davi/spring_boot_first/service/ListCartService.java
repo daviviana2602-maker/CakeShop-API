@@ -12,16 +12,16 @@ import java.util.List;
 
 
 @Service
-public class ListOrderService {
+public class ListCartService {
 
     private final CartRepository cartRepository;
     private final OwnershipService ownershipService;
     private final OrderRepository orderRepository;
 
 
-    public ListOrderService(CartRepository cartRepository,
-                            OwnershipService ownershipService,
-                            OrderRepository orderRepository) {
+    public ListCartService(CartRepository cartRepository,
+                           OwnershipService ownershipService,
+                           OrderRepository orderRepository) {
         this.cartRepository = cartRepository;
         this.ownershipService = ownershipService;
         this.orderRepository = orderRepository;
