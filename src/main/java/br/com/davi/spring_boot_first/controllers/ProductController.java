@@ -53,15 +53,16 @@ public class ProductController {
     }
 
 
-    @PutMapping("/edit")
+    @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
-    public EditProductResponse edit(
+    public EditProductResponse changeProduct(
+        @PathVariable Long id,
         @Valid @RequestBody EditProductRequest editProductRequest
     )
     {
         return editProductService.editProduct(
-            editProductRequest.getId(),
+            id,
             editProductRequest.getName(),
             editProductRequest.getPrice(),
             editProductRequest.getQuantity());

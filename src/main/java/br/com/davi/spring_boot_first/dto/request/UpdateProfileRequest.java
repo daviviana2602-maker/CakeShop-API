@@ -11,8 +11,6 @@ import lombok.Getter;
 
 public class UpdateProfileRequest {
 
-    private Long userId;
-
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
 

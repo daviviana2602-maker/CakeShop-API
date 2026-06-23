@@ -29,7 +29,7 @@ public class OrderController {
     private final ListOrderService listOrderService;
 
 
-    @PostMapping("/create/{userId}")
+    @PostMapping("{userId}/create}")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public OrderResponse generateOrder(
@@ -40,22 +40,23 @@ public class OrderController {
     }
 
 
-    @PostMapping("/items")
+    @PostMapping("{orderId}/items}")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public CartResponse Cart(
+        @PathVariable Long orderId,
         @Valid @RequestBody CartRequest cartRequest
     )
     {
         return cartService.editCart(
-            cartRequest.getOrderId(),
+            orderId,
             cartRequest.getProductId(),
             cartRequest.getQuantity()
         );
     }
 
 
-    @PostMapping("/cancel/{orderId}")
+    @PostMapping("{orderId}/cancel")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public Long excludeOrder(
@@ -66,7 +67,7 @@ public class OrderController {
     }
 
 
-    @PostMapping("/conclude/{orderId}")
+    @PostMapping("{orderId}/conclude")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public List<ConcludeOrderResponse> buyOrder(
@@ -77,7 +78,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("/list/{orderId}")
+    @GetMapping("{orderId/list")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public List<CartResponse> listOrder(

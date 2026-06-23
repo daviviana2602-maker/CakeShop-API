@@ -9,8 +9,11 @@ import java.math.BigDecimal;
 
 
 public class EditProductRequest {
-        private Long id;
-        private String name;
-        private BigDecimal price;
-        private Integer quantity;
-    }
+
+    private String name;
+
+    private BigDecimal price;
+
+    private Integer quantity;
+
+}

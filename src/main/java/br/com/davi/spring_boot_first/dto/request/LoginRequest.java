@@ -20,4 +20,5 @@ public class LoginRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 3, max = 50, message = "Password must be between 3 and 50 characters")
     private String password;
+
 }

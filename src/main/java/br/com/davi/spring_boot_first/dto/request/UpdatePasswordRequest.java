@@ -12,8 +12,6 @@ import lombok.Getter;
 
 public class UpdatePasswordRequest {
 
-    private Long userId;
-
     @NotBlank(message = "current password is required")
     @Size(min = 3, max = 50, message = "Password must be between 3 and 50 characters")
     private String currentPassword;

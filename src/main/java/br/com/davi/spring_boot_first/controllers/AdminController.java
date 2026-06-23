@@ -29,7 +29,7 @@ public class AdminController {
     private final DemoteUserService demoteUserService;
 
 
-    @PostMapping("/disable/{userId}")
+    @PostMapping("{userId}/disable")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public UserStatusResponse disableId(
@@ -40,7 +40,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/reactivate/{userId}")
+    @PostMapping("{userId}/reactivate")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public UserStatusResponse reactivateId(
@@ -51,7 +51,7 @@ public class AdminController {
     }
 
 
-    @PostMapping("/promote/{userId}")
+    @PostMapping("{userId}/promote")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public UserRoleResponse promoteId(
@@ -62,12 +62,12 @@ public class AdminController {
     }
 
 
-    @PostMapping("/demote/{userId}")
+    @PostMapping("{userId}/demote")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public UserRoleResponse demoteId(
         @PathVariable Long userId,
-        Authentication authentication   // Spring add the object of the authenticated user
+        Authentication authentication   // add the object of the authenticated user
     )
     {
         return demoteUserService.demoteUser(userId, authentication);

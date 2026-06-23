@@ -25,7 +25,7 @@ public class ProfileController {
     private final UpdatePasswordService updatePasswordService;
 
 
-    @PostMapping("delete/{userId}")
+    @DeleteMapping("/{userId}")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public Long deleteProfile(
@@ -36,30 +36,32 @@ public class ProfileController {
     }
 
 
-    @PatchMapping("update")
+    @PatchMapping("/{userId}")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public UpdateProfileResponse updateProfile(
+        @PathVariable Long userId,
         @Valid @RequestBody UpdateProfileRequest updateProfileRequest
     )
     {
         return updateProfileService.changeProfile(
-                updateProfileRequest.getUserId(),
+                userId,
                 updateProfileRequest.getName(),
                 updateProfileRequest.getEmail()
         );
     }
 
 
-    @PatchMapping("update/password")
+    @PatchMapping("/{userId}/password")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public Long updatePassword(
+        @PathVariable Long userId,
         @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest
     )
     {
         return updatePasswordService.changePassword(
-                updatePasswordRequest.getUserId(),
+                userId,
                 updatePasswordRequest.getCurrentPassword(),
                 updatePasswordRequest.getNewPassword()
         );
