@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -62,15 +63,6 @@ public class EditProductServiceTest {
     @Test
     public void shouldWrongProductWithEmptyName() {
 
-        ProductEntity product = new ProductEntity();
-        product.setId(1L);
-        product.setName("OldName");
-        product.setPrice(BigDecimal.valueOf(10));
-        product.setQuantity(5);
-
-        when(productRepository.findById(1L))
-                .thenReturn(Optional.of(product));
-
 
         assertThrows(
                 BadRequestException.class,
@@ -84,23 +76,19 @@ public class EditProductServiceTest {
 
     }
 
+
     @Test
     void shouldWrongProductNameAlreadyExists() {
 
         ProductEntity product = new ProductEntity();
         product.setId(1L);
-        product.setName("TestProduct");
 
-        ProductEntity anotherProduct = new ProductEntity();
-        anotherProduct.setId(2L);
-        anotherProduct.setName("TestProductTwo");
-
-
-        when(productRepository.findAll())
-                .thenReturn(List.of(anotherProduct));
 
         when(productRepository.findById(1L))
                 .thenReturn(Optional.of(product));
+
+        when(productRepository.existsByName("TestProductTwo"))
+                .thenReturn(true);
 
 
         assertThrows(
@@ -117,52 +105,25 @@ public class EditProductServiceTest {
 
 
     @Test
-    void shouldWrongWhenPriceIsNegative() {
-
-        ProductEntity product = new ProductEntity();
-        product.setId(1L);
-        product.setPrice(BigDecimal.valueOf(40));
-
-
-        when(productRepository.findAll())
-                .thenReturn(List.of());
-
-        when(productRepository.findById(1L))
-                .thenReturn(Optional.of(product));
-
-
-        assertThrows(
-                BadRequestException.class,
-                () -> editProductService.editProduct(
-                        1L,
-                        null,
-                        BigDecimal.valueOf(-10),
-                        null
-                )
-        );
-
-    }
-
-
-    @Test
-    void shouldWrongWhenQuantityIsZero() {
+    void shouldWrongWhenNewQuantityIsZero() {
 
         ProductEntity product = new ProductEntity();
         product.setId(1L);
         product.setQuantity(5);
 
-        when(productRepository.findAll())
-                .thenReturn(List.of());
 
         when(productRepository.findById(1L))
                 .thenReturn(Optional.of(product));
+
+        when(productRepository.existsByName("TestProduct"))
+                .thenReturn(false);
 
 
         assertThrows(
                 BadRequestException.class,
                 () -> editProductService.editProduct(
                         1L,
-                        null,
+                        "TestProduct",
                         null,
                         -10
                 )

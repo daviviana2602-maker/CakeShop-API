@@ -68,10 +68,6 @@ public class ConcludedOrderServiceTest {
         concluded.setFullPrice(BigDecimal.valueOf(100));
 
 
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
-
         when(orderRepository.findById(1L))
                 .thenReturn(Optional.of(order));
 

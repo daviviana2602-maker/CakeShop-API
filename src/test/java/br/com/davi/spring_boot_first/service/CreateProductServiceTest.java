@@ -35,8 +35,9 @@ public class CreateProductServiceTest {
     @Test
     void shouldCreateProductSuccessfully() {
 
-        when(productRepository.findAll())
-                .thenReturn(List.of());     // return an empty list
+        when(productRepository.existsByName("Notebook"))
+                .thenReturn(false);
+
 
         CreateProductResponse response =
                 createProductService.createNewProduct(
@@ -79,11 +80,8 @@ public class CreateProductServiceTest {
     @Test
     void shouldThrowConflictWhenProductNameAlreadyExists() {
 
-        ProductEntity product = new ProductEntity();
-        product.setName("Notebook");
-
-        when(productRepository.findAll())
-                .thenReturn(List.of(product));
+        when(productRepository.existsByName("Notebook"))
+                .thenReturn(true);
 
         assertThrows(
                 ConflictException.class,
@@ -122,8 +120,6 @@ public class CreateProductServiceTest {
     @Test
     void shouldThrowBadRequestWhenQuantityIsZero() {
 
-        when(productRepository.findAll())
-                .thenReturn(List.of());
 
         assertThrows(
                 BadRequestException.class,
@@ -133,6 +129,11 @@ public class CreateProductServiceTest {
                         0
                 )
         );
+
+
+        verify(productRepository, never())
+            .save(any());
+
     }
 
 

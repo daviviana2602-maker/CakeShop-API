@@ -39,6 +39,16 @@ public class EditProductService {
     @Transactional
     public EditProductResponse editProduct(Long id, String name, BigDecimal price, Integer quantity) {
 
+
+        if (name == null && price == null && quantity == null) {
+            throw new BadRequestException("At least one field is required");
+        }
+
+        if (name != null && name.isBlank()){
+            throw new BadRequestException("Name must contain characters");
+        }
+
+
         ProductEntity product = findProductById(id);
 
 

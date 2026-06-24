@@ -38,10 +38,8 @@ class CreateAccountServiceTest {
     @Test
     void shouldThrowWhenEmailAlreadyExists() {
 
-        UserEntity user = new UserEntity();
-
-        when(userRepository.findByEmail("test@gmail.com"))
-                .thenReturn(Optional.of(user));
+        when(userRepository.existsByEmail("test@gmail.com"))
+                .thenReturn(true);
 
         assertThrows(
                 ConflictException.class,
@@ -60,8 +58,8 @@ class CreateAccountServiceTest {
     @Test
     void shouldCreateAccountSuccessfully() {
 
-        when(userRepository.findByEmail("test@gmail.com"))
-                .thenReturn(Optional.empty());
+        when(userRepository.existsByEmail("test@gmail.com"))
+                .thenReturn(false);
 
         when(passwordEncoder.encode("123456"))
                 .thenReturn("HASH");
@@ -97,8 +95,8 @@ class CreateAccountServiceTest {
     @Test
     void shouldCreateAdminSuccessfully() {
 
-        when(userRepository.findByEmail("test@gmail.com"))
-                .thenReturn(Optional.empty());
+        when(userRepository.existsByEmail("test@gmail.com"))
+                .thenReturn(false);
 
         when(passwordEncoder.encode("123456"))
                 .thenReturn("HASH");

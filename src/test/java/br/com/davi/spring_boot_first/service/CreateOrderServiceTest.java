@@ -9,6 +9,7 @@ import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,8 +48,9 @@ public class CreateOrderServiceTest {
         user.setId(1L);
         user.setName("Davi");
 
-        when(orderRepository.findByUserId(1L))
-                .thenReturn(List.of());
+
+        when(orderRepository.existsByUserIdAndStatus(1L, OrderStatusEnum.PENDING))
+                .thenReturn(false);
 
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
@@ -62,6 +64,7 @@ public class CreateOrderServiceTest {
         assertEquals("Davi", response.getName());
         assertEquals(OrderStatusEnum.PENDING, response.getStatus());
 
+
         verify(orderRepository)
                 .save(any(OrderEntity.class));
 
@@ -71,16 +74,19 @@ public class CreateOrderServiceTest {
     @Test
     void shouldThrowConflictWhenUserAlreadyHasPendingOrder() {
 
-        OrderEntity order = new OrderEntity();
-        order.setStatus(OrderStatusEnum.PENDING);
 
-        when(orderRepository.findByUserId(1L))
-                .thenReturn(List.of(order));
+        when(orderRepository.existsByUserIdAndStatus(1L, OrderStatusEnum.PENDING))
+                .thenReturn(true);
+
 
         assertThrows(
                 ConflictException.class,
                 () -> createOrderService.createOrder(1L)
         );
+
+
+        verify(userRepository, never())
+                .findById(1L);
 
         verify(orderRepository, never())
                 .save(any(OrderEntity.class));

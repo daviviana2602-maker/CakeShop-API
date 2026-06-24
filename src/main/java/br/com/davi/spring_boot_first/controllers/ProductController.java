@@ -45,7 +45,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/list/")
+    @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public List<ListProductResponse> catchProducts(

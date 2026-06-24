@@ -16,8 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -41,10 +40,6 @@ public class UpdateProfileServiceTest {
         user.setName("Old Name");
         user.setEmail("old@gmail.com");
 
-
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
 
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
@@ -73,17 +68,12 @@ public class UpdateProfileServiceTest {
         user.setEmail("old@gmail.com");
 
 
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
-
-
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
 
-        when(userRepository.findByEmail("new@gmail.com"))
-                .thenReturn(Optional.empty());
+        when(userRepository.existsByEmail("new@gmail.com"))
+                .thenReturn(false);
 
 
         UpdateProfileResponse response =
@@ -101,15 +91,6 @@ public class UpdateProfileServiceTest {
     @Test
     void shouldFailWhenNoFieldProvided() {
 
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
-
-
-        when(userRepository.findById(1L))
-                .thenReturn(Optional.of(new UserEntity()));
-
-
         assertThrows(
                 BadRequestException.class,
                 () -> updateProfileService.changeProfile(
@@ -118,6 +99,11 @@ public class UpdateProfileServiceTest {
                         null
                 )
         );
+
+
+       verify(userRepository, never())
+            .findById(1L);
+
     }
 
 
@@ -127,11 +113,6 @@ public class UpdateProfileServiceTest {
         UserEntity user = new UserEntity();
 
         user.setId(1L);
-
-
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
 
 
         when(userRepository.findById(1L))
@@ -157,20 +138,12 @@ public class UpdateProfileServiceTest {
         user.setId(1L);
 
 
-        UserEntity anotherUser = new UserEntity();
-
-
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
-
-
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
 
-        when(userRepository.findByEmail("test@gmail.com"))
-                .thenReturn(Optional.of(anotherUser));
+        when(userRepository.existsByEmail("test@gmail.com"))
+                .thenReturn(true);
 
 
         assertThrows(
@@ -181,16 +154,12 @@ public class UpdateProfileServiceTest {
                         "test@gmail.com"
                 )
         );
+
     }
 
 
     @Test
     void shouldFailWhenUserNotFound() {
-
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
-
 
         when(userRepository.findById(1L))
                 .thenReturn(Optional.empty());

@@ -29,7 +29,7 @@ public class OrderController {
     private final ListCartService listCartService;
 
 
-    @PostMapping("{userId}/create}")
+    @PostMapping("{userId}/create")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public OrderResponse generateOrder(
@@ -40,7 +40,7 @@ public class OrderController {
     }
 
 
-    @PostMapping("{orderId}/items}")
+    @PostMapping("{orderId}/items")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public CartResponse Cart(
@@ -78,7 +78,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("{orderId/list")
+    @GetMapping("{orderId}/list")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
     public List<CartResponse> listOrder(
