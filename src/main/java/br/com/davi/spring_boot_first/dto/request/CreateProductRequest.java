@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class CreateProductRequest {
 
     @NotBlank(message = "Name is required")
-    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    @Size(max = 50, message = "Product name cannot exceed 50 characters")
     private String name;
 
     @NotNull(message = "Price is required")
