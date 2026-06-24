@@ -11,7 +11,7 @@ import lombok.Getter;
 
 public class UpdateProfileRequest {
 
-    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    @Size(max = 50, message = "Product name cannot exceed 50 characters")
     private String name;
 
     @Email(message = "Email format is wrong")

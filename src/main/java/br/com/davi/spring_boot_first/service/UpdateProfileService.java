@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeEmail;
+import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeName;
+
 
 @Service
 public class UpdateProfileService {
@@ -41,6 +44,16 @@ public class UpdateProfileService {
         }
 
 
+        if (name != null) {
+
+            name = normalizeName(name);
+
+            if (name.length() < 3) {
+                throw new BadRequestException("name must be at least 3 characters");
+            }
+        }
+
+
         UserEntity user = findUserById(userId);
 
 
@@ -50,6 +63,8 @@ public class UpdateProfileService {
 
 
         if (email != null) {
+
+            email = normalizeEmail(email);
 
             if (email.isBlank()) {
                 throw new BadRequestException("Email cannot be empty");
@@ -72,4 +87,5 @@ public class UpdateProfileService {
         );
 
     }
+
 }

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
+import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeName;
+
 
 @Service
 public class CreateProductService {
@@ -27,11 +29,14 @@ public class CreateProductService {
 
 
     @Transactional
-    public CreateProductResponse createNewProduct(String name, BigDecimal price, int quantity) {
+    public CreateProductResponse createNewProduct(String name, BigDecimal price, Integer quantity) {
 
 
-        if (name.isBlank()) {
-            throw new BadRequestException("Name is required");
+        name = normalizeName(name);
+
+
+        if (name.length() < 3) {
+            throw new BadRequestException("Name must be at least 3 characters");
         }
 
 

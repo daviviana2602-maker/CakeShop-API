@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 public class EditProductRequest {
 
-    @Size(min = 3, max = 50, message = "Product name needs to be between 3 and 50 characters")
+    @Size(max = 50, message = "Product name cannot exceed 50 characters")
     private String name;
 
     @DecimalMin(value = "0.01", message = "Price must be greater than zero")

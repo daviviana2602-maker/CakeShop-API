@@ -11,6 +11,8 @@ import br.com.davi.spring_boot_first.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeEmail;
+
 
 @Service
 public class LoginService {
@@ -37,6 +39,9 @@ public class LoginService {
 
 
     public LoginResponse systemLogin(String email, String password){
+
+        email = normalizeEmail(email);
+
 
         UserEntity user = findUserByEmail(email);
 

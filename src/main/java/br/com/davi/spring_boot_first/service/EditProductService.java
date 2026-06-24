@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeName;
+
 
 @Service
 public class EditProductService {
@@ -44,8 +46,14 @@ public class EditProductService {
             throw new BadRequestException("At least one field is required");
         }
 
-        if (name != null && name.isBlank()){
-            throw new BadRequestException("Name must contain characters");
+        if (name != null) {
+
+            name = normalizeName(name);
+
+            if (name.length() < 3) {
+                throw new BadRequestException("name must be at least 3 characters");
+            }
+
         }
 
 
