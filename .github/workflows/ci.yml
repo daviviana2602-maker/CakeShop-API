@@ -35,10 +35,10 @@ jobs:
           distribution: temurin
 
       - name: Run tests
-        run: ./mvnw test
+        run: mvn test
 
       - name: Build
-        run: ./mvnw clean package -DskipTests
+        run: mvn clean package -DskipTests
 
       - name: Stop containers
         if: always()
