@@ -1,0 +1,45 @@
+name: CakeShop CI
+
+on:
+  push:
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create env
+        run: |
+          echo "POSTGRES_PASSWORD=test" >> .env
+
+          echo "DB_URL=jdbc:postgresql://postgres:5432/cakeshop" >> .env
+          echo "DB_USER=postgres" >> .env
+          echo "DB_PASSWORD=test" >> .env
+
+          echo "JWT_SECRET=test-secret-ci" >> .env
+          echo "REFRESH_JWT_EXPIRATION=86400000" >> .env
+          echo "ACCESS_JWT_EXPIRATION=3600000" >> .env
+
+      - name: Start containers
+        run: docker compose up -d
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: temurin
+
+      - name: Run tests
+        run: ./mvnw test
+
+      - name: Build
+        run: ./mvnw clean package -DskipTests
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down
