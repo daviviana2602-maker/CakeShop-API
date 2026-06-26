@@ -28,9 +28,7 @@ public class ProductEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = false)
-    private Integer quantity;
-
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
 }

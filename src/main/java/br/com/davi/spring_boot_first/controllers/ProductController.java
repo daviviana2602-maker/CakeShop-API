@@ -40,8 +40,8 @@ public class ProductController {
     {
         return createProductService.createNewProduct(
             createProductRequest.getName(),
-            createProductRequest.getPrice(),
-            createProductRequest.getQuantity());
+            createProductRequest.getPrice()
+        );
     }
 
 
@@ -67,8 +67,8 @@ public class ProductController {
         return editProductService.editProduct(
             id,
             editProductRequest.getName(),
-            editProductRequest.getPrice(),
-            editProductRequest.getQuantity());
+            editProductRequest.getPrice()
+            );
     }
 
 

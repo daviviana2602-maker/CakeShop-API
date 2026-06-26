@@ -29,7 +29,7 @@ public class CreateProductService {
 
 
     @Transactional
-    public CreateProductResponse createNewProduct(String name, BigDecimal price, Integer quantity) {
+    public CreateProductResponse createNewProduct(String name, BigDecimal price) {
 
 
         name = normalizeName(name);
@@ -44,10 +44,6 @@ public class CreateProductService {
             throw new BadRequestException("Price must be between 0 and 5000");
         }
 
-        if (quantity <= 0 || quantity > 100) {
-            throw new BadRequestException("Quantity must be between 0 and 100");
-        }
-
 
         if (existsProductByName(name)) {
             throw new ConflictException("Product already exists");
@@ -58,7 +54,6 @@ public class CreateProductService {
 
         product.setName(name);
         product.setPrice(price);
-        product.setQuantity(quantity);
 
         productRepository.save(product);
 
@@ -66,8 +61,7 @@ public class CreateProductService {
         return new CreateProductResponse(
                 product.getId(),
                 product.getName(),
-                product.getPrice(),
-                product.getQuantity()
+                product.getPrice()
         );
 
     }

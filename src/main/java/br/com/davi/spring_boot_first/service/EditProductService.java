@@ -39,10 +39,10 @@ public class EditProductService {
 
 
     @Transactional
-    public EditProductResponse editProduct(Long id, String name, BigDecimal price, Integer quantity) {
+    public EditProductResponse editProduct(Long id, String name, BigDecimal price) {
 
 
-        if (name == null && price == null && quantity == null) {
+        if (name == null && price == null) {
             throw new BadRequestException("At least one field is required");
         }
 
@@ -70,18 +70,6 @@ public class EditProductService {
         }
 
 
-        if (quantity != null) {
-
-            Integer newQuantity = product.getQuantity() + quantity;
-
-            if (newQuantity < 0) {
-                throw new BadRequestException("Product quantity needs to be between 0 and 100");
-            }
-
-            product.setQuantity(newQuantity);
-        }
-
-
         if (price != null) {
             product.setPrice(price);
         }
@@ -90,8 +78,7 @@ public class EditProductService {
         return new EditProductResponse(
                 product.getId(),
                 product.getName(),
-                product.getPrice(),
-                product.getQuantity()
+                product.getPrice()
         );
 
     }

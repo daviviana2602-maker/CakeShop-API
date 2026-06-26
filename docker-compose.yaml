@@ -11,12 +11,21 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+
   app:
     build: .
     ports:
       - "8080:8080"
     depends_on:
       - postgres
+      - redis
     environment:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
@@ -24,6 +33,10 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       REFRESH_JWT_EXPIRATION: ${REFRESH_JWT_EXPIRATION}
       ACCESS_JWT_EXPIRATION: ${ACCESS_JWT_EXPIRATION}
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+
 
 volumes:
   postgres_data:

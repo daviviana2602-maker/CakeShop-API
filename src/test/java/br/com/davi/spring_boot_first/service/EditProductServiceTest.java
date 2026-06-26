@@ -39,7 +39,7 @@ public class EditProductServiceTest {
         product.setId(1L);
         product.setName("OldName");
         product.setPrice(BigDecimal.valueOf(10));
-        product.setQuantity(5);
+
 
         when(productRepository.findById(1L))
                 .thenReturn(Optional.of(product));
@@ -49,13 +49,11 @@ public class EditProductServiceTest {
                 editProductService.editProduct(
                         1L,
                         "TestProduct",
-                        BigDecimal.valueOf(50),
-                        10
+                        BigDecimal.valueOf(50)
                 );
 
         assertEquals("TestProduct", response.getName());
         assertEquals(0, BigDecimal.valueOf(50).compareTo(response.getPrice()));
-        assertEquals(15, response.getQuantity());
 
     }
 
@@ -69,8 +67,7 @@ public class EditProductServiceTest {
                 () -> editProductService.editProduct(
                         1L,
                         "",
-                        BigDecimal.valueOf(50),
-                        10
+                        BigDecimal.valueOf(50)
                 )
         );
 
@@ -96,39 +93,11 @@ public class EditProductServiceTest {
                 () -> editProductService.editProduct(
                         1L,
                         "TestProductTwo",
-                        null,
                         null
                 )
         );
 
     }
 
-
-    @Test
-    void shouldWrongWhenNewQuantityIsZero() {
-
-        ProductEntity product = new ProductEntity();
-        product.setId(1L);
-        product.setQuantity(5);
-
-
-        when(productRepository.findById(1L))
-                .thenReturn(Optional.of(product));
-
-        when(productRepository.existsByName("TestProduct"))
-                .thenReturn(false);
-
-
-        assertThrows(
-                BadRequestException.class,
-                () -> editProductService.editProduct(
-                        1L,
-                        "TestProduct",
-                        null,
-                        -10
-                )
-        );
-
-    }
 
 }

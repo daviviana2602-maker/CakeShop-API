@@ -33,8 +33,7 @@ public class ListProductService {
             .map(product -> new ListProductResponse(
                 product.getId(),
                 product.getName(),
-                product.getPrice(),
-                product.getQuantity()
+                product.getPrice()
             ))
             .toList();
 

@@ -42,14 +42,12 @@ public class CreateProductServiceTest {
         CreateProductResponse response =
                 createProductService.createNewProduct(
                         "Notebook",
-                        BigDecimal.valueOf(2500),
-                        10
+                        BigDecimal.valueOf(2500)
                 );
 
 
         assertEquals("Notebook", response.getName());
         assertEquals(BigDecimal.valueOf(2500), response.getPrice());
-        assertEquals(10, response.getQuantity());
 
 
         verify(productRepository)
@@ -65,8 +63,7 @@ public class CreateProductServiceTest {
             BadRequestException.class,
             () -> createProductService.createNewProduct(
                    "",
-                   BigDecimal.valueOf(100),
-                   5
+                   BigDecimal.valueOf(100)
                 )
         );
 
@@ -87,8 +84,7 @@ public class CreateProductServiceTest {
                 ConflictException.class,
                 () -> createProductService.createNewProduct(
                         "Notebook",
-                        BigDecimal.valueOf(1000),
-                        10
+                        BigDecimal.valueOf(1000)
                 )
         );
 
@@ -105,8 +101,7 @@ public class CreateProductServiceTest {
                 BadRequestException.class,
                 () -> createProductService.createNewProduct(
                         "TestProduct",
-                        BigDecimal.valueOf(-10),
-                        5
+                        BigDecimal.valueOf(-10)
                 )
         );
 
@@ -115,26 +110,5 @@ public class CreateProductServiceTest {
                 .save(any());
 
     }
-
-
-    @Test
-    void shouldThrowBadRequestWhenQuantityIsZero() {
-
-
-        assertThrows(
-                BadRequestException.class,
-                () -> createProductService.createNewProduct(
-                        "Notebook",
-                        BigDecimal.valueOf(100),
-                        0
-                )
-        );
-
-
-        verify(productRepository, never())
-            .save(any());
-
-    }
-
 
 }

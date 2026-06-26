@@ -18,8 +18,4 @@ public class EditProductRequest {
     @DecimalMax(value = "5000", message = "Price must be less than or equal to 5000")
     private BigDecimal price;
 
-    @Min(value = 0, message = "Quantity cannot be negative")
-    @Max(value = 100, message = "Quantity cannot exceed 100")
-    private Integer quantity;
-
 }

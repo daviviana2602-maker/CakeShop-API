@@ -24,7 +24,4 @@ public class CreateProductRequest {
     @Positive(message = "Price must be greater than 0")
     private BigDecimal price;
 
-    @NotNull(message = "Quantity is required")
-    @Positive(message = "Quantity must be greater than 0")
-    private Integer quantity;
-    }
+}
