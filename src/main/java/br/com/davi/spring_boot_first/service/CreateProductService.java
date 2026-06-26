@@ -5,6 +5,7 @@ import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.repository.ProductRepository;
 import br.com.davi.spring_boot_first.dto.response.CreateProductResponse;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -29,6 +30,7 @@ public class CreateProductService {
 
 
     @Transactional
+    @CacheEvict(value = "products", allEntries = true)
     public CreateProductResponse createNewProduct(String name, BigDecimal price) {
 
 

@@ -6,6 +6,7 @@ import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.ProductRepository;
 import br.com.davi.spring_boot_first.dto.response.EditProductResponse;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ public class EditProductService {
 
 
     @Transactional
+    @CacheEvict(value = "products", allEntries = true)
     public EditProductResponse editProduct(Long id, String name, BigDecimal price) {
 
 

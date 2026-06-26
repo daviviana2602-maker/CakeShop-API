@@ -94,11 +94,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (Exception e) {
 
+            e.printStackTrace();
+
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("""
-        {"message":"Invalid token"}
-        """);
+            response.getWriter().write(""" 
+                    {"message":"Invalid token"}
+                    """);
         }
 
     }
