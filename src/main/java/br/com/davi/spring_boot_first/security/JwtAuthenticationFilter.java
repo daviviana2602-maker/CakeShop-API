@@ -5,6 +5,7 @@ import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,8 +57,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             String token = header.replace("Bearer ", "");
 
-            Long userId = Long.valueOf(jwtService.extractClaims(token).getUserId());
-            String role = jwtService.extractClaims(token).getRole();
+            JwtDataFormat claims = jwtService.extractClaims(token);
+
+            Long userId = Long.valueOf(claims.getUserId());
+            String role = claims.getRole();
 
 
             UserEntity user = getCurrentUser(userId);
@@ -92,15 +95,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
 
-        } catch (Exception e) {
-
-            e.printStackTrace();
+        } catch (JwtException | IllegalArgumentException e) {
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write(""" 
-                    {"message":"Invalid token"}
-                    """);
+            response.getWriter().write("""
+        {"message":"Invalid token"}
+        """);
         }
 
     }
