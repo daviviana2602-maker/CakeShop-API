@@ -28,6 +28,9 @@ public class UpdateProfileServiceTest {
     @Mock
     private OwnershipService ownershipService;
 
+    @Mock
+    private EmailService emailService;
+
     @InjectMocks
     private UpdateProfileService updateProfileService;
 
@@ -76,6 +79,10 @@ public class UpdateProfileServiceTest {
                 .thenReturn(false);
 
 
+        doNothing()
+                .when(emailService).sendVerificationEmail(anyString(), anyString());
+
+
         UpdateProfileResponse response =
                 updateProfileService.changeProfile(
                         1L,
@@ -84,7 +91,11 @@ public class UpdateProfileServiceTest {
                 );
 
 
-        assertEquals("new@gmail.com", response.getEmail());
+        assertEquals("new@gmail.com", response.getNewEmail());
+
+
+        verify(emailService)
+            .sendVerificationEmail(anyString(), anyString());
     }
 
 
