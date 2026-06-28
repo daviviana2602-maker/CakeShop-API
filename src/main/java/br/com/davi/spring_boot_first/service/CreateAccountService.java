@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeEmail;
 import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeName;
 
@@ -21,11 +24,15 @@ public class CreateAccountService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
 
-    public CreateAccountService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public CreateAccountService(UserRepository userRepository,
+                                PasswordEncoder passwordEncoder,
+                                EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
 
@@ -61,6 +68,15 @@ public class CreateAccountService {
 
         String passwordHash = passwordEncoder.encode(password);
         user.setPassword(passwordHash);
+
+
+        String token = UUID.randomUUID().toString();
+
+        user.setEmailVerified(false);
+        user.setEmailVerificationToken(token);
+        user.setEmailVerificationExpiresIn(LocalDateTime.now().plusMinutes(10));
+
+        emailService.sendVerificationEmail(email, token);
 
 
         userRepository.saveAndFlush(user);

@@ -7,14 +7,16 @@ import br.com.davi.spring_boot_first.dto.response.LoginResponse;
 import br.com.davi.spring_boot_first.service.CreateAccountService;
 import br.com.davi.spring_boot_first.service.LoginService;
 import br.com.davi.spring_boot_first.service.TokenService;
+import br.com.davi.spring_boot_first.service.VerifyEmailService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 
 
@@ -23,6 +25,7 @@ public class AuthController {
     private final CreateAccountService createAccountService;
     private final LoginService loginService;
     private final TokenService tokenService;
+    private final VerifyEmailService verifyEmailService;
 
 
     @PostMapping("/create")
@@ -47,6 +50,16 @@ public class AuthController {
             loginRequest.getEmail(),
             loginRequest.getPassword()
         );
+    }
+
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<?> verifyEmail(
+            @RequestParam String token
+    ) {
+        verifyEmailService.verify(token);
+
+        return ResponseEntity.ok("Email verified");
     }
 
 

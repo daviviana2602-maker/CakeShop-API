@@ -40,6 +40,15 @@ public class UserEntity {
     @Column(nullable = false)
     private UserStatusEnum status;
 
+    @Column(nullable = false)
+    private Boolean emailVerified = false;
+
+    @Column
+    private String emailVerificationToken;
+
+    @Column
+    private LocalDateTime emailVerificationExpiresIn;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 }
