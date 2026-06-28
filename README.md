@@ -1,163 +1,151 @@
 # 🍰 CakeShop API
 
-REST API for managing users, products and orders, built with Java and Spring Boot, applying backend engineering practices focused on security, maintainability and layered Architecture with separation of concerns.
+REST API for an e-commerce platform built with **Java 21** and **Spring Boot**, following a layered architecture and backend engineering best practices focused on security, maintainability and scalability.
 
----
-
-## 📖 About
-
-CakeShop API is a backend system for an e-commerce platform focused on managing products, users and orders.
-
-The project implements concepts commonly used in real-world applications:
-
-* JWT Authentication
-* Role-Based Access Control (RBAC)
-* Resource Ownership Validation
-* DTO-based API contracts
-* Global Exception Handling
-* Database Versioning
-* Automated Testing
-* Containerized Environment
-
----
-
-## 🚀 Technologies
-
-### Backend
+## 🚀 Tech Stack
 
 * Java 21
 * Spring Boot
 * Spring Security
 * Spring Data JPA (Hibernate)
-
-### Database
-
 * PostgreSQL
-* Flyway (Database Migration)
-
-### Infrastructure
-
-* Docker
-* Docker Compose
-
-### Documentation
-
+* Redis
+* Flyway
+* Docker & Docker Compose
 * Swagger / OpenAPI
-
-### Testing
-
 * JUnit 5
 * Mockito
+* GitHub Actions 
+* Resend API
 
 ---
 
-## 🔐 Security
+## ✨ Features
 
-### Authentication
+### Authentication & Security
 
-* User registration
-* JWT login
-* BCrypt password encryption
-* Protected endpoints
+* JWT Authentication with **Access Token** and **Refresh Token**
+* BCrypt password hashing
+* Global exception handling
+* DTO validation
+* Protected endpoints with Spring Security
 
 ### Authorization
 
-Role-based permissions:
+* Role-Based Access Control (RBAC)
+* USER and ADMIN roles
+* Ownership validation to ensure users can only access their own resources
 
-* USER
-* ADMIN
-
-### Ownership Control
-
-Users can only access resources that belong to them.
-
-The API validates ownership before allowing operations on private resources.
-
----
-
-## 👤 Users
-
-Features:
+### User Management
 
 * User registration
-* Authentication
-* Profile management
+* Login
+* Profile update
+* Password change
+* Account deletion
+* Secure email change flow
 
-Users can:
+### Email Verification
 
-* Update name
-* Update email
-* Change password
-* Delete account
+Account creation requires email verification before activation.
 
----
+Email verification is also required when changing the user's email address.
 
-## 🛡️ Administration
+Implemented through integration with the **Resend API**, using verification tokens with expiration.
 
-ADMIN users can:
-
-* Ban users
-* Unban users
-* Promote users
-* Demote users
-
----
-
-## 🍰 Products
-
-Features:
+### Product Management
 
 * Create products
-* List products
 * Update products
 * Delete products
+* Paginated product listing with Redis
 
-Access rules:
+Only ADMIN users can manage products.
 
-* Only ADMIN users can manage products
-
----
-
-## 🛒 Orders
-
-Features:
+### Order Management
 
 * Create orders
 * Associate products with orders
-* Manage order status
+* Order status management
 
-Available statuses:
+Supported statuses:
 
 * PENDING
 * CONCLUDED
 * CANCELED
 
+### Administration
+
+ADMIN users can:
+
+* Promote users
+* Demote users
+* Activate accounts
+* Deactivate accounts
+
 ---
 
-## 🧪 Tests
+## ⚡ Redis
 
-The project contains automated tests using JUnit 5.
+Redis is used to improve application performance through caching.
 
-Current status:
+Current implementation includes:
 
-✔ 51 tests passing consistently
+* Product cache
+* Paginated product listing cache
+
+---
+
+## 🧪 Automated Tests
+
+* 48 automated tests
+* JUnit 5
+* Mockito
 
 Tests cover business rules and service layer behavior.
 
 ---
 
-## ⚠️ Exception Handling
+## 🔄 Continuous Integration
 
-The API uses centralized exception handling with standardized responses.
+GitHub Actions automatically validates every push by:
 
-Handled cases:
+* Running the automated test suite
+* Rebuilding the application
+* Building Docker containers
 
-* Bad Request (400)
-* Unauthorized (401)
-* Forbidden (403)
-* Not Found (404)
-* Conflict (409)
-* DTO Validation Errors
+This guarantees that the project remains buildable and tests continue passing after every commit.
+
+---
+
+## 📚 API Documentation
+
+Interactive API documentation is available through Swagger / OpenAPI.
+
+---
+
+## 🏗️ Architecture
+
+Layered architecture with clear separation of responsibilities.
+
+```text
+src
+└── main
+    └── java
+        ├── controller
+        ├── service
+        ├── repository
+        ├── entity
+        ├── security
+        ├── dto
+        │   ├── request
+        │   └── response
+        ├── exception
+        ├── enums
+        ├── normalization
+        └── config
+```
+
 
 ---
 
@@ -178,4 +166,6 @@ src
         │   ├── request
         │   └── response
         ├── exception
-        └── enums
+        ├── enums
+        ├── config
+        └── normalization

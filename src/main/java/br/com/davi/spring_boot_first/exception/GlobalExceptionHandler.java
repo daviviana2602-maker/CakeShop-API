@@ -52,7 +52,6 @@ public class GlobalExceptionHandler {
     }
 
 
-    // Validation of Dto request
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleDtoRequest(
             MethodArgumentNotValidException ex
