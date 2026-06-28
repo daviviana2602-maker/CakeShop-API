@@ -30,6 +30,9 @@ class CreateAccountServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private EmailService emailService;
+
     @InjectMocks
     private CreateAccountService createAccountService;  // create the class and add the @Mock inside
 
@@ -64,6 +67,9 @@ class CreateAccountServiceTest {
         when(passwordEncoder.encode("123456"))
                 .thenReturn("HASH");
 
+        doNothing().when(emailService)
+                .sendVerificationEmail(anyString(), anyString());
+
         when(userRepository.saveAndFlush(any(UserEntity.class)))
                 .thenAnswer(invocation -> {
                     UserEntity user = invocation.getArgument(0);  // catch the first and unique object (UserEntity.class)
@@ -86,6 +92,9 @@ class CreateAccountServiceTest {
 
         verify(passwordEncoder)
                 .encode("123456");
+
+        verify(emailService)
+                .sendVerificationEmail(eq("test@gmail.com"), anyString());
 
         verify(userRepository)
                 .saveAndFlush(any(UserEntity.class));

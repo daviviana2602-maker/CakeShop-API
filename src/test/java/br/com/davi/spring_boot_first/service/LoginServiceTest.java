@@ -52,6 +52,7 @@ public class LoginServiceTest {
         user.setPassword("HASH");
         user.setRole(UserRoleEnum.USER);
         user.setStatus(UserStatusEnum.ACTIVE);
+        user.setEmailVerified(true);
 
 
         when(userRepository.findByEmail("test@gmail.com"))
@@ -159,6 +160,7 @@ public class LoginServiceTest {
         user.setPassword("HASH");
         user.setRole(UserRoleEnum.USER);
         user.setStatus(UserStatusEnum.ACTIVE);
+        user.setEmailVerified(true);
 
 
         when(userRepository.findByEmail("test@gmail.com"))
