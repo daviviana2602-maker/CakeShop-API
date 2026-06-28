@@ -47,7 +47,7 @@ public class ProfileController {
         return updateProfileService.changeProfile(
                 userId,
                 updateProfileRequest.getName(),
-                updateProfileRequest.getEmail()
+                updateProfileRequest.getNewEmail()
         );
     }
 

@@ -14,7 +14,7 @@ public class UpdateProfileRequest {
     @Size(max = 50, message = "Product name cannot exceed 50 characters")
     private String name;
 
-    @Email(message = "Email format is wrong")
-    private String email;
+    @Email(message = "New email format is wrong")
+    private String newEmail;
 
 }

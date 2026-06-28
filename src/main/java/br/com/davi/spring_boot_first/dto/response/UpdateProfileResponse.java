@@ -12,6 +12,7 @@ public class UpdateProfileResponse {
 
     private Long id;
     private String name;
+    private String newEmail;
     private String email;
 
 }

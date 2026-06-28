@@ -21,7 +21,7 @@ public class VerifyEmailService {
     }
 
 
-    private UserEntity getUserEntityByToken(String token) {
+    private UserEntity getUserByToken(String token) {
         return userRepository.findByEmailVerificationToken(token)
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
@@ -30,13 +30,21 @@ public class VerifyEmailService {
     @Transactional
     public void verify(String token) {
 
-        UserEntity user = getUserEntityByToken(token);
+        UserEntity user = getUserByToken(token);
 
 
         if (user.getEmailVerificationExpiresIn()
                 .isBefore(LocalDateTime.now())) {
 
             throw new BadRequestException("Token expired");
+
+        }
+
+        if (user.getNewEmail() != null){
+
+            user.setEmail(user.getNewEmail());
+
+            user.setNewEmail(null);
 
         }
 

@@ -49,6 +49,9 @@ public class UserEntity {
     @Column
     private LocalDateTime emailVerificationExpiresIn;
 
+    @Column
+    private String newEmail;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 }

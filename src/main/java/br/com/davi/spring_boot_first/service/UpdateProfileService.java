@@ -9,7 +9,9 @@ import br.com.davi.spring_boot_first.security.OwnershipService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeEmail;
 import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeName;
@@ -20,11 +22,15 @@ public class UpdateProfileService {
 
     private final UserRepository userRepository;
     private final OwnershipService ownershipService;
+    private final EmailService newEmailService;
 
 
-    public UpdateProfileService(UserRepository userRepository, OwnershipService ownershipService) {
+    public UpdateProfileService(UserRepository userRepository,
+                                OwnershipService ownershipService,
+                                EmailService newEmailService) {
         this.userRepository = userRepository;
         this.ownershipService = ownershipService;
+        this.newEmailService = newEmailService;
     }
 
 
@@ -35,11 +41,11 @@ public class UpdateProfileService {
 
 
     @Transactional
-    public UpdateProfileResponse changeProfile(Long userId, String name, String email) {
+    public UpdateProfileResponse changeProfile(Long userId, String name, String newEmail) {
 
         ownershipService.checkOwnership(userId);
 
-        if (name == null && email == null) {
+        if (name == null && newEmail == null) {
             throw new BadRequestException("at least one field is required");
         }
 
@@ -62,20 +68,28 @@ public class UpdateProfileService {
         }
 
 
-        if (email != null) {
+        if (newEmail != null) {
 
-            email = normalizeEmail(email);
+            newEmail = normalizeEmail(newEmail);
 
-            if (email.isBlank()) {
+            if (newEmail.isBlank()) {
                 throw new BadRequestException("Email cannot be empty");
             }
 
 
-            if (userRepository.existsByEmail(email)) {
+            if (userRepository.existsByEmail(newEmail)) {
                 throw new BadRequestException("Email already exists");
             }
 
-            user.setEmail(email);
+
+            String token = UUID.randomUUID().toString();
+
+            newEmailService.sendVerificationEmail(newEmail, token);
+
+            user.setEmailVerificationToken(token);
+            user.setEmailVerificationExpiresIn(LocalDateTime.now().plusMinutes(10));
+
+            user.setNewEmail(newEmail);
 
         }
 
@@ -83,6 +97,7 @@ public class UpdateProfileService {
         return new UpdateProfileResponse(
                 user.getId(),
                 user.getName(),
+                user.getNewEmail(),
                 user.getEmail()
         );
 
