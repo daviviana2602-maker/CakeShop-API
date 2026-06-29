@@ -52,6 +52,16 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(TooManyRequestsException.class)
+    public ResponseEntity<ErrorResponse> handleTooMany(
+            TooManyRequestsException ex
+    )
+    {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(new ErrorResponse(ex.getMessage()));
+    }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleDtoRequest(
             MethodArgumentNotValidException ex

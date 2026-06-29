@@ -6,8 +6,10 @@ import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.ForbiddenException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
+import br.com.davi.spring_boot_first.exception.TooManyRequestsException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.JwtService;
+import br.com.davi.spring_boot_first.security.RateLimitService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,18 @@ public class LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RateLimitService rateLimitService;
 
 
     public LoginService(UserRepository userRepository,
                         PasswordEncoder passwordEncoder,
-                        JwtService jwtService
+                        JwtService jwtService,
+                        RateLimitService rateLimitService
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.rateLimitService = rateLimitService;
     }
 
 
@@ -41,6 +46,17 @@ public class LoginService {
     public LoginResponse systemLogin(String email, String password){
 
         email = normalizeEmail(email);
+
+
+        boolean allowed = rateLimitService.allowRequest(
+                "rate:login:" + email,
+                5,
+                300
+        );
+
+        if (!allowed) {
+            throw new TooManyRequestsException("Too many requests");
+        }
 
 
         UserEntity user = findUserByEmail(email);
