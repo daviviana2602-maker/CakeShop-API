@@ -1,0 +1,76 @@
+package br.com.davi.spring_boot_first.security;
+
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+
+
+@Component
+public class RateLimitFilter extends OncePerRequestFilter {
+
+    private final RateLimitService rateLimitService;
+
+
+    public RateLimitFilter(RateLimitService rateLimitService) {
+        this.rateLimitService = rateLimitService;
+    }
+
+
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
+
+        Authentication authentication =
+            SecurityContextHolder
+                 .getContext()
+                 .getAuthentication();
+
+
+        if (authentication == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
+        Long userId = (Long) authentication.getPrincipal();
+
+
+        boolean allowed =
+              rateLimitService.allowRequest(
+                      "rate:user:" + userId,
+                      30,
+                      300
+              );
+
+
+        if(!allowed) {
+            response.setStatus(
+                    HttpStatus.TOO_MANY_REQUESTS.value()
+            );
+
+            return;
+
+        }
+
+
+        filterChain.doFilter(
+                request,
+                response
+        );
+
+    }
+
+}

@@ -21,7 +21,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter, RateLimitFilter rateLimitFilter) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
@@ -30,7 +30,10 @@ public class SecurityConfig {
                 .anyRequest().permitAll()   // release all API routes
             )
         
-            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+
+            .addFilterAfter(rateLimitFilter, JwtAuthenticationFilter.class);
+
 
         return http.build();
     }

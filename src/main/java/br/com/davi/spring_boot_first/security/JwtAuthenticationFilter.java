@@ -85,13 +85,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
 
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(   // create the object of the authenticated user
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     userId,
                     null,
                     List.of(new SimpleGrantedAuthority("ROLE_" + role))
             );
 
-            SecurityContextHolder.getContext().setAuthentication(auth);   // save in SecurityContext the object of the authenticated user
+            SecurityContextHolder.getContext().setAuthentication(auth);
 
             filterChain.doFilter(request, response);
 
