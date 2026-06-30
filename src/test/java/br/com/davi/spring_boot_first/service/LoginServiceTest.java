@@ -8,8 +8,10 @@ import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.ForbiddenException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
+import br.com.davi.spring_boot_first.exception.TooManyRequestsException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.JwtService;
+import br.com.davi.spring_boot_first.security.RateLimitService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,6 +39,9 @@ public class LoginServiceTest {
     @Mock
     private JwtService jwtService;
 
+    @Mock
+    private RateLimitService rateLimitService;
+
     @InjectMocks
     private LoginService loginService;
 
@@ -54,6 +59,8 @@ public class LoginServiceTest {
         user.setStatus(UserStatusEnum.ACTIVE);
         user.setEmailVerified(true);
 
+        when(rateLimitService.allowRequest(any(), anyInt(), anyLong()))
+                .thenReturn(true);
 
         when(userRepository.findByEmail("test@gmail.com"))
                 .thenReturn(Optional.of(user));
@@ -85,6 +92,9 @@ public class LoginServiceTest {
 
     @Test
     public void shouldEmailDoesNotExist() {
+
+        when(rateLimitService.allowRequest(any(), anyInt(), anyLong()))
+                .thenReturn(true);
 
         when(userRepository.findByEmail("test@gmail.com"))
                 .thenReturn(Optional.empty());
@@ -124,6 +134,9 @@ public class LoginServiceTest {
         user.setStatus(UserStatusEnum.DISABLED);
 
 
+        when(rateLimitService.allowRequest(any(), anyInt(), anyLong()))
+                .thenReturn(true);
+
         when(userRepository.findByEmail("test@gmail.com"))
                 .thenReturn(Optional.of(user));
 
@@ -162,6 +175,9 @@ public class LoginServiceTest {
         user.setStatus(UserStatusEnum.ACTIVE);
         user.setEmailVerified(true);
 
+
+        when(rateLimitService.allowRequest(any(), anyInt(), anyLong()))
+                .thenReturn(true);
 
         when(userRepository.findByEmail("test@gmail.com"))
                 .thenReturn(Optional.of(user));
