@@ -93,6 +93,7 @@ Current implementation includes:
 
 * Product cache
 * Paginated product listing cache
+* Rate Limiting with TTL
 
 ---
 
