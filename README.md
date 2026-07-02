@@ -145,28 +145,3 @@ src
         ├── enums
         ├── normalization
         └── config
-```
-
-
----
-
-## 🏗 Architecture
-
-Layered architecture with separation of responsibilities:
-
-```text
-src
-└── main
-    └── java
-        ├── controller
-        ├── service
-        ├── repository
-        ├── entity
-        ├── security
-        ├── dto
-        │   ├── request
-        │   └── response
-        ├── exception
-        ├── enums
-        ├── config
-        └── normalization
