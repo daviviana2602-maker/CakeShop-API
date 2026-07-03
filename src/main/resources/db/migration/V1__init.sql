@@ -10,7 +10,7 @@ CREATE TABLE users (
 CREATE TABLE products (
                     id BIGSERIAL PRIMARY KEY,
                     name VARCHAR(150) NOT NULL,
-                    price DECIMAL(10,2) NOT NULL,    -- 10 = total de dígitos e 2 = casas decimais
+                    price DECIMAL(10,2) NOT NULL,
                     quantity INT NOT NULL DEFAULT 0,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

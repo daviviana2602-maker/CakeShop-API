@@ -4,6 +4,7 @@ import br.com.davi.spring_boot_first.dto.response.ConcludeOrderResponse;
 import br.com.davi.spring_boot_first.entity.CartEntity;
 import br.com.davi.spring_boot_first.entity.ConcludedEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
+import br.com.davi.spring_boot_first.entity.ProductEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
@@ -13,6 +14,7 @@ import br.com.davi.spring_boot_first.security.OwnershipService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,15 +60,15 @@ public class ConcludeOrderService {
 
         List<ConcludeOrderResponse> response = new ArrayList<>();
 
-        for (CartEntity car : cart) {
+        for (CartEntity item : cart) {
 
             ConcludedEntity concluded = new ConcludedEntity();
 
             concluded.setOrderId(orderId);
-            concluded.setProductId(car.getProductId());
-            concluded.setQuantity(car.getQuantity());
-            concluded.setUnitPrice(car.getUnitPrice());
-            concluded.setFullPrice(car.getFullPrice());
+            concluded.setProductId(item.getProductId());
+            concluded.setQuantity(item.getQuantity());
+            concluded.setUnitPrice(item.getUnitPrice());
+            concluded.setFullPrice(item.getFullPrice());
 
             ConcludedEntity saved = concludedRepository.save(concluded);
 
@@ -82,6 +84,19 @@ public class ConcludeOrderService {
             );
 
         }
+
+        List<ConcludedEntity> boughtProducts = concludedRepository.findByOrderId(orderId);
+
+        BigDecimal orderPrice = BigDecimal.ZERO;
+
+        for (ConcludedEntity boughtItem : boughtProducts) {
+
+            orderPrice = orderPrice.add(boughtItem.getFullPrice());
+
+        }
+
+        order.setPrice(orderPrice);
+
 
         cartRepository.deleteByOrderId(orderId);
 
