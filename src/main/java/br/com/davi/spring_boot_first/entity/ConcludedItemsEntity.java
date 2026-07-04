@@ -4,10 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "cart")
+@Table(name = "concluded_items")
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 
 
-public class CartEntity {
+public class ConcludedItemsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +36,7 @@ public class CartEntity {
 
     @Column(name = "full_price", nullable = false)
     private BigDecimal fullPrice  = BigDecimal.ZERO;
+
+    @Column(name = "concluded_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
 }

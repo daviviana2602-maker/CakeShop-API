@@ -1,7 +1,7 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.CartResponse;
-import br.com.davi.spring_boot_first.entity.CartEntity;
+import br.com.davi.spring_boot_first.entity.CartItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
 import br.com.davi.spring_boot_first.entity.ProductEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
@@ -51,7 +51,7 @@ public class CartService {
     }
 
     // discovering if the item already exists in the order
-    private Optional<CartEntity> findItemInOrderById(Long orderId, Long productId) {
+    private Optional<CartItemsEntity> findItemInOrderById(Long orderId, Long productId) {
         return cartRepository.findByOrderIdAndProductId(orderId, productId);
     }
 
@@ -61,7 +61,7 @@ public class CartService {
 
         OrderEntity order = findOrderById(orderId);
 
-        ownershipService.checkOwnership(order.getUserId());
+        ownershipService.checkOwnership(order.getUser().getId());
 
 
         if (order.getStatus() == OrderStatusEnum.CANCELED || order.getStatus() == OrderStatusEnum.CONCLUDED) {
@@ -71,12 +71,12 @@ public class CartService {
 
         ProductEntity product = findProductById(productId);
 
-        Optional<CartEntity> item = findItemInOrderById(orderId, productId);
+        Optional<CartItemsEntity> item = findItemInOrderById(orderId, productId);
 
         BigDecimal unitPrice = product.getPrice();
 
 
-        CartEntity cart;
+        CartItemsEntity cart;
 
         if (item.isPresent()) {
             cart = item.get();
@@ -89,7 +89,7 @@ public class CartService {
 
         }
         else{
-            cart = new CartEntity();
+            cart = new CartItemsEntity();
 
             if (quantity < 1) {
                 throw new BadRequestException("quantity must be greater than 0");
@@ -99,7 +99,7 @@ public class CartService {
         }
 
 
-        cart.setOrderId(orderId);
+        cart.setOrder(order);
         cart.setProductId(productId);
         cart.setUnitPrice(unitPrice);
         cart.setFullPrice(cart.getUnitPrice().multiply(new BigDecimal(cart.getQuantity())));
@@ -109,7 +109,7 @@ public class CartService {
 
         return new CartResponse(
                 cart.getId(),
-                cart.getOrderId(),
+                cart.getOrder().getId(),
                 cart.getProductId(),
                 cart.getQuantity(),
                 cart.getUnitPrice(),

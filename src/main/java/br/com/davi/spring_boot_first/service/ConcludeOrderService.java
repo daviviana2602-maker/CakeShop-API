@@ -1,11 +1,11 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.ConcludeOrderResponse;
-import br.com.davi.spring_boot_first.entity.CartEntity;
-import br.com.davi.spring_boot_first.entity.ConcludedEntity;
+import br.com.davi.spring_boot_first.entity.CartItemsEntity;
+import br.com.davi.spring_boot_first.entity.ConcludedItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
-import br.com.davi.spring_boot_first.entity.ProductEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
+import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.ConcludedRepository;
@@ -48,21 +48,29 @@ public class ConcludeOrderService {
     @Transactional
     public List<ConcludeOrderResponse> concludeOrder(Long orderId) {
 
+
         OrderEntity order = findOrderId(orderId);
 
-        ownershipService.checkOwnership(order.getUserId());
+        ownershipService.checkOwnership(order.getUser().getId());
+
+
+        boolean cartCheck = cartRepository.existsByOrderId(orderId);
+
+        if (!cartCheck) {
+            throw new BadRequestException("No products");
+        }
 
         
         order.setStatus(OrderStatusEnum.CONCLUDED);
 
 
-        List<CartEntity> cart = cartRepository.findByOrderId(orderId);
+        List<CartItemsEntity> cart = cartRepository.findByOrderId(orderId);
 
         List<ConcludeOrderResponse> response = new ArrayList<>();
 
-        for (CartEntity item : cart) {
+        for (CartItemsEntity item : cart) {
 
-            ConcludedEntity concluded = new ConcludedEntity();
+            ConcludedItemsEntity concluded = new ConcludedItemsEntity();
 
             concluded.setOrderId(orderId);
             concluded.setProductId(item.getProductId());
@@ -70,7 +78,7 @@ public class ConcludeOrderService {
             concluded.setUnitPrice(item.getUnitPrice());
             concluded.setFullPrice(item.getFullPrice());
 
-            ConcludedEntity saved = concludedRepository.save(concluded);
+            ConcludedItemsEntity saved = concludedRepository.save(concluded);
 
             response.add(
                     new ConcludeOrderResponse(
@@ -85,11 +93,11 @@ public class ConcludeOrderService {
 
         }
 
-        List<ConcludedEntity> boughtProducts = concludedRepository.findByOrderId(orderId);
+        List<ConcludedItemsEntity> boughtProducts = concludedRepository.findByOrderId(orderId);
 
         BigDecimal orderPrice = BigDecimal.ZERO;
 
-        for (ConcludedEntity boughtItem : boughtProducts) {
+        for (ConcludedItemsEntity boughtItem : boughtProducts) {
 
             orderPrice = orderPrice.add(boughtItem.getFullPrice());
 

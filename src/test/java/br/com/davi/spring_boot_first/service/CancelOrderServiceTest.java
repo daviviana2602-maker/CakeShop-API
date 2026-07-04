@@ -1,7 +1,8 @@
 package br.com.davi.spring_boot_first.service;
 
-import br.com.davi.spring_boot_first.entity.CartEntity;
+import br.com.davi.spring_boot_first.entity.CartItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
+import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,18 +43,17 @@ public class CancelOrderServiceTest {
     @Test
     void shouldCancelOrderSuccessfully() {
 
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
         OrderEntity order = new OrderEntity();
         order.setId(1L);
-        order.setUserId(1L);
-
-        CartEntity item = new CartEntity();
+        order.setUser(user);
 
 
         when(orderRepository.findById(1L))
                 .thenReturn(Optional.of(order));
 
-        when(cartRepository.findByOrderId(1L))
-                .thenReturn(List.of(item));
 
         Long response =
                 cancelOrderService.cancelOrder(1L);
@@ -62,7 +63,7 @@ public class CancelOrderServiceTest {
 
 
         verify(cartRepository)
-                .delete(item);
+                .deleteAll(any());
     }
 
 

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -18,6 +19,10 @@ import java.time.LocalDateTime;
 
 
 public class UserEntity {
+
+    @OneToMany(mappedBy = "user")
+    private List<OrderEntity> orders;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,4 +59,5 @@ public class UserEntity {
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
 }

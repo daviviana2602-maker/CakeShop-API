@@ -1,8 +1,10 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.CartResponse;
-import br.com.davi.spring_boot_first.entity.CartEntity;
+import br.com.davi.spring_boot_first.entity.CartItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
+import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
@@ -28,19 +30,25 @@ public class ListCartService {
     }
 
 
+    private OrderEntity findOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Order not found"));
+    }
+
+
     public List<CartResponse> listItems(Long orderId) {
 
-        List<CartEntity> cart = cartRepository.findByOrderId(orderId);
+        List<CartItemsEntity> cart = cartRepository.findByOrderId(orderId);
 
-        OrderEntity order = orderRepository.findById(orderId).get();
+        OrderEntity order = findOrderById(orderId);
 
-        ownershipService.checkOwnership(order.getUserId());
+        ownershipService.checkOwnership(order.getUser().getId());
 
 
         return cart.stream()
                 .map(item -> new CartResponse(
                         item.getId(),
-                        item.getOrderId(),
+                        item.getOrder().getId(),
                         item.getProductId(),
                         item.getQuantity(),
                         item.getUnitPrice(),

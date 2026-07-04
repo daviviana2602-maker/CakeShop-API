@@ -39,8 +39,8 @@ public class CreateOrderService {
     }
 
 
-    private boolean existsPendingOrderByUserIdAndStatus(Long orderId, OrderStatusEnum status) {
-        return orderRepository.existsByUserIdAndStatus(orderId, status);
+    private boolean existsPendingOrderByUserIdAndStatus(Long userId, OrderStatusEnum status) {
+        return orderRepository.existsByUserIdAndStatus(userId, status);
     }
 
 
@@ -59,14 +59,14 @@ public class CreateOrderService {
 
         OrderEntity order = new OrderEntity();
 
-        order.setUserId(user.getId());
+        order.setUser(user);
         order.setStatus(OrderStatusEnum.PENDING);
 
         orderRepository.save(order);
 
         return new OrderResponse(
             order.getId(),
-            order.getUserId(),
+            order.getUser().getId(),
             user.getName(),
             order.getStatus()
         );

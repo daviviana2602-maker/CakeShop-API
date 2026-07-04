@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "concluded")
+@Table(name = "cart_items")
 
 @Getter
 @Setter
@@ -16,14 +15,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 
 
-public class ConcludedEntity {
+public class CartItemsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "order_id", nullable = false)
-    private Long orderId;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private OrderEntity order;
 
     @Column(name = "product_id", nullable = false)
     private Long productId;
@@ -36,7 +36,4 @@ public class ConcludedEntity {
 
     @Column(name = "full_price", nullable = false)
     private BigDecimal fullPrice  = BigDecimal.ZERO;
-
-    @Column(name = "concluded_at", insertable = false, updatable = false)
-    private LocalDateTime createdAt;
 }

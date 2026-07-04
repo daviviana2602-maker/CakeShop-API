@@ -1,6 +1,5 @@
 package br.com.davi.spring_boot_first.service;
 
-import br.com.davi.spring_boot_first.entity.CartEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
@@ -9,8 +8,6 @@ import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.security.OwnershipService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Service
@@ -41,17 +38,14 @@ public class CancelOrderService {
 
         OrderEntity order = findOrderById(orderId);
 
-        ownershipService.checkOwnership(order.getUserId());
+        ownershipService.checkOwnership(order.getUser().getId());
 
 
         order.setStatus(OrderStatusEnum.CANCELED);
 
 
-        List<CartEntity> cart = cartRepository.findByOrderId(orderId);
+        cartRepository.deleteAll(order.getCartItems());
 
-        for (CartEntity item : cart) {
-            cartRepository.delete(item);
-        }
 
        return orderId;
 

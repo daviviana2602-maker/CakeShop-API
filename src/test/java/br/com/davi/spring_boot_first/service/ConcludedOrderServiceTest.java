@@ -1,9 +1,10 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.ConcludeOrderResponse;
-import br.com.davi.spring_boot_first.entity.CartEntity;
-import br.com.davi.spring_boot_first.entity.ConcludedEntity;
+import br.com.davi.spring_boot_first.entity.CartItemsEntity;
+import br.com.davi.spring_boot_first.entity.ConcludedItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
+import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.ConcludedRepository;
@@ -47,19 +48,24 @@ public class ConcludedOrderServiceTest {
     @Test
     void shouldConcludeOrderSuccessfully() {
 
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
         OrderEntity order = new OrderEntity();
         order.setId(1L);
-        order.setUserId(1L);
+        order.setUser(user);
+        order.setPrice(BigDecimal.TEN);
 
 
-        CartEntity cart = new CartEntity();
+        CartItemsEntity cart = new CartItemsEntity();
         cart.setProductId(10L);
+        cart.setOrder(order);
         cart.setQuantity(2);
         cart.setUnitPrice(BigDecimal.valueOf(50));
         cart.setFullPrice(BigDecimal.valueOf(100));
 
 
-        ConcludedEntity concluded = new ConcludedEntity();
+        ConcludedItemsEntity concluded = new ConcludedItemsEntity();
         concluded.setId(1L);
         concluded.setOrderId(1L);
         concluded.setProductId(10L);
@@ -71,10 +77,13 @@ public class ConcludedOrderServiceTest {
         when(orderRepository.findById(1L))
                 .thenReturn(Optional.of(order));
 
+        when(cartRepository.existsByOrderId(1L))
+                .thenReturn(true);
+
         when(cartRepository.findByOrderId(1L))
                 .thenReturn(List.of(cart));
 
-        when(concludedRepository.save(any(ConcludedEntity.class)))
+        when(concludedRepository.save(any(ConcludedItemsEntity.class)))
                 .thenReturn(concluded);
 
 
@@ -87,7 +96,7 @@ public class ConcludedOrderServiceTest {
 
 
         verify(concludedRepository)
-                .save(any(ConcludedEntity.class));
+                .save(any(ConcludedItemsEntity.class));
 
         verify(cartRepository)
                 .deleteByOrderId(1L);

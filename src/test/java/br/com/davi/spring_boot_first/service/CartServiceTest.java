@@ -1,9 +1,10 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.CartResponse;
-import br.com.davi.spring_boot_first.entity.CartEntity;
+import br.com.davi.spring_boot_first.entity.CartItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
 import br.com.davi.spring_boot_first.entity.ProductEntity;
+import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.ConflictException;
@@ -49,9 +50,12 @@ public class CartServiceTest {
     @Test
     void shouldAddNewItemToCart() {
 
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
         OrderEntity order = new OrderEntity();
         order.setId(1L);
-        order.setUserId(1L);
+        order.setUser(user);
         order.setStatus(OrderStatusEnum.PENDING);
 
         ProductEntity product = new ProductEntity();
@@ -82,7 +86,7 @@ public class CartServiceTest {
 
 
         verify(cartRepository).
-                save(any(CartEntity.class));
+                save(any(CartItemsEntity.class));
 
     }
 
@@ -90,14 +94,17 @@ public class CartServiceTest {
     @Test
     void shouldIncreaseExistingItemQuantity() {
 
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
         OrderEntity order = new OrderEntity();
-        order.setUserId(1L);
+        order.setUser(user);
         order.setStatus(OrderStatusEnum.PENDING);
 
         ProductEntity product = new ProductEntity();
         product.setPrice(BigDecimal.valueOf(50));
 
-        CartEntity cart = new CartEntity();
+        CartItemsEntity cart = new CartItemsEntity();
         cart.setQuantity(5);
 
 
@@ -123,8 +130,11 @@ public class CartServiceTest {
     @Test
     void shouldThrowConflictWhenOrderIsConcluded() {
 
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
         OrderEntity order = new OrderEntity();
-        order.setUserId(1L);
+        order.setUser(user);
         order.setStatus(OrderStatusEnum.CONCLUDED);
 
 
@@ -146,14 +156,17 @@ public class CartServiceTest {
     @Test
     void shouldThrowBadRequestWhenFinalQuantityIsNegative() {
 
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
         OrderEntity order = new OrderEntity();
-        order.setUserId(1L);
+        order.setUser(user);
         order.setStatus(OrderStatusEnum.PENDING);
 
         ProductEntity product = new ProductEntity();
         product.setPrice(BigDecimal.valueOf(50));
 
-        CartEntity cart = new CartEntity();
+        CartItemsEntity cart = new CartItemsEntity();
         cart.setQuantity(2);
 
 

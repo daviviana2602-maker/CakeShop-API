@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
-    List<OrderEntity> findByUserId(Long userId);
-
     boolean existsByUserIdAndStatus(Long userId, OrderStatusEnum status);
 
 }

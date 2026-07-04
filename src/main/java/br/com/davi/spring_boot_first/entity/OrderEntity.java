@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -19,12 +20,17 @@ import java.time.LocalDateTime;
 
 public class OrderEntity {
 
+    @OneToMany(mappedBy = "order")
+    private List<CartItemsEntity> cartItems;
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Column(nullable = false)
     private BigDecimal price  = BigDecimal.ZERO;
@@ -35,4 +41,5 @@ public class OrderEntity {
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
 }
