@@ -8,11 +8,9 @@ import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Service
@@ -20,16 +18,16 @@ public class CreateOrderService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-    private final OwnershipService ownershipService;
+    private final AuthenticatedService authenticatedService;
 
 
     public CreateOrderService(OrderRepository orderRepository,
                               UserRepository userRepository,
-                              OwnershipService ownershipService)
+                              AuthenticatedService authenticatedService)
     {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
-        this.ownershipService = ownershipService;
+        this.authenticatedService = authenticatedService;
     }
 
 
@@ -47,7 +45,7 @@ public class CreateOrderService {
     @Transactional
     public OrderResponse createOrder(Long userId){
 
-        ownershipService.checkOwnership(userId);
+        authenticatedService.checkOwnership(userId);
 
 
         if (existsPendingOrderByUserIdAndStatus(userId, OrderStatusEnum.PENDING)) {

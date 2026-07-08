@@ -4,7 +4,7 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,7 +26,7 @@ public class UpdatePasswordServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private OwnershipService ownershipService;
+    private AuthenticatedService authenticatedService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -44,9 +44,8 @@ public class UpdatePasswordServiceTest {
         user.setPassword("OLD_HASH");
 
 
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
 
 
         when(userRepository.findById(1L))
@@ -63,7 +62,6 @@ public class UpdatePasswordServiceTest {
 
         Long id =
                 updatePasswordService.changePassword(
-                        1L,
                         "oldPassword",
                         "newPassword"
                 );
@@ -87,10 +85,8 @@ public class UpdatePasswordServiceTest {
         user.setPassword("OLD_HASH");
 
 
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
-
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
 
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
@@ -103,9 +99,9 @@ public class UpdatePasswordServiceTest {
         assertThrows(
                 BadRequestException.class,
                 () -> updatePasswordService.changePassword(
-                        1L,
                         "wrongPassword",
                         "newPassword"
+
                 )
         );
 
@@ -118,10 +114,8 @@ public class UpdatePasswordServiceTest {
     @Test
     public void shouldFailWhenUserNotFound() {
 
-        doNothing()
-                .when(ownershipService)
-                .checkOwnership(1L);
-
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
 
         when(userRepository.findById(1L))
                 .thenReturn(Optional.empty());
@@ -130,7 +124,6 @@ public class UpdatePasswordServiceTest {
         assertThrows(
                 NotFoundException.class,
                 () -> updatePasswordService.changePassword(
-                        1L,
                         "old",
                         "new"
                 )

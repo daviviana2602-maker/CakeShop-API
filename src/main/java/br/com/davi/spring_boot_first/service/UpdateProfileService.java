@@ -5,12 +5,11 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeEmail;
@@ -21,16 +20,16 @@ import static br.com.davi.spring_boot_first.normalization.StringNormalizer.norma
 public class UpdateProfileService {
 
     private final UserRepository userRepository;
-    private final OwnershipService ownershipService;
     private final EmailService newEmailService;
+    private final AuthenticatedService authenticatedService;
 
 
     public UpdateProfileService(UserRepository userRepository,
-                                OwnershipService ownershipService,
-                                EmailService newEmailService) {
+                                EmailService newEmailService,
+                                AuthenticatedService authenticatedService) {
         this.userRepository = userRepository;
-        this.ownershipService = ownershipService;
         this.newEmailService = newEmailService;
+        this.authenticatedService = authenticatedService;
     }
 
 
@@ -41,9 +40,8 @@ public class UpdateProfileService {
 
 
     @Transactional
-    public UpdateProfileResponse changeProfile(Long userId, String name, String newEmail) {
+    public UpdateProfileResponse changeProfile(String name, String newEmail) {
 
-        ownershipService.checkOwnership(userId);
 
         if (name == null && newEmail == null) {
             throw new BadRequestException("at least one field is required");
@@ -60,6 +58,7 @@ public class UpdateProfileService {
         }
 
 
+        Long userId = authenticatedService.getAuthenticatedUserId();
         UserEntity user = findUserById(userId);
 
 

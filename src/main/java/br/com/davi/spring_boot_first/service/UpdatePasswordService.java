@@ -4,7 +4,7 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,18 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdatePasswordService {
 
     private final UserRepository userRepository;
-    private final OwnershipService ownershipService;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticatedService authenticatedService;
 
 
     public UpdatePasswordService(UserRepository userRepository,
-                                 OwnershipService ownershipService,
-                                 PasswordEncoder passwordEncoder
+                                 PasswordEncoder passwordEncoder,
+                                 AuthenticatedService authenticatedService
     )
     {
         this.userRepository = userRepository;
-        this.ownershipService = ownershipService;
         this.passwordEncoder = passwordEncoder;
+        this.authenticatedService = authenticatedService;
     }
 
 
@@ -36,12 +36,10 @@ public class UpdatePasswordService {
 
 
     @Transactional
-    public Long changePassword(Long userId, String currentPassword, String newPassword) {
+    public Long changePassword(String currentPassword, String newPassword) {
 
-        ownershipService.checkOwnership(userId);
-
-
-        UserEntity user = findUserById(userId);
+        Long userId = authenticatedService.getAuthenticatedUserId();
+        UserEntity user =  findUserById(userId);
 
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {

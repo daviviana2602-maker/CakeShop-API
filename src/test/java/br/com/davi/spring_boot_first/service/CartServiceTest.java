@@ -11,7 +11,7 @@ import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.repository.ProductRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,7 +41,7 @@ public class CartServiceTest {
     private ProductRepository productRepository;
 
     @Mock
-    private OwnershipService ownershipService;
+    private AuthenticatedService authenticatedService;
 
     @InjectMocks
     private CartService cartService;

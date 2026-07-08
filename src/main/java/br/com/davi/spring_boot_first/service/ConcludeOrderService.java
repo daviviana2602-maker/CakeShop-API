@@ -10,7 +10,7 @@ import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.ConcludedRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,17 +25,17 @@ public class ConcludeOrderService {
     private final ConcludedRepository concludedRepository;
     private final CartRepository cartRepository;
     private final OrderRepository orderRepository;
-    private final OwnershipService ownershipService;
+    private final AuthenticatedService authenticatedService;
 
 
     public ConcludeOrderService(ConcludedRepository concludedRepository,
                                 CartRepository cartRepository,
                                 OrderRepository orderRepository,
-                                OwnershipService ownershipService) {
+                                AuthenticatedService authenticatedService) {
         this.concludedRepository = concludedRepository;
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
-        this.ownershipService = ownershipService;
+        this.authenticatedService = authenticatedService;
     }
 
 
@@ -51,7 +51,7 @@ public class ConcludeOrderService {
 
         OrderEntity order = findOrderId(orderId);
 
-        ownershipService.checkOwnership(order.getUser().getId());
+        authenticatedService.checkOwnership(order.getUser().getId());
 
 
         boolean cartCheck = cartRepository.existsByOrderId(orderId);

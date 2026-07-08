@@ -7,7 +7,7 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,15 +17,15 @@ import java.util.List;
 public class ListCartService {
 
     private final CartRepository cartRepository;
-    private final OwnershipService ownershipService;
+    private final AuthenticatedService authenticatedService;
     private final OrderRepository orderRepository;
 
 
     public ListCartService(CartRepository cartRepository,
-                           OwnershipService ownershipService,
+                           AuthenticatedService authenticatedService,
                            OrderRepository orderRepository) {
         this.cartRepository = cartRepository;
-        this.ownershipService = ownershipService;
+        this.authenticatedService = authenticatedService;
         this.orderRepository = orderRepository;
     }
 
@@ -42,7 +42,7 @@ public class ListCartService {
 
         OrderEntity order = findOrderById(orderId);
 
-        ownershipService.checkOwnership(order.getUser().getId());
+        authenticatedService.checkOwnership(order.getUser().getId());
 
 
         return cart.stream()

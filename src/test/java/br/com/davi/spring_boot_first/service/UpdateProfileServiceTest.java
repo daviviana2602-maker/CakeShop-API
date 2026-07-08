@@ -5,13 +5,12 @@ import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +25,7 @@ public class UpdateProfileServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private OwnershipService ownershipService;
+    private AuthenticatedService authenticatedService;
 
     @Mock
     private EmailService emailService;
@@ -44,13 +43,15 @@ public class UpdateProfileServiceTest {
         user.setEmail("old@gmail.com");
 
 
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
+
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
 
         UpdateProfileResponse response =
                 updateProfileService.changeProfile(
-                        1L,
                         "New Name",
                         null
                 );
@@ -70,6 +71,8 @@ public class UpdateProfileServiceTest {
         user.setName("Test");
         user.setEmail("old@gmail.com");
 
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
 
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
@@ -85,7 +88,6 @@ public class UpdateProfileServiceTest {
 
         UpdateProfileResponse response =
                 updateProfileService.changeProfile(
-                        1L,
                         null,
                         "new@gmail.com"
                 );
@@ -105,7 +107,6 @@ public class UpdateProfileServiceTest {
         assertThrows(
                 BadRequestException.class,
                 () -> updateProfileService.changeProfile(
-                        1L,
                         null,
                         null
                 )
@@ -126,6 +127,9 @@ public class UpdateProfileServiceTest {
         user.setId(1L);
 
 
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
+
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
@@ -133,7 +137,6 @@ public class UpdateProfileServiceTest {
         assertThrows(
                 BadRequestException.class,
                 () -> updateProfileService.changeProfile(
-                        1L,
                         null,
                         ""
                 )
@@ -149,6 +152,10 @@ public class UpdateProfileServiceTest {
         user.setId(1L);
 
 
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
+
+
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
@@ -160,7 +167,6 @@ public class UpdateProfileServiceTest {
         assertThrows(
                 BadRequestException.class,
                 () -> updateProfileService.changeProfile(
-                        1L,
                         null,
                         "test@gmail.com"
                 )
@@ -172,6 +178,10 @@ public class UpdateProfileServiceTest {
     @Test
     void shouldFailWhenUserNotFound() {
 
+
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
+
         when(userRepository.findById(1L))
                 .thenReturn(Optional.empty());
 
@@ -179,7 +189,6 @@ public class UpdateProfileServiceTest {
         assertThrows(
                 NotFoundException.class,
                 () -> updateProfileService.changeProfile(
-                        1L,
                         "Test",
                         null
                 )

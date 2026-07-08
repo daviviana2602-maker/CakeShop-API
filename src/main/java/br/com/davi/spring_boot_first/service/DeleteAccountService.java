@@ -7,7 +7,7 @@ import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.exception.ForbiddenException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteAccountService {
 
     private final UserRepository userRepository;
-    private final OwnershipService ownershipService;
+    private final AuthenticatedService authenticatedService;
 
 
-    public DeleteAccountService(UserRepository userRepository, OwnershipService ownershipService) {
+    public DeleteAccountService(UserRepository userRepository, AuthenticatedService authenticatedService) {
         this.userRepository = userRepository;
-        this.ownershipService = ownershipService;
+        this.authenticatedService = authenticatedService;
     }
 
 
@@ -32,12 +32,10 @@ public class DeleteAccountService {
 
 
     @Transactional
-    public Long deleteUser(Long userId){
+    public Long deleteUser(){
 
-        UserEntity user = findUserById(userId);
-
-
-        ownershipService.checkOwnership(user.getId());
+        Long userId = authenticatedService.getAuthenticatedUserId();
+        UserEntity user =  findUserById(userId);
 
 
         if (user.getStatus().equals(UserStatusEnum.DELETED) ||

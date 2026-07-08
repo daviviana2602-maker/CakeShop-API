@@ -11,7 +11,7 @@ import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.repository.ProductRepository;
-import br.com.davi.spring_boot_first.security.OwnershipService;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,17 +25,17 @@ public class CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
-    private final OwnershipService ownershipService;
+    private final AuthenticatedService authenticatedService;
 
 
     public CartService(CartRepository cartRepository,
                        ProductRepository productRepository,
                        OrderRepository orderRepository,
-                       OwnershipService ownershipService) {
+                       AuthenticatedService authenticatedService) {
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
-        this.ownershipService = ownershipService;
+        this.authenticatedService = authenticatedService;
     }
 
 
@@ -61,7 +61,7 @@ public class CartService {
 
         OrderEntity order = findOrderById(orderId);
 
-        ownershipService.checkOwnership(order.getUser().getId());
+        authenticatedService.checkOwnership(order.getUser().getId());
 
 
         if (order.getStatus() == OrderStatusEnum.CANCELED || order.getStatus() == OrderStatusEnum.CONCLUDED) {
