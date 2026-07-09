@@ -61,6 +61,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             Long userId = Long.valueOf(claims.getUserId());
             String role = claims.getRole();
+            String type = claims.getType();
+
+
+            if (!"ACCESS".equals(type)) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.setContentType("application/json");
+                response.getWriter().write("""
+            {"message":"access token is required"}
+            """);
+                return;
+            }
 
 
             UserEntity user = getCurrentUser(userId);

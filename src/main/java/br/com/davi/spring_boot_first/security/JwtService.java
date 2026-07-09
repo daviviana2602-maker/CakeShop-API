@@ -42,7 +42,8 @@ public class JwtService {
 
         return new JwtDataFormat(
             claims.getSubject(),
-            claims.get("role", String.class)
+            claims.get("role", String.class),
+            claims.get("type", String.class)
         );
 
     }
@@ -56,6 +57,7 @@ public class JwtService {
         return Jwts.builder()
                 .subject(String.valueOf(userId))
                 .claim("role", role)
+                .claim("type", "ACCESS")
                 .issuedAt(now)
                 .expiration(expiration)
                 .signWith(getKey())
@@ -71,6 +73,7 @@ public class JwtService {
         return Jwts.builder()
                 .subject(String.valueOf(userId))
                 .claim("role", role)
+                .claim("type", "REFRESH")
                 .issuedAt(now)
                 .expiration(expiration)
                 .signWith(getKey())
