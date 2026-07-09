@@ -29,14 +29,12 @@ public class OrderController {
     private final ListCartService listCartService;
 
 
-    @PostMapping("{userId}/create")
+    @PostMapping("/create")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
-    public OrderResponse generateOrder(
-        @PathVariable Long userId
-    )
+    public OrderResponse generateOrder()
     {
-        return createOrderService.createOrder(userId);
+        return createOrderService.createOrder();
     }
 
 

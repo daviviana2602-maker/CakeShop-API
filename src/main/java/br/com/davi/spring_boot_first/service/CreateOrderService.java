@@ -43,9 +43,9 @@ public class CreateOrderService {
 
 
     @Transactional
-    public OrderResponse createOrder(Long userId){
+    public OrderResponse createOrder(){
 
-        authenticatedService.checkOwnership(userId);
+        Long userId = authenticatedService.getAuthenticatedUserId();
 
 
         if (existsPendingOrderByUserIdAndStatus(userId, OrderStatusEnum.PENDING)) {

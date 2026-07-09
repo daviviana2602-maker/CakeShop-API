@@ -46,6 +46,8 @@ public class CreateOrderServiceTest {
         user.setId(1L);
         user.setName("Davi");
 
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
 
         when(orderRepository.existsByUserIdAndStatus(1L, OrderStatusEnum.PENDING))
                 .thenReturn(false);
@@ -55,7 +57,7 @@ public class CreateOrderServiceTest {
 
 
         OrderResponse response =
-                createOrderService.createOrder(1L);
+                createOrderService.createOrder();
 
 
         assertEquals(1L, response.getUserId());
@@ -72,6 +74,12 @@ public class CreateOrderServiceTest {
     @Test
     void shouldThrowConflictWhenUserAlreadyHasPendingOrder() {
 
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+        user.setName("Davi");
+
+        when(authenticatedService.getAuthenticatedUserId())
+                .thenReturn(1L);
 
         when(orderRepository.existsByUserIdAndStatus(1L, OrderStatusEnum.PENDING))
                 .thenReturn(true);
@@ -79,7 +87,7 @@ public class CreateOrderServiceTest {
 
         assertThrows(
                 ConflictException.class,
-                () -> createOrderService.createOrder(1L)
+                () -> createOrderService.createOrder()
         );
 
 
