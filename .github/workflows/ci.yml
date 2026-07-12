@@ -35,9 +35,11 @@ jobs:
           distribution: temurin
 
       - name: Run tests
+        working-directory: backend
         run: mvn test
 
       - name: Build
+        working-directory: backend
         run: mvn clean package -DskipTests
 
       - name: Stop containers
