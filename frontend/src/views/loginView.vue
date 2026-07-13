@@ -1,28 +1,31 @@
 <script setup lang="ts">
 
 import { ref } from "vue"
-import { createAccount } from "../service/authService"
+import { login } from "../service/authService"
 
 
-const name = ref("")
 const email = ref("")
 const password = ref("")
 
 
-async function handleSubmit() {
+async function handleLogin() {
   
 
   const data = {
-    name: name.value,
     email: email.value,
     password: password.value
   }
 
   try {
 
-        await createAccount(data)
+        const response = await login(data)
 
-        alert("Conta criada!")
+        localStorage.setItem("accessToken", response.accessToken)
+        localStorage.setItem("refreshToken", response.refreshToken)
+
+
+        alert("Login realizado!")
+
 
     } catch(error:any){
 
@@ -37,11 +40,9 @@ async function handleSubmit() {
 
 
 <template>
-  <h1>Criar conta</h1>
+  <h1>Login</h1>
 
-  <form @submit.prevent="handleSubmit">
-
-    <input v-model="name" placeholder="Nome">
+  <form @submit.prevent="handleLogin">
 
     <input v-model="email" placeholder="Email">
 
@@ -52,7 +53,7 @@ async function handleSubmit() {
     >
 
     <button type="submit">
-      Criar conta
+      Fazer login
     </button>
 
   </form>
