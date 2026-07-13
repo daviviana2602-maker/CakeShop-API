@@ -33,11 +33,11 @@ api.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem("refreshToken")
 
-        
-        const response = await axios.post(`http://localhost:8080/v1/auth/${refreshToken}`
-)
 
-        const newAccessToken = response.data.accessToken
+        const response = await axios.post(`http://localhost:8080/v1/auth/${refreshToken}`)
+
+
+        const newAccessToken = response.data
 
         localStorage.setItem("accessToken", newAccessToken)
 
