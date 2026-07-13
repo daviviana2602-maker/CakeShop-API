@@ -3,6 +3,8 @@ import HomeView from '../views/homeView.vue'
 import createAccountView from '../views/createAccountView.vue'
 import loginView from '../views/loginView.vue'
 import createProductView from '../views/createProductView.vue'
+import editProductView from '../views/editProductView.vue'
+import ListProductsView from '../views/listProductsView.vue'
 
 
 const router = createRouter({
@@ -24,6 +26,14 @@ const router = createRouter({
     {
       path: '/create-product',
       component: createProductView
+    },
+    {
+      path: '/edit-product/:id',
+      component: editProductView
+    },
+    {
+     path: '/products',
+      component: ListProductsView
     }
   ]
 })
