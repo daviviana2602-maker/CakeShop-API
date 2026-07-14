@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class AdminSeeder implements CommandLineRunner {
+public class UserSeeder implements CommandLineRunner {
 
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
-    public AdminSeeder(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserSeeder(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -27,22 +27,39 @@ public class AdminSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if (userRepository.existsByEmail("admin@cakeshop.com")) {
+        if (userRepository.existsByEmail("admin@cakeshop.com")
+            || userRepository.existsByEmail("user@cakeshop.com")) {
+
             return;
+
         }
+
 
         UserEntity admin = UserEntity.builder()
                 .name("Administrator")
                 .email("admin@cakeshop.com")
-                .password(passwordEncoder.encode("Admin123"))
+                .password(passwordEncoder.encode("admin"))
                 .role(UserRoleEnum.ADMIN)
                 .status(UserStatusEnum.ACTIVE)
                 .emailVerified(true)
                 .build();
 
 
-        userRepository.save(admin);
+        UserEntity user = UserEntity.builder()
+                .name("user")
+                .email("user@cakeshop.com")
+                .password(passwordEncoder.encode("user"))
+                .role(UserRoleEnum.USER)
+                .status(UserStatusEnum.ACTIVE)
+                .emailVerified(true)
+                .build();
 
-        System.out.println("Admin seeded successfully!");
+
+
+        userRepository.save(admin);
+        userRepository.save(user);
+
+        System.out.println("Users seeded successfully!");
+
     }
 }

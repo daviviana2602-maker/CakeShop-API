@@ -51,7 +51,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
         boolean allowed =
               rateLimitService.allowRequest(
                       "rate:user:" + userId,
-                      30,
+                      40,
                       300
               );
 
