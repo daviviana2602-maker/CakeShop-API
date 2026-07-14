@@ -89,7 +89,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("{status}/list")
+    @GetMapping("{status}")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public List<OrderResponse> listOrdersStatus(
