@@ -42,6 +42,7 @@ public class ListOrdersService {
                         item.getId(),
                         item.getUser().getId(),
                         item.getUser().getName(),
+                        item.getUser().getEmail(),
                         item.getStatus(),
                         item.getPrice()
                 ))
