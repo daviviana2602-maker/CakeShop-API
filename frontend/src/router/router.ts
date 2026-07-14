@@ -4,7 +4,9 @@ import createAccountView from '../views/createAccountView.vue'
 import loginView from '../views/loginView.vue'
 import createProductView from '../views/createProductView.vue'
 import editProductView from '../views/editProductView.vue'
-import ListProductsView from '../views/listProductsView.vue'
+import listProductsView from '../views/listProductsView.vue'
+import updateProfileView from '../views/updateProfileView.vue'
+import OrderView from '../views/orderView.vue'
 
 
 const router = createRouter({
@@ -33,7 +35,15 @@ const router = createRouter({
     },
     {
      path: '/products',
-      component: ListProductsView
+     component: listProductsView
+    },
+    {
+      path: '/update-profile',
+      component: updateProfileView
+    },
+    {
+      path: '/order/:id',
+      component: OrderView
     }
   ]
 })
