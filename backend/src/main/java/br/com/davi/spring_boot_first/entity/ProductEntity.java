@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -18,6 +19,9 @@ import java.time.LocalDateTime;
 
 
 public class ProductEntity {
+
+    @OneToMany(mappedBy = "product")
+    private List<CartItemsEntity> cartItems;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

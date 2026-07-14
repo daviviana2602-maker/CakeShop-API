@@ -73,7 +73,7 @@ public class ConcludeOrderService {
             ConcludedItemsEntity concluded = new ConcludedItemsEntity();
 
             concluded.setOrderId(orderId);
-            concluded.setProductId(item.getProductId());
+            concluded.setProductId(item.getProduct().getId());
             concluded.setQuantity(item.getQuantity());
             concluded.setUnitPrice(item.getUnitPrice());
             concluded.setFullPrice(item.getFullPrice());

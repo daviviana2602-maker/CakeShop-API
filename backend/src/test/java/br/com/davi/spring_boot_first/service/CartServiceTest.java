@@ -98,14 +98,22 @@ public class CartServiceTest {
         user.setId(1L);
 
         OrderEntity order = new OrderEntity();
+        order.setId(1L);
         order.setUser(user);
         order.setStatus(OrderStatusEnum.PENDING);
 
+
         ProductEntity product = new ProductEntity();
+        product.setId(10L);
         product.setPrice(BigDecimal.valueOf(50));
 
+
         CartItemsEntity cart = new CartItemsEntity();
+        cart.setProduct(product);
+        cart.setOrder(order);
         cart.setQuantity(5);
+        cart.setUnitPrice(BigDecimal.valueOf(50));
+        cart.setFullPrice(BigDecimal.valueOf(250));
 
 
         when(orderRepository.findById(1L))
@@ -123,7 +131,8 @@ public class CartServiceTest {
 
 
         assertEquals(7, response.getQuantity());
-        assertEquals(0, BigDecimal.valueOf(350).compareTo(response.getFullPrice()));
+        assertEquals(0, BigDecimal.valueOf(350)
+                .compareTo(response.getFullPrice()));
     }
 
 

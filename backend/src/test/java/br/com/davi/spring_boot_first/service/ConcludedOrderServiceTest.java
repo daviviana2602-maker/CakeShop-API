@@ -1,10 +1,7 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.ConcludeOrderResponse;
-import br.com.davi.spring_boot_first.entity.CartItemsEntity;
-import br.com.davi.spring_boot_first.entity.ConcludedItemsEntity;
-import br.com.davi.spring_boot_first.entity.OrderEntity;
-import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.entity.*;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.ConcludedRepository;
@@ -57,8 +54,13 @@ public class ConcludedOrderServiceTest {
         order.setPrice(BigDecimal.TEN);
 
 
+        ProductEntity product = new ProductEntity();
+        product.setId(10L);
+        product.setName("Chocolate Cake");
+
+
         CartItemsEntity cart = new CartItemsEntity();
-        cart.setProductId(10L);
+        cart.setProduct(product);
         cart.setOrder(order);
         cart.setQuantity(2);
         cart.setUnitPrice(BigDecimal.valueOf(50));
@@ -91,7 +93,7 @@ public class ConcludedOrderServiceTest {
                 concludeOrderService.concludeOrder(1L);
 
 
-        assertEquals(1, response.size());   // Size of the list
+        assertEquals(1, response.size());
         assertEquals(10L, response.get(0).getProductId());
 
 
@@ -100,7 +102,6 @@ public class ConcludedOrderServiceTest {
 
         verify(cartRepository)
                 .deleteByOrderId(1L);
-
     }
 
 

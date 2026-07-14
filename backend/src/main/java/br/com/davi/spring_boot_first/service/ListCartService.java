@@ -49,7 +49,8 @@ public class ListCartService {
                 .map(item -> new CartResponse(
                         item.getId(),
                         item.getOrder().getId(),
-                        item.getProductId(),
+                        item.getProduct().getId(),
+                        item.getProduct().getName(),
                         item.getQuantity(),
                         item.getUnitPrice(),
                         item.getFullPrice()

@@ -94,7 +94,8 @@ public class CartService {
                 return new CartResponse(
                         cart.getId(),
                         cart.getOrder().getId(),
-                        cart.getProductId(),
+                        cart.getProduct().getId(),
+                        cart.getProduct().getName(),
                         cart.getQuantity(),
                         cart.getUnitPrice(),
                         cart.getFullPrice()
@@ -113,7 +114,7 @@ public class CartService {
 
 
         cart.setOrder(order);
-        cart.setProductId(productId);
+        cart.setProduct(product);
         cart.setUnitPrice(unitPrice);
         cart.setFullPrice(cart.getUnitPrice().multiply(new BigDecimal(cart.getQuantity())));
 
@@ -123,7 +124,8 @@ public class CartService {
         return new CartResponse(
                 cart.getId(),
                 cart.getOrder().getId(),
-                cart.getProductId(),
+                cart.getProduct().getId(),
+                cart.getProduct().getName(),
                 cart.getQuantity(),
                 cart.getUnitPrice(),
                 cart.getFullPrice()
