@@ -2,6 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.entity.OrderEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
+import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
@@ -40,6 +41,9 @@ public class CancelOrderService {
 
         authenticatedService.checkOwnership(order.getUser().getId());
 
+        if (order.getStatus().equals(OrderStatusEnum.CONCLUDED)) {
+            throw new BadRequestException("order already is concluded");
+        }
 
         order.setStatus(OrderStatusEnum.CANCELED);
 

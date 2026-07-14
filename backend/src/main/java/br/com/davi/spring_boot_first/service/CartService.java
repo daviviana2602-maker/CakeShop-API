@@ -50,7 +50,7 @@ public class CartService {
                 .orElseThrow(() -> new NotFoundException("product not found"));
     }
 
-    // discovering if the item already exists in the order
+
     private Optional<CartItemsEntity> findItemInOrderById(Long orderId, Long productId) {
         return cartRepository.findByOrderIdAndProductId(orderId, productId);
     }
@@ -87,6 +87,19 @@ public class CartService {
                 throw new BadRequestException("quantity is negative");
             }
 
+            if (cart.getQuantity() == 0) {
+
+                cartRepository.delete(cart);
+
+                return new CartResponse(
+                        cart.getId(),
+                        cart.getOrder().getId(),
+                        cart.getProductId(),
+                        cart.getQuantity(),
+                        cart.getUnitPrice(),
+                        cart.getFullPrice()
+                );
+            }
         }
         else{
             cart = new CartItemsEntity();

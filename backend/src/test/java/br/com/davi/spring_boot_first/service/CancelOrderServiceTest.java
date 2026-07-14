@@ -47,6 +47,7 @@ public class CancelOrderServiceTest {
         OrderEntity order = new OrderEntity();
         order.setId(1L);
         order.setUser(user);
+        order.setStatus(OrderStatusEnum.PENDING);
 
 
         when(orderRepository.findById(1L))

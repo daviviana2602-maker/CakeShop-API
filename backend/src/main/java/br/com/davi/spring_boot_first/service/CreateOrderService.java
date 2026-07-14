@@ -4,13 +4,14 @@ import br.com.davi.spring_boot_first.dto.response.OrderResponse;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
 import br.com.davi.spring_boot_first.entity.UserEntity;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
-import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Service
@@ -37,8 +38,8 @@ public class CreateOrderService {
     }
 
 
-    private boolean existsPendingOrderByUserIdAndStatus(Long userId, OrderStatusEnum status) {
-        return orderRepository.existsByUserIdAndStatus(userId, status);
+    private Optional<OrderEntity> findPendingOrderByUserIdAndStatus(Long userId, OrderStatusEnum status) {
+        return orderRepository.findByUserIdAndStatus(userId, status);
     }
 
 
@@ -48,8 +49,18 @@ public class CreateOrderService {
         Long userId = authenticatedService.getAuthenticatedUserId();
 
 
-        if (existsPendingOrderByUserIdAndStatus(userId, OrderStatusEnum.PENDING)) {
-            throw new ConflictException("pending order already exists");
+        Optional<OrderEntity> currentOrder = findPendingOrderByUserIdAndStatus(userId, OrderStatusEnum.PENDING);
+
+
+        if (currentOrder.isPresent()) {
+            OrderEntity order = currentOrder.get();
+
+            return new OrderResponse(
+                    order.getId(),
+                    order.getUser().getId(),
+                    order.getUser().getName(),
+                    order.getStatus()
+            );
         }
 
 
