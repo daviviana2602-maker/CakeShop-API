@@ -197,6 +197,13 @@ v-for="item in items"
 {{ item.product?.name ?? item.productName }}
 </p>
 
+<p>
+{{ item.product?.unitPrice ?? item.unitPrice }}
+</p>
+
+<p>
+{{ item.product?.fullPrice ?? item.fullPrice }}
+</p>
 
 <p>
 Quantidade: {{ item.quantity }}

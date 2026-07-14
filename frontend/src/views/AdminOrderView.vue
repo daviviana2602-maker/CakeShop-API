@@ -7,7 +7,8 @@ import api from "../api/api";
 interface OrderResponse {
   id: number;
   userId: number;
-  userName: string;
+  name: string;
+  email: string;
   status: string;
   price: number;
 }
@@ -69,7 +70,7 @@ onMounted(() => {
 
 <div class="container">
 
-    <h1>Orders</h1>
+    <h1>Pedidos</h1>
 
 
     <select
@@ -89,7 +90,7 @@ onMounted(() => {
 
 
     <div v-if="loading">
-      Loading...
+      Carregando...
     </div>
 
 
@@ -98,9 +99,10 @@ onMounted(() => {
       <thead>
         <tr>
           <th>ID</th>
-          <th>User</th>
+          <th>Usuário</th>
+          <th>Email</th>
           <th>Status</th>
-          <th>Price</th>
+          <th>Preço total</th>
         </tr>
       </thead>
 
@@ -117,7 +119,11 @@ onMounted(() => {
           </td>
 
           <td>
-            {{ order.userName }}
+            {{ order.name }}
+          </td>
+
+          <td>
+            {{ order.email }}
           </td>
 
           <td>
@@ -134,7 +140,7 @@ onMounted(() => {
         <tr v-if="orders.length === 0">
 
           <td colspan="4">
-            No orders found
+            Nenhum pedido encontrado
           </td>
 
         </tr>
