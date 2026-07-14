@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @AllArgsConstructor
 
@@ -14,4 +16,5 @@ public class OrderResponse {
     private Long userId;
     private String name;
     private OrderStatusEnum status;
+    private BigDecimal price;
 }

@@ -5,6 +5,7 @@ import br.com.davi.spring_boot_first.dto.request.CartRequest;
 import br.com.davi.spring_boot_first.dto.response.CartResponse;
 import br.com.davi.spring_boot_first.dto.response.ConcludeOrderResponse;
 import br.com.davi.spring_boot_first.dto.response.OrderResponse;
+import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -27,6 +28,7 @@ public class OrderController {
     private final CancelOrderService cancelOrderService;
     private final ConcludeOrderService concludeOrderService;
     private final ListCartService listCartService;
+    private final ListOrdersService listOrdersService;
 
 
     @PostMapping("/create")
@@ -84,6 +86,18 @@ public class OrderController {
     )
     {
         return listCartService.listItems(orderId);
+    }
+
+
+    @GetMapping("{status}/list")
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
+    public List<OrderResponse> listOrdersStatus(
+            @PathVariable OrderStatusEnum status,
+            @RequestParam(defaultValue = "0") int page
+    )
+    {
+        return listOrdersService.listOrders(status, page);
     }
 
 

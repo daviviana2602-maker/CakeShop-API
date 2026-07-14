@@ -59,7 +59,8 @@ public class CreateOrderService {
                     order.getId(),
                     order.getUser().getId(),
                     order.getUser().getName(),
-                    order.getStatus()
+                    order.getStatus(),
+                    order.getPrice()
             );
         }
 
@@ -77,7 +78,8 @@ public class CreateOrderService {
             order.getId(),
             order.getUser().getId(),
             user.getName(),
-            order.getStatus()
+            order.getStatus(),
+            order.getPrice()
         );
 
     }
