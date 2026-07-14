@@ -7,8 +7,7 @@ import editProductView from '../views/editProductView.vue'
 import listProductsView from '../views/listProductsView.vue'
 import updateProfileView from '../views/updateProfileView.vue'
 import OrderView from '../views/orderView.vue'
-import AdminOrderView from '../views/AdminOrderView.vue'
-import AdminSearchUserView from '@/views/AdminSearchUserView.vue'
+import AdminView from '@/views/adminView.vue'
 
 
 const router = createRouter({
@@ -48,13 +47,13 @@ const router = createRouter({
       component: OrderView
     },
     {
-      path: '/admin/orders',
-      component: AdminOrderView
-    },
-    {
-      path: '/admin/users',
-      component: AdminSearchUserView
-    }
+    path: "/admin",
+    component: AdminView,
+    meta: {
+    requiresAdmin: true
+  }
+  
+}
   ]
 })
 

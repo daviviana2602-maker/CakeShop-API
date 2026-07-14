@@ -98,13 +98,10 @@ async function handleCreateOrder() {
 
     <h2>Admin</h2>
 
-    <button @click="go('/admin/orders')">
-      Gerenciar pedidos
+    <button @click="go('/admin')">
+      Administração
     </button>
 
-    <button @click="go('/admin/users')">
-      Gerenciar usuários
-    </button>
 
     </div>
 

@@ -204,7 +204,7 @@ async function handleDemote() {
 
 
 <h1>
-  Admin User Search
+  Procurar Usuário
 </h1>
 
 

@@ -22,6 +22,7 @@ async function handleLogin() {
 
         localStorage.setItem("accessToken", response.accessToken)
         localStorage.setItem("refreshToken", response.refreshToken)
+        localStorage.setItem("role", response.role)
 
 
         alert("Login realizado!")
