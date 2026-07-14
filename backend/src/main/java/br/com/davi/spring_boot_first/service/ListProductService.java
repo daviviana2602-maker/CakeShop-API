@@ -22,20 +22,35 @@ public class ListProductService {
     }
 
 
+    public record ProductPageResponse(
+            List<ListProductResponse> products,
+            int page,
+            int totalPages
+    ) {}
+
+
     @Cacheable(value = "products", key = "#page")
-    public Page<ListProductResponse> listProducts(int page) {
+    public ProductPageResponse listProducts(int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
 
         Page<ProductEntity> pageProducts = productRepository.findAll(pageable);
 
 
-        return pageProducts.map(product -> new ListProductResponse(
-                product.getId(),
-                product.getName(),
-                product.getPrice()
-            ));
+        return new ProductPageResponse(
+                pageProducts.getContent()
+                        .stream()
+                        .map(product -> new ListProductResponse(
+                                product.getId(),
+                                product.getName(),
+                                product.getPrice()
+                        ))
+                        .toList(),
 
-        }
+                pageProducts.getNumber(),
+                pageProducts.getTotalPages()
+        );
 
+
+    }
 }

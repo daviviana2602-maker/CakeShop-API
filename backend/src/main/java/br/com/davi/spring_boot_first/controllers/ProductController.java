@@ -49,7 +49,7 @@ public class ProductController {
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
-    public Page<ListProductResponse> catchProducts(
+    public ListProductService.ProductPageResponse catchProducts(
          @RequestParam(defaultValue = "0") int page
     )
     {
