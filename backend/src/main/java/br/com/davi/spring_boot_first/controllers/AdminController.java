@@ -1,19 +1,13 @@
 package br.com.davi.spring_boot_first.controllers;
 
+import br.com.davi.spring_boot_first.dto.response.UserResponse;
 import br.com.davi.spring_boot_first.dto.response.UserRoleResponse;
 import br.com.davi.spring_boot_first.dto.response.UserStatusResponse;
-import br.com.davi.spring_boot_first.service.DemoteUserService;
-import br.com.davi.spring_boot_first.service.DisableUserService;
-import br.com.davi.spring_boot_first.service.PromoteUserService;
-import br.com.davi.spring_boot_first.service.ReactivateUserService;
+import br.com.davi.spring_boot_first.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -27,6 +21,7 @@ public class AdminController {
     private final ReactivateUserService reactivateUserService;
     private final PromoteUserService promoteUserService;
     private final DemoteUserService demoteUserService;
+    private final SearchUserService searchUserService;
 
 
     @PostMapping("{userId}/disable")
@@ -70,6 +65,17 @@ public class AdminController {
     )
     {
         return demoteUserService.demoteUser(userId);
+    }
+
+
+    @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
+    public UserResponse searchUser(
+            @RequestParam String identifier
+    )
+    {
+        return searchUserService.search(identifier);
     }
 
 
