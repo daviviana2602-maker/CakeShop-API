@@ -10,6 +10,7 @@ import br.com.davi.spring_boot_first.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,7 +93,7 @@ public class OrderController {
     @GetMapping("{status}")
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
-    public List<OrderResponse> listOrdersStatus(
+    public Page<OrderResponse> listOrdersStatus(
             @PathVariable OrderStatusEnum status,
             @RequestParam(defaultValue = "0") int page
     )

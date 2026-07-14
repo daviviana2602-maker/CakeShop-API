@@ -29,7 +29,7 @@ public class ListOrdersService {
     }
 
 
-    public List<OrderResponse> listOrders(OrderStatusEnum status, int page) {
+    public Page<OrderResponse> listOrders(OrderStatusEnum status, int page) {
 
 
         Pageable pageable = PageRequest.of(page, 10);
@@ -37,16 +37,14 @@ public class ListOrdersService {
         Page<OrderEntity> pageOrders = findByStatus(status, pageable);
 
 
-        return pageOrders.stream()
-                .map(item -> new OrderResponse(
+        return pageOrders .map(item -> new OrderResponse(
                         item.getId(),
                         item.getUser().getId(),
                         item.getUser().getName(),
                         item.getUser().getEmail(),
                         item.getStatus(),
                         item.getPrice()
-                ))
-                .toList();
+                ));
 
     }
 

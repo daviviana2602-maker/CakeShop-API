@@ -12,6 +12,7 @@ import br.com.davi.spring_boot_first.service.ListProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ProductController {
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "bearerAuth")
-    public List<ListProductResponse> catchProducts(
+    public Page<ListProductResponse> catchProducts(
          @RequestParam(defaultValue = "0") int page
     )
     {
