@@ -8,11 +8,18 @@ import { deleteProduct } from "../service/productService"
 
 const products = ref<any[]>([])
 
+const page = ref(0);
+const totalPages = ref(0);
+
+
 async function loadProducts() {
 
   try {
 
-    products.value = await listProducts()
+    const response = await listProducts(page.value)
+
+    products.value = response.products;
+    totalPages.value = response.totalPages;
 
   } catch(error:any) {
 
@@ -22,19 +29,10 @@ async function loadProducts() {
 
 }
 
+
 onMounted(() => {
   loadProducts()
 })
-
-
-
-
-const router = useRouter()  // change to another route
-
-function goToEdit(id: number) {
-  router.push(`/edit-product/${id}`)
-}
-
 
 
 async function handleDelete(id: number) {
@@ -54,6 +52,30 @@ async function handleDelete(id: number) {
   }
 
 }
+
+
+const router = useRouter()  // change to another route
+
+function goToEdit(id: number) {
+  router.push(`/edit-product/${id}`)
+}
+
+
+function nextPage() {
+
+  page.value++;
+  loadProducts();
+
+}
+
+
+function previousPage() {
+
+  page.value--;
+  loadProducts();
+
+}
+
 
 </script>
 
@@ -78,5 +100,21 @@ async function handleDelete(id: number) {
   </button>
 
 </div>
+
+
+<button
+  @click="previousPage"
+  :disabled="page === 0"
+>
+  Anterior
+</button>
+
+
+<button
+  @click="nextPage"
+  :disabled="page + 1 >= totalPages"
+>
+  Próxima
+</button>
 
 </template>

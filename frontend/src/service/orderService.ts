@@ -58,11 +58,3 @@ export async function concludeOrder(orderId: number) {
 
   return response.data
 }
-
-
-export async function listOrders(status: string,page: number = 0) {
-
-  const response = await api.get(`/order/${status}`, {params: {page}})
-
-  return response.data
-}

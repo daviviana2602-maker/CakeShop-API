@@ -28,6 +28,10 @@ const statuses = [
 ];
 
 
+const page = ref(0);
+const totalPages = ref(0);
+
+
 async function loadOrders() {
 
   loading.value = true;
@@ -37,12 +41,13 @@ async function loadOrders() {
     const response = await api.get( `/order/${status.value}`,
       {
         params: {
-          page: 0
+          page: page.value
         }
       }
     );
 
-    orders.value = response.data;
+    orders.value = response.data.content;
+    totalPages.value = response.data.totalPages;
 
   } finally {
 
@@ -61,6 +66,20 @@ function changeStatus() {
 onMounted(() => {
   loadOrders();
 });
+
+
+function nextPage() {
+  page.value++;
+  loadOrders();
+}
+
+function previousPage() {
+
+  if(page.value > 0) {
+    page.value--;
+    loadOrders();
+  }
+}
 
 
 </script>
@@ -145,10 +164,25 @@ onMounted(() => {
 
         </tr>
 
-
       </tbody>
 
     </table>
+
+<button
+  @click="previousPage"
+  :disabled="page === 0"
+>
+  Anterior
+</button>
+
+
+<button
+  @click="nextPage"
+  :disabled="page + 1 >= totalPages"
+>
+  Próxima
+</button>
+
 
 </div>
 

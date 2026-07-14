@@ -27,7 +27,7 @@ export async function editProduct(id: number, data: EditProductRequest) {
 
 
 
-export async function listProducts(page: number = 0) {
+export async function listProducts(page: number) {
   const response = await api.get("/product/list", {params: {page}})
 
   return response.data
