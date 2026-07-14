@@ -7,6 +7,7 @@ import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +29,7 @@ public class DemoteUserServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private Authentication authentication;
+    private AuthenticatedService authentication;
 
     @InjectMocks
     private DemoteUserService demoteUserService;
@@ -47,14 +48,13 @@ public class DemoteUserServiceTest {
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
 
-        when(authentication.getPrincipal())
+        when(authentication.getAuthenticatedUserId())
                 .thenReturn(1L);
 
         assertThrows(
                 BadRequestException.class,
                 () -> demoteUserService.demoteUser(
-                        1L,
-                        authentication
+                        1L
                 )
         );
     }
@@ -73,14 +73,13 @@ public class DemoteUserServiceTest {
         when(userRepository.findById(2L))
                 .thenReturn(Optional.of(user));
 
-        when(authentication.getPrincipal())
+        when(authentication.getAuthenticatedUserId())
                 .thenReturn(1L);
 
 
         UserRoleResponse response =
                 demoteUserService.demoteUser(
-                       2L,
-                        authentication
+                       2L
                     );
 
         assertEquals(UserRoleEnum.USER, response.getRole());
@@ -101,15 +100,14 @@ public class DemoteUserServiceTest {
         when(userRepository.findById(2L))
                 .thenReturn(Optional.of(user));
 
-        when(authentication.getPrincipal())
+        when(authentication.getAuthenticatedUserId())
                 .thenReturn(1L);
 
 
         assertThrows(
                 BadRequestException.class,
                 () -> demoteUserService.demoteUser(
-                        2L,
-                        authentication
+                        2L
                 )
         );
 
@@ -129,15 +127,14 @@ public class DemoteUserServiceTest {
         when(userRepository.findById(2L))
                 .thenReturn(Optional.of(user));
 
-        when(authentication.getPrincipal())
+        when(authentication.getAuthenticatedUserId())
                 .thenReturn(1L);
 
 
         assertThrows(
                 BadRequestException.class,
                 () -> demoteUserService.demoteUser(
-                        2L,
-                        authentication
+                        2L
                 )
         );
 

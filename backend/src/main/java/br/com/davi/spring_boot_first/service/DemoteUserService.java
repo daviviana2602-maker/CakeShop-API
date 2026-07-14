@@ -7,6 +7,7 @@ import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
+import br.com.davi.spring_boot_first.security.AuthenticatedService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class DemoteUserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final AuthenticatedService authenticatedService;
 
 
-    public DemoteUserService(UserRepository userRepository) {
+    public DemoteUserService(UserRepository userRepository, AuthenticatedService authenticatedService) {
         this.userRepository = userRepository;
+        this.authenticatedService = authenticatedService;
     }
 
 
@@ -30,11 +33,11 @@ public class DemoteUserService {
 
 
     @Transactional
-    public UserRoleResponse demoteUser(Long userId, Authentication authentication) {
+    public UserRoleResponse demoteUser(Long userId) {
 
         UserEntity user = findUserById(userId);
 
-        Long loggedUserId = (Long) authentication.getPrincipal();
+        Long loggedUserId = authenticatedService.getAuthenticatedUserId();
 
 
         if (user.getStatus().equals(UserStatusEnum.DISABLED) ||

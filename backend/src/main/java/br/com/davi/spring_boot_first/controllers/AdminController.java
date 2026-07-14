@@ -66,11 +66,10 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public UserRoleResponse demoteId(
-        @PathVariable Long userId,
-        Authentication authentication   // add the object of the authenticated user
+        @PathVariable Long userId
     )
     {
-        return demoteUserService.demoteUser(userId, authentication);
+        return demoteUserService.demoteUser(userId);
     }
 
 
