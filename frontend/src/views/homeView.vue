@@ -93,6 +93,17 @@ async function handleCreateOrder() {
 
     </div>
 
+    
+    <div class="card">
+
+    <h2>Admin</h2>
+
+    <button @click="go('/admin/orders')">
+      Gerenciar pedidos
+    </button>
+
+    </div>
+
 
   </div>
 
