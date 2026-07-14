@@ -8,6 +8,7 @@ import listProductsView from '../views/listProductsView.vue'
 import updateProfileView from '../views/updateProfileView.vue'
 import OrderView from '../views/orderView.vue'
 import AdminOrderView from '../views/AdminOrderView.vue'
+import AdminSearchUserView from '@/views/AdminSearchUserView.vue'
 
 
 const router = createRouter({
@@ -49,6 +50,10 @@ const router = createRouter({
     {
       path: '/admin/orders',
       component: AdminOrderView
+    },
+    {
+      path: '/admin/users',
+      component: AdminSearchUserView
     }
   ]
 })
