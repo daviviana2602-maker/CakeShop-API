@@ -30,6 +30,8 @@ async function handleCreateOrder() {
 
 }
 
+const role = localStorage.getItem("role");
+
 </script>
 
 
@@ -94,7 +96,11 @@ async function handleCreateOrder() {
     </div>
 
     
-    <div class="card">
+    <div 
+  class="card"
+
+  v-if="role === 'ADMIN'"
+>
 
     <h2>Admin</h2>
 
@@ -102,8 +108,7 @@ async function handleCreateOrder() {
       Administração
     </button>
 
-
-    </div>
+  </div>
 
 
   </div>

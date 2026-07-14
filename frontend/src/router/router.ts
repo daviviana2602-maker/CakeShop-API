@@ -11,6 +11,7 @@ import AdminView from '@/views/adminView.vue'
 
 
 const router = createRouter({
+
   history: createWebHistory(import.meta.env.BASE_URL),
 
   routes: [
@@ -35,8 +36,8 @@ const router = createRouter({
       component: editProductView
     },
     {
-     path: '/products',
-     component: listProductsView
+      path: '/products',
+      component: listProductsView
     },
     {
       path: '/update-profile',
@@ -47,14 +48,26 @@ const router = createRouter({
       component: OrderView
     },
     {
-    path: "/admin",
-    component: AdminView,
-    meta: {
-    requiresAdmin: true
-  }
-  
-}
+      path: '/admin',
+      component: AdminView,
+      meta: {
+        requiresAdmin: true
+      }
+    }
   ]
+
 })
+
+
+router.beforeEach((to) => {
+
+  const role = localStorage.getItem("role")
+
+  if (to.meta.requiresAdmin && role !== "ADMIN") {
+    return "/"
+  }
+
+})
+
 
 export default router
