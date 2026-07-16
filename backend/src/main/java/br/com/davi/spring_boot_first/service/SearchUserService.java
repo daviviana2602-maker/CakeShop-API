@@ -3,6 +3,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.UserResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
@@ -25,13 +26,13 @@ public class SearchUserService {
 
     private UserEntity findUserById(Long id){
         return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND,"User not found"));
     }
 
 
     private UserEntity findUserByEmail(String email){
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "User not found"));
     }
 
 
@@ -39,7 +40,7 @@ public class SearchUserService {
 
 
         if(identifier == null || identifier.isBlank()) {
-            throw new BadRequestException("Identifier is required");
+            throw new BadRequestException(ErrorCodeEnum.ONE_FIELD_REQUIRED, "Identifier is required");
         }
 
 
@@ -51,7 +52,7 @@ public class SearchUserService {
             Long id = Long.parseLong(identifier);
 
             if (id < 1) {
-                throw new BadRequestException("Invalid user id");
+                throw new BadRequestException(ErrorCodeEnum.INVALID_CREDENTIALS, "Invalid user id");
             }
 
             user = findUserById(id);

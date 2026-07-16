@@ -4,6 +4,7 @@ import br.com.davi.spring_boot_first.dto.response.CartResponse;
 import br.com.davi.spring_boot_first.entity.CartItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.CartRepository;
 import br.com.davi.spring_boot_first.repository.OrderRepository;
@@ -32,7 +33,7 @@ public class ListCartService {
 
     private OrderEntity findOrderById(Long orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException("Order not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.ORDER_NOT_FOUND,"Order not found"));
     }
 
 

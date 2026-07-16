@@ -2,6 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.LoginResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.ForbiddenException;
@@ -39,7 +40,7 @@ public class LoginService {
 
     private UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-            .orElseThrow(() -> new NotFoundException("User not found"));
+            .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND,"User not found"));
     }
 
 
@@ -55,7 +56,7 @@ public class LoginService {
         );
 
         if (!allowed) {
-            throw new TooManyRequestsException("Too many requests");
+            throw new TooManyRequestsException(ErrorCodeEnum.MANY_REQUESTS, "Too many requests");
         }
 
 
@@ -63,20 +64,20 @@ public class LoginService {
 
         
         if (user.getEmailVerified() == false){
-            throw new ForbiddenException("User is not verified");
+            throw new ForbiddenException(ErrorCodeEnum.USER_NOT_VERIFIED, "User is not verified");
         }
 
         if (user.getStatus().equals(UserStatusEnum.DISABLED)) {
-            throw new ForbiddenException("User is disabled");
+            throw new ForbiddenException(ErrorCodeEnum.USER_DISABLED,"User is disabled");
         }
 
         if (user.getStatus().equals(UserStatusEnum.DELETED)) {
-            throw new ForbiddenException("User is deleted");
+            throw new ForbiddenException(ErrorCodeEnum.USER_DELETED,"User is deleted");
         }
 
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadRequestException("wrong email or password");
+            throw new BadRequestException(ErrorCodeEnum.INVALID_CREDENTIALS,"wrong email or password");
         }
 
 

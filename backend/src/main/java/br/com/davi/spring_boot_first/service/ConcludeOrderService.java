@@ -4,6 +4,7 @@ import br.com.davi.spring_boot_first.dto.response.ConcludeOrderResponse;
 import br.com.davi.spring_boot_first.entity.CartItemsEntity;
 import br.com.davi.spring_boot_first.entity.ConcludedItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
@@ -41,7 +42,7 @@ public class ConcludeOrderService {
 
     public OrderEntity findOrderId(Long orderId) {
         return orderRepository.findById(orderId)
-            .orElseThrow(() -> new NotFoundException("Order not found"));
+            .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.ORDER_NOT_FOUND,"Order not found"));
     }
 
     
@@ -57,7 +58,7 @@ public class ConcludeOrderService {
         boolean cartCheck = cartRepository.existsByOrderId(orderId);
 
         if (!cartCheck) {
-            throw new BadRequestException("No products");
+            throw new BadRequestException(ErrorCodeEnum.CART_EMPTY, "No products");
         }
 
         

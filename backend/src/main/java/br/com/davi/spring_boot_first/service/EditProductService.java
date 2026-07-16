@@ -1,6 +1,7 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.entity.ProductEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.ConflictException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
@@ -30,7 +31,7 @@ public class EditProductService {
 
     private ProductEntity findProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Product not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.PRODUCT_NOT_FOUND,"Product not found"));
     }
 
 
@@ -45,7 +46,7 @@ public class EditProductService {
 
 
         if (name == null && price == null) {
-            throw new BadRequestException("At least one field is required");
+            throw new BadRequestException(ErrorCodeEnum.PRODUCT_NOT_FOUND, "At least one field is required");
         }
 
         if (name != null) {
@@ -53,7 +54,7 @@ public class EditProductService {
             name = normalizeName(name);
 
             if (name.length() < 3) {
-                throw new BadRequestException("name must be at least 3 characters");
+                throw new BadRequestException(ErrorCodeEnum.INVALID_NAME, "name must be at least 3 characters");
             }
 
         }
@@ -65,7 +66,7 @@ public class EditProductService {
         if (name != null) {
 
             if (existsByName(name)) {
-                throw new ConflictException("Product with this name already exists");
+                throw new ConflictException(ErrorCodeEnum.NAME_ALREADY_EXISTS, "Product with this name already exists");
             }
 
             product.setName(name);

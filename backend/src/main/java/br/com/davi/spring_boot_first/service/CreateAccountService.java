@@ -2,6 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.CreateAccountResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
@@ -48,14 +49,13 @@ public class CreateAccountService {
         name = normalizeName(name);
         email = normalizeEmail(email);
 
-        
-        if (existsByEmail(email)) {
-            throw new ConflictException("Email already exists");
-        }
-
 
         if (name.length() < 3) {
-            throw new BadRequestException("Name must be at least 3 characters");
+            throw new BadRequestException(ErrorCodeEnum.INVALID_NAME, "Name must be at least 3 characters");
+        }
+
+        if (existsByEmail(email)) {
+            throw new ConflictException(ErrorCodeEnum.EMAIL_ALREADY_EXISTS, "Email already exists");
         }
 
 

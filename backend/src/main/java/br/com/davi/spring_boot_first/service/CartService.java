@@ -4,6 +4,7 @@ import br.com.davi.spring_boot_first.dto.response.CartResponse;
 import br.com.davi.spring_boot_first.entity.CartItemsEntity;
 import br.com.davi.spring_boot_first.entity.OrderEntity;
 import br.com.davi.spring_boot_first.entity.ProductEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.ConflictException;
@@ -41,13 +42,13 @@ public class CartService {
 
     private OrderEntity findOrderById(Long orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException("order not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.ORDER_NOT_FOUND,"order not found"));
     }
 
 
     private ProductEntity findProductById(Long productId) {
         return productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException("product not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.PRODUCT_NOT_FOUND, "product not found"));
     }
 
 
@@ -65,7 +66,7 @@ public class CartService {
 
 
         if (order.getStatus() == OrderStatusEnum.CANCELED || order.getStatus() == OrderStatusEnum.CONCLUDED) {
-            throw new ConflictException("order status is " + order.getStatus());
+            throw new ConflictException(ErrorCodeEnum.ORDER_FINISHED, "order status is " + order.getStatus());
         }
 
 
@@ -83,11 +84,8 @@ public class CartService {
 
             cart.setQuantity(cart.getQuantity() + quantity);
 
-            if (cart.getQuantity() < 0) {
-                throw new BadRequestException("quantity is negative");
-            }
 
-            if (cart.getQuantity() == 0) {
+            if (cart.getQuantity() < 1) {
 
                 cartRepository.delete(cart);
 
@@ -106,7 +104,7 @@ public class CartService {
             cart = new CartItemsEntity();
 
             if (quantity < 1) {
-                throw new BadRequestException("quantity must be greater than 0");
+                throw new BadRequestException(ErrorCodeEnum.INVALID_QUANTITY, "quantity must be greater than 0");
             }
 
             cart.setQuantity(quantity);

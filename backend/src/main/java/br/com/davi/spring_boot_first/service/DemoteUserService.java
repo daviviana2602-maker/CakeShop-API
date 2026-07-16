@@ -2,6 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.UserRoleResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
@@ -28,7 +29,7 @@ public class DemoteUserService {
 
     private UserEntity findUserById(Long userId) {
         return userRepository.findById(userId)
-            .orElseThrow(() -> new NotFoundException("user not found"));
+            .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND,"user not found"));
     }
 
 
@@ -40,17 +41,20 @@ public class DemoteUserService {
         Long loggedUserId = authenticatedService.getAuthenticatedUserId();
 
 
-        if (user.getStatus().equals(UserStatusEnum.DISABLED) ||
-            user.getStatus().equals(UserStatusEnum.DELETED)) {
-            throw new BadRequestException("Cannot demote a disabled or deleted user");
+        if (user.getStatus().equals(UserStatusEnum.DISABLED)) {
+            throw new BadRequestException(ErrorCodeEnum.USER_DISABLED, "Cannot demote a disabled user");
+        }
+
+        if (user.getStatus().equals(UserStatusEnum.DELETED)) {
+            throw new BadRequestException(ErrorCodeEnum.USER_DELETED, "Cannot demote a deleted user");
         }
 
         if (loggedUserId.equals(userId)) {
-            throw new BadRequestException("Cannot demote yourself");
+            throw new BadRequestException(ErrorCodeEnum.USER_ACTION_FORBIDDEN, "Cannot demote yourself");
         }
 
         if (user.getRole().equals(UserRoleEnum.USER)) {
-            throw new BadRequestException("The user is not an administrator");
+            throw new BadRequestException(ErrorCodeEnum.USER_NOT_ADMIN, "The user is not an administrator");
         }
 
         user.setRole(UserRoleEnum.USER);

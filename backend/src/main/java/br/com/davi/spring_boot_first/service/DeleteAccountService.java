@@ -1,6 +1,7 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.ConflictException;
@@ -27,7 +28,7 @@ public class DeleteAccountService {
 
     private UserEntity findUserById(Long userId){
         return userRepository.findById(userId)
-                .orElseThrow(()->new NotFoundException("User not found"));
+                .orElseThrow(()->new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND,"User not found"));
     }
 
 
@@ -38,14 +39,17 @@ public class DeleteAccountService {
         UserEntity user =  findUserById(userId);
 
 
-        if (user.getStatus().equals(UserStatusEnum.DELETED) ||
-            user.getStatus().equals(UserStatusEnum.DISABLED)) {
-            throw new ConflictException("User is already deleted or disabled");
+        if (user.getStatus().equals(UserStatusEnum.DISABLED)) {
+            throw new ConflictException(ErrorCodeEnum.USER_DISABLED, "User is already disabled");
+        }
+
+        if (user.getStatus().equals(UserStatusEnum.DELETED)) {
+            throw new ForbiddenException(ErrorCodeEnum.USER_DELETED, "User is already deleted");
         }
 
 
         if (user.getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new ForbiddenException("Admins can't be deleted");
+            throw new ForbiddenException(ErrorCodeEnum.USER_ACTION_FORBIDDEN,"Admins can't be deleted");
         }
 
 

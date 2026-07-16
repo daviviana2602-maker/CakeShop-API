@@ -1,6 +1,7 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.entity.OrderEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.OrderStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
@@ -30,7 +31,7 @@ public class CancelOrderService {
 
     private OrderEntity findOrderById(Long orderId) {
         return orderRepository.findById(orderId)
-                .orElseThrow(() -> new NotFoundException("order not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.ORDER_NOT_FOUND, "order not found"));
     }
 
 
@@ -42,7 +43,7 @@ public class CancelOrderService {
         authenticatedService.checkOwnership(order.getUser().getId());
 
         if (order.getStatus().equals(OrderStatusEnum.CONCLUDED)) {
-            throw new BadRequestException("order already is concluded");
+            throw new BadRequestException(ErrorCodeEnum.ORDER_FINISHED, "order already is concluded");
         }
 
         order.setStatus(OrderStatusEnum.CANCELED);

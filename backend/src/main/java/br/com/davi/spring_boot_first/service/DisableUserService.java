@@ -2,6 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.UserStatusResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.enums.UserRoleEnum;
 import br.com.davi.spring_boot_first.enums.UserStatusEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
@@ -25,7 +26,7 @@ public class DisableUserService {
 
     private UserEntity findUserById(Long userId) {
         return userRepository.findById(userId)
-            .orElseThrow(() -> new NotFoundException("User not found"));
+            .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND,"User not found"));
     }
 
 
@@ -36,11 +37,11 @@ public class DisableUserService {
 
 
         if (user.getStatus().equals(UserStatusEnum.DISABLED)) {
-            throw new BadRequestException("The user already is disabled");
+            throw new BadRequestException(ErrorCodeEnum.USER_DISABLED, "The user already is disabled");
         }
 
         if (user.getRole().equals(UserRoleEnum.ADMIN)) {
-            throw new ForbiddenException("Admins can't be disabled");
+            throw new ForbiddenException(ErrorCodeEnum.USER_ACTION_FORBIDDEN, "Admins can't be disabled");
         }
 
         user.setStatus(UserStatusEnum.DISABLED);

@@ -2,6 +2,7 @@ package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.dto.response.UpdateProfileResponse;
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
@@ -35,7 +36,7 @@ public class UpdateProfileService {
 
     private UserEntity findUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND,"User not found"));
     }
 
 
@@ -44,7 +45,7 @@ public class UpdateProfileService {
 
 
         if (name == null && newEmail == null) {
-            throw new BadRequestException("at least one field is required");
+            throw new BadRequestException(ErrorCodeEnum.ONE_FIELD_REQUIRED, "at least one field is required");
         }
 
 
@@ -53,7 +54,7 @@ public class UpdateProfileService {
             name = normalizeName(name);
 
             if (name.length() < 3) {
-                throw new BadRequestException("name must be at least 3 characters");
+                throw new BadRequestException(ErrorCodeEnum.INVALID_NAME,"name must be at least 3 characters");
             }
         }
 
@@ -72,12 +73,12 @@ public class UpdateProfileService {
             newEmail = normalizeEmail(newEmail);
 
             if (newEmail.isBlank()) {
-                throw new BadRequestException("Email cannot be empty");
+                throw new BadRequestException(ErrorCodeEnum.INVALID_EMAIL, "Email cannot be empty");
             }
 
 
             if (userRepository.existsByEmail(newEmail)) {
-                throw new BadRequestException("Email already exists");
+                throw new BadRequestException(ErrorCodeEnum.EMAIL_ALREADY_EXISTS,"Email already exists");
             }
 
 

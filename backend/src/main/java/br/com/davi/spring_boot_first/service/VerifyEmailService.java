@@ -1,6 +1,7 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
@@ -23,7 +24,7 @@ public class VerifyEmailService {
 
     private UserEntity getUserByToken(String token) {
         return userRepository.findByEmailVerificationToken(token)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND, "User not found"));
     }
 
 
@@ -36,7 +37,7 @@ public class VerifyEmailService {
         if (user.getEmailVerificationExpiresIn()
                 .isBefore(LocalDateTime.now())) {
 
-            throw new BadRequestException("Token expired");
+            throw new BadRequestException(ErrorCodeEnum.TOKEN_EXPIRED, "Token expired");
 
         }
 

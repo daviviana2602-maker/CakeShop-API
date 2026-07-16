@@ -1,6 +1,7 @@
 package br.com.davi.spring_boot_first.service;
 
 import br.com.davi.spring_boot_first.entity.UserEntity;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import br.com.davi.spring_boot_first.exception.BadRequestException;
 import br.com.davi.spring_boot_first.exception.NotFoundException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
@@ -31,7 +32,7 @@ public class UpdatePasswordService {
 
     private UserEntity findUserById(Long userId){
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(ErrorCodeEnum.USER_NOT_FOUND,"User not found"));
     }
 
 
@@ -43,7 +44,7 @@ public class UpdatePasswordService {
 
 
         if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new BadRequestException("Current password is wrong");
+            throw new BadRequestException(ErrorCodeEnum.WRONG_PASSWORD, "Current password is wrong");
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
