@@ -1,6 +1,7 @@
 package br.com.davi.spring_boot_first.exception;
 
 import br.com.davi.spring_boot_first.dto.response.ErrorResponse;
+import br.com.davi.spring_boot_first.enums.ErrorCodeEnum;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,7 +19,7 @@ public class GlobalExceptionHandler {
     )
     {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(new ErrorResponse(ex.getMessage()));
+            .body(new ErrorResponse(ex.getErrorCode(), ex.getMessage()));
     }
 
 
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler {
     )
     {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-            .body(new ErrorResponse(ex.getMessage()));
+            .body(new ErrorResponse(ex.getErrorCode(), ex.getMessage()));
     }
 
 
@@ -38,7 +39,7 @@ public class GlobalExceptionHandler {
     )
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ErrorResponse(ex.getMessage()));
+            .body(new ErrorResponse(ex.getErrorCode(), ex.getMessage()));
     }
 
 
@@ -48,7 +49,7 @@ public class GlobalExceptionHandler {
     )
     {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(new ErrorResponse(ex.getMessage()));
+                .body(new ErrorResponse(ex.getErrorCode(), ex.getMessage()));
     }
 
 
@@ -58,7 +59,7 @@ public class GlobalExceptionHandler {
     )
     {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                .body(new ErrorResponse(ex.getMessage()));
+                .body(new ErrorResponse(ex.getErrorCode(), ex.getMessage()));
     }
 
 
@@ -72,7 +73,7 @@ public class GlobalExceptionHandler {
                 .getDefaultMessage();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(message));
+                .body(new ErrorResponse(ErrorCodeEnum.VALIDATION_ERROR, message));
     }
 
 }
