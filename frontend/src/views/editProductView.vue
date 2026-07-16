@@ -5,7 +5,7 @@ import { useRoute } from "vue-router"
 import { editProduct } from "../service/productService"
 
 
-const route = useRoute()  // catch de object of the current route
+const route = useRoute()  
 
 
 const id = Number(route.params.id)
@@ -16,10 +16,7 @@ const price = ref(0)
 
 async function handleSubmit() {
 
-  const data = {
-    name: name.value,
-    price: price.value
-  }
+  const data = {name: name.value, price: price.value}
 
   try {
 

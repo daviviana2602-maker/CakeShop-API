@@ -2,8 +2,8 @@ import api from "../api/api"
 
 
 export interface UpdateProfileRequest {
-  name: string
-  newEmail: string
+  name?: string
+  newEmail?: string
 }
 
 

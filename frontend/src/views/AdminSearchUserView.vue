@@ -40,9 +40,7 @@ async function handleSearch() {
   try {
 
 
-    user.value = await searchUser(
-      identifier.value
-    );
+    user.value = await searchUser(identifier.value);
 
 
   } catch(error:any) {
@@ -70,13 +68,10 @@ async function handleDisable() {
   if(!user.value) return;
 
 
-
   try {
 
 
-    await disableUser(
-      user.value.id
-    );
+    await disableUser(user.value.id);
 
 
     alert("User disabled");
@@ -107,9 +102,7 @@ async function handleReactivate() {
   try {
 
 
-    await reactivateUser(
-      user.value.id
-    );
+    await reactivateUser(user.value.id);
 
 
     alert("User reactivated");
@@ -140,9 +133,7 @@ async function handlePromote() {
   try {
 
 
-    await promoteUser(
-      user.value.id
-    );
+    await promoteUser(user.value.id);
 
 
     alert("User promoted");
@@ -172,9 +163,7 @@ async function handleDemote() {
   try {
 
 
-    await demoteUser(
-      user.value.id
-    );
+    await demoteUser(user.value.id);
 
 
     alert("User demoted");

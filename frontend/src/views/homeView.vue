@@ -4,8 +4,8 @@
 import { createOrder } from "../service/orderService"
 import { useRouter } from "vue-router"
 
-const router = useRouter()
 
+const router = useRouter()
 
 function go(path:string) {
   router.push(path)

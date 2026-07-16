@@ -25,6 +25,8 @@ const quantity = ref<number>(1)
 const items = ref<any[]>([])
 
 
+onMounted(loadCart)
+
 
 async function loadCart() {
 
@@ -125,10 +127,6 @@ async function handleConclude() {
 
 
 }
-
-
-
-onMounted(loadCart)
 
 
 </script>

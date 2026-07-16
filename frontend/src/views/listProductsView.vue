@@ -12,49 +12,10 @@ const page = ref(0);
 const totalPages = ref(0);
 
 
-async function loadProducts() {
-
-  try {
-
-    const response = await listProducts(page.value)
-
-    products.value = response.products;
-    totalPages.value = response.totalPages;
-
-  } catch(error:any) {
-
-    alert(error.response.data.message)
-
-  }
-
-}
+onMounted(() => {loadProducts()})
 
 
-onMounted(() => {
-  loadProducts()
-})
-
-
-async function handleDelete(id: number) {
-
-  try {
-
-    await deleteProduct(id)
-
-    alert("Produto deletado!")
-
-    loadProducts()
-
-  } catch(error:any) {
-
-    alert(error.response.data.message)
-
-  }
-
-}
-
-
-const router = useRouter()  // change to another route
+const router = useRouter()
 
 function goToEdit(id: number) {
   router.push(`/edit-product/${id}`)
@@ -73,6 +34,44 @@ function previousPage() {
 
   page.value--;
   loadProducts();
+
+}
+
+
+async function loadProducts() {
+
+  try {
+
+    const response = await listProducts(page.value)
+
+    products.value = response.products;
+    totalPages.value = response.totalPages;
+
+  } catch(error:any) {
+
+    alert(error.response.data.message)
+
+  }
+
+}
+
+
+
+async function handleDelete(id: number) {
+
+  try {
+
+    await deleteProduct(id)
+
+    alert("Produto deletado!")
+
+    loadProducts()
+
+  } catch(error:any) {
+
+    alert(error.response.data.message)
+
+  }
 
 }
 

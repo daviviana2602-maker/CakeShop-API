@@ -7,7 +7,7 @@ import editProductView from '../views/editProductView.vue'
 import listProductsView from '../views/listProductsView.vue'
 import updateProfileView from '../views/updateProfileView.vue'
 import OrderView from '../views/orderView.vue'
-import AdminView from '@/views/adminView.vue'
+import AdminView from '../views/adminView.vue'
 
 
 const router = createRouter({

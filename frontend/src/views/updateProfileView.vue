@@ -14,12 +14,9 @@ const newPassword = ref("")
 
 async function handleUpdateProfile() {
 
-  const data:any = {
-    name: name.value
-  }
-
-  if (newEmail.value) {
-    data.newEmail = newEmail.value
+  const data = {
+  name: name.value,
+  newEmail: newEmail.value
   }
 
 
