@@ -18,8 +18,6 @@ async function handleCreateOrder() {
 
     const response = await createOrder()
 
-    console.log(response)
-
     router.push(`/order/${response.id}`)
 
   } catch(error:any) {
