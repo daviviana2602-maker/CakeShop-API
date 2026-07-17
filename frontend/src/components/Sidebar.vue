@@ -55,7 +55,7 @@ function logout() {
     </h2>
 
 
-    <button @click="go('/products')">
+    <button @click="go('/')">
     
       <span v-if="isOpen">
         Menu

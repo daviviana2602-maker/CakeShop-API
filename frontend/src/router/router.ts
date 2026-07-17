@@ -7,6 +7,7 @@ import updateProfileView from '../views/updateProfileView.vue'
 import OrderView from '../views/orderView.vue'
 import AdminView from '../views/adminView.vue'
 import HomeProductsView from '@/views/homeProductsView.vue'
+import AppLayout from '@/Layouts/AppLayout.vue'
 
 
 const router = createRouter({
@@ -14,13 +15,36 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
 
   routes: [
+
+  {
+  path: "/",
+  component: AppLayout,
+  children: [
     {
-      path: '/',
+      path: '',
       component: HomeProductsView,
       meta: {
         requiresToken: true
       }
     },
+    {
+      path: 'update-profile',
+      component: updateProfileView,
+      meta: {
+        requiresToken: true
+      }
+    },
+      {
+      path: 'admin',
+      component: AdminView,
+      meta: {
+        requiresAdmin: true,
+        requiresToken: true
+      }
+    }
+  ]
+},
+
     {
       path: '/create-account',
       component: createAccountView,
@@ -44,27 +68,12 @@ const router = createRouter({
       }
     },
     {
-      path: '/update-profile',
-      component: updateProfileView,
-      meta: {
-        requiresToken: true
-      }
-    },
-    {
       path: '/order/:id',
       component: OrderView,
       meta: {
         requiresToken: true
       }
     },
-    {
-      path: '/admin',
-      component: AdminView,
-      meta: {
-        requiresAdmin: true,
-        requiresToken: true
-      }
-    }
   ]
 
 })

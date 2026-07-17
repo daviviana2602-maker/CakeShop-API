@@ -5,7 +5,6 @@ import { listProducts } from "../service/productService"
 import { useRouter } from "vue-router"
 import { deleteProduct } from "../service/productService"
 import { showError, showSuccess } from "@/service/notificationService"
-import Sidebar from "@/components/Sidebar.vue"
 
 
 const products = ref<any[]>([])
