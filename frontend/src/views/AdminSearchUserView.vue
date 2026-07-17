@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 import { ref } from "vue";
+import { showError, showSuccess, showWarning } from "@/service/notificationService";
+import { handleApiError } from "@/errorControl/handleApiError";
 import {
   searchUser,
   disableUser,
@@ -25,7 +27,7 @@ async function handleSearch() {
 
   if (!identifier.value.trim()) {
 
-    alert("Identifier is required");
+    showWarning("Identifier is required");
 
     return;
 
@@ -46,7 +48,7 @@ async function handleSearch() {
   } catch(error:any) {
 
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
 
   } finally {
@@ -74,7 +76,7 @@ async function handleDisable() {
     await disableUser(user.value.id);
 
 
-    alert("User disabled");
+    showSuccess("Usuário desativado");
 
 
     await handleSearch();
@@ -83,7 +85,7 @@ async function handleDisable() {
   } catch(error:any) {
 
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
 
   }
@@ -105,7 +107,7 @@ async function handleReactivate() {
     await reactivateUser(user.value.id);
 
 
-    alert("User reactivated");
+    showSuccess("Usuário reativado");
 
 
     await handleSearch();
@@ -114,7 +116,7 @@ async function handleReactivate() {
   } catch(error:any) {
 
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
 
   }
@@ -136,7 +138,7 @@ async function handlePromote() {
     await promoteUser(user.value.id);
 
 
-    alert("User promoted");
+    showSuccess("Usuário promovido");
 
 
     await handleSearch();
@@ -144,7 +146,7 @@ async function handlePromote() {
 
   } catch(error:any){
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
 
   }
@@ -166,7 +168,7 @@ async function handleDemote() {
     await demoteUser(user.value.id);
 
 
-    alert("User demoted");
+    showSuccess("Usuário rebaixado");
 
 
     await handleSearch();
@@ -175,7 +177,7 @@ async function handleDemote() {
   } catch(error:any) {
 
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 

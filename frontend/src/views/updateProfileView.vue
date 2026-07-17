@@ -2,6 +2,8 @@
 
 import { ref } from "vue"
 import { updateProfile, updatePassword, deleteProfile } from "../service/profileService"
+import { showSuccess, showError } from "@/service/notificationService"
+import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const name = ref("")
@@ -24,7 +26,7 @@ async function handleUpdateProfile() {
 
     await updateProfile(data)
 
-    alert("Perfil atualizado!")
+    showSuccess("Perfil atualizado!")
 
     name.value = ""
     newEmail.value = ""
@@ -32,7 +34,7 @@ async function handleUpdateProfile() {
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 
@@ -51,14 +53,14 @@ async function handleUpdatePassword() {
 
     await updatePassword(data)
 
-    alert("Senha alterada!")
+    showSuccess("Senha alterada!")
 
     currentPassword.value = ""
     newPassword.value = ""
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 
@@ -83,11 +85,11 @@ async function handleDeleteProfile() {
     localStorage.removeItem("accessToken")
     localStorage.removeItem("refreshToken")
 
-    alert("Conta deletada!")
+    showSuccess("Conta deletada!")
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 

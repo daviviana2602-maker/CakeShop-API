@@ -4,6 +4,8 @@ import { onMounted, ref } from "vue"
 import { listProducts } from "../service/productService"
 import { useRouter } from "vue-router"
 import { deleteProduct } from "../service/productService"
+import { showError, showSuccess } from "@/service/notificationService"
+import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const products = ref<any[]>([])
@@ -49,7 +51,7 @@ async function loadProducts() {
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 
@@ -63,13 +65,13 @@ async function handleDelete(id: number) {
 
     await deleteProduct(id)
 
-    alert("Produto deletado!")
+    showSuccess("Produto deletado!")
 
     loadProducts()
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 

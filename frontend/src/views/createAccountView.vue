@@ -2,6 +2,8 @@
 
 import { ref } from "vue"
 import { createAccount } from "../service/authService"
+import { showSuccess, showError } from "@/service/notificationService"
+import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const name = ref("")
@@ -22,11 +24,11 @@ async function handleSubmit() {
 
         await createAccount(data)
 
-        alert("Conta criada!")
+        showSuccess("Conta criada!");
 
     } catch(error:any){
 
-        alert(error.response.data.message)
+        showError(handleApiError(error));
 
     }
 

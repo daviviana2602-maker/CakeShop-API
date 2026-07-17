@@ -3,6 +3,8 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 import { editProduct } from "../service/productService"
+import { handleApiError } from "@/errorControl/handleApiError"
+import { showSuccess, showError } from "@/service/notificationService"
 
 
 const route = useRoute()  
@@ -22,11 +24,11 @@ async function handleSubmit() {
 
     await editProduct(id, data)
 
-    alert("Produto atualizado!")
+    showSuccess("Produto atualizado!")
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 

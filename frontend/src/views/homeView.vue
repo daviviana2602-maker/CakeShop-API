@@ -3,6 +3,8 @@
 
 import { createOrder } from "../service/orderService"
 import { useRouter } from "vue-router"
+import { showError } from "@/service/notificationService"
+import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const router = useRouter()
@@ -22,7 +24,7 @@ async function handleCreateOrder() {
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 

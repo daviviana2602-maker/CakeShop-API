@@ -2,6 +2,8 @@
 
 import { ref } from "vue"
 import { createProduct } from "../service/productService"
+import { showSuccess, showError } from "@/service/notificationService"
+import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const name = ref("")
@@ -19,14 +21,14 @@ async function handleSubmit() {
 
     await createProduct(data)
 
-    alert("Produto criado!")
+    showSuccess("Produto criado!")
 
     name.value = ""
     price.value = 0
 
   } catch(error:any) {
 
-    alert(error.response.data.message)
+    showError(handleApiError(error));
 
   }
 

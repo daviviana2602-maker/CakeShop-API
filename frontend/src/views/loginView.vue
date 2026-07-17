@@ -2,6 +2,8 @@
 
 import { ref } from "vue"
 import { login } from "../service/authService"
+import { showSuccess, showError } from "@/service/notificationService"
+import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const email = ref("")
@@ -25,12 +27,12 @@ async function handleLogin() {
         localStorage.setItem("role", response.role)
 
 
-        alert("Login realizado!")
+        showSuccess("Login realizado!")
 
 
     } catch(error:any){
 
-        alert(error.response.data.message)
+        showError(handleApiError(error));
 
     }
 

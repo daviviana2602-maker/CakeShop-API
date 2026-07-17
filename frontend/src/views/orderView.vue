@@ -2,6 +2,8 @@
 
 import { ref, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { showError, showSuccess } from "@/service/notificationService"
+import { handleApiError } from "@/errorControl/handleApiError"
 
 import {
   addItem,
@@ -38,7 +40,7 @@ async function loadCart() {
 
   } catch(error:any) {
 
-    alert(error.response?.data?.message)
+    showError(handleApiError(error));
 
   }
 
@@ -70,7 +72,7 @@ async function handleAddItem() {
 
   } catch(error:any) {
 
-    alert(error.response?.data?.message)
+    showError(handleApiError(error));
 
   }
 
@@ -87,7 +89,7 @@ async function handleCancel() {
     await cancelOrder(orderId)
 
 
-    alert("Pedido cancelado!")
+    showSuccess("Pedido cancelado!")
 
 
     router.push("/")
@@ -95,7 +97,7 @@ async function handleCancel() {
 
   } catch(error:any) {
 
-    alert(error.response?.data?.message)
+    showError(handleApiError(error));
 
   }
 
@@ -113,7 +115,7 @@ async function handleConclude() {
     await concludeOrder(orderId)
 
 
-    alert("Pedido concluído!")
+    showSuccess("Pedido concluído!")
 
 
     router.push("/")
@@ -121,7 +123,7 @@ async function handleConclude() {
 
   } catch(error:any) {
 
-    alert(error.response?.data?.message)
+    showError(handleApiError(error));
 
   }
 
