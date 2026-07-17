@@ -20,21 +20,6 @@ api.interceptors.request.use((config) => {
 
 
 api.interceptors.response.use(
-
-  (response) => response,
-
-  async (error) => {
-
-    if (error.response?.status === 429) {
-      alert("Muitas requisições. Aguarde alguns minutos.")
-    }
-
-    return Promise.reject(error)
-  }
-)
-
-
-api.interceptors.response.use(
   (response) => response,
 
   async (error) => {

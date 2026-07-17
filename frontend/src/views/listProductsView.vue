@@ -51,7 +51,7 @@ async function loadProducts() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 
@@ -71,7 +71,7 @@ async function handleDelete(id: number) {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 

@@ -28,7 +28,7 @@ async function handleSubmit() {
 
     } catch(error:any){
 
-        showError(handleApiError(error));
+        showError(error);
 
     }
 

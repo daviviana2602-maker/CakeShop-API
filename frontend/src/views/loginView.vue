@@ -32,7 +32,7 @@ async function handleLogin() {
 
     } catch(error:any){
 
-        showError(handleApiError(error));
+        showError(error);
 
     }
 

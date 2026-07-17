@@ -24,7 +24,7 @@ async function handleCreateOrder() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 

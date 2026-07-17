@@ -48,7 +48,7 @@ async function handleSearch() {
   } catch(error:any) {
 
 
-    showError(handleApiError(error));
+    showError(error);
 
 
   } finally {
@@ -85,7 +85,7 @@ async function handleDisable() {
   } catch(error:any) {
 
 
-    showError(handleApiError(error));
+    showError(error);
 
 
   }
@@ -116,7 +116,7 @@ async function handleReactivate() {
   } catch(error:any) {
 
 
-    showError(handleApiError(error));
+    showError(error);
 
 
   }
@@ -146,7 +146,7 @@ async function handlePromote() {
 
   } catch(error:any){
 
-    showError(handleApiError(error));
+    showError(error);
 
 
   }
@@ -177,7 +177,7 @@ async function handleDemote() {
   } catch(error:any) {
 
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 

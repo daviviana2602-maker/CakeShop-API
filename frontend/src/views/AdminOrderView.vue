@@ -54,7 +54,7 @@ async function loadOrders() {
 
   } catch(error:any) {
 
-       showError(handleApiError(error));
+       showError(error);
 
   } finally {
 

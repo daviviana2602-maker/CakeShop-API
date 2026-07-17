@@ -40,7 +40,7 @@ async function loadCart() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 
@@ -72,7 +72,7 @@ async function handleAddItem() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 
@@ -97,7 +97,7 @@ async function handleCancel() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 
@@ -123,7 +123,7 @@ async function handleConclude() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 

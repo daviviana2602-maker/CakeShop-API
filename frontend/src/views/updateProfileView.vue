@@ -34,7 +34,7 @@ async function handleUpdateProfile() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 
@@ -60,7 +60,7 @@ async function handleUpdatePassword() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 
@@ -89,7 +89,7 @@ async function handleDeleteProfile() {
 
   } catch(error:any) {
 
-    showError(handleApiError(error));
+    showError(error);
 
   }
 
