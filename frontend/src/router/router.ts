@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/homeView.vue'
 import createAccountView from '../views/createAccountView.vue'
 import loginView from '../views/loginView.vue'
 import createProductView from '../views/createProductView.vue'
 import editProductView from '../views/editProductView.vue'
-import listProductsView from '../views/listProductsView.vue'
 import updateProfileView from '../views/updateProfileView.vue'
 import OrderView from '../views/orderView.vue'
 import AdminView from '../views/adminView.vue'
+import HomeProductsView from '@/views/homeProductsView.vue'
 
 
 const router = createRouter({
@@ -17,11 +16,14 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: HomeView
+      component: HomeProductsView,
+      meta: {
+        requiresToken: true
+      }
     },
     {
       path: '/create-account',
-      component: createAccountView
+      component: createAccountView,
     },
     {
       path: '/login',
@@ -42,22 +44,25 @@ const router = createRouter({
       }
     },
     {
-      path: '/products',
-      component: listProductsView
-    },
-    {
       path: '/update-profile',
-      component: updateProfileView
+      component: updateProfileView,
+      meta: {
+        requiresToken: true
+      }
     },
     {
       path: '/order/:id',
-      component: OrderView
+      component: OrderView,
+      meta: {
+        requiresToken: true
+      }
     },
     {
       path: '/admin',
       component: AdminView,
       meta: {
-        requiresAdmin: true
+        requiresAdmin: true,
+        requiresToken: true
       }
     }
   ]
@@ -71,6 +76,17 @@ router.beforeEach((to) => {
 
   if (to.meta.requiresAdmin && role !== "ADMIN") {
     return "/"
+  }
+
+})
+
+
+router.beforeEach((to) => {
+
+  const token = localStorage.getItem("accessToken")
+
+  if (to.meta.requiresToken && token == null) {
+    return "/login"
   }
 
 })
