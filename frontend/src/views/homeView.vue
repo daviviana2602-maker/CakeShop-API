@@ -4,7 +4,6 @@
 import { createOrder } from "../service/orderService"
 import { useRouter } from "vue-router"
 import { showError } from "@/service/notificationService"
-import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const router = useRouter()
@@ -77,7 +76,8 @@ const role = localStorage.getItem("role");
         Listar produtos
       </button>
 
-      <button @click="go('/create-product')">
+      <button @click="go('/create-product')"
+      v-if="role === 'ADMIN'">
         Criar produto
       </button>
 

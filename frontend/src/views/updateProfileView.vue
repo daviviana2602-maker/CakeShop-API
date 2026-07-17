@@ -3,7 +3,6 @@
 import { ref } from "vue"
 import { updateProfile, updatePassword, deleteProfile } from "../service/profileService"
 import { showSuccess, showError } from "@/service/notificationService"
-import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const name = ref("")

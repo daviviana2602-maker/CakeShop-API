@@ -2,7 +2,6 @@
 
 import { ref } from "vue";
 import { showError, showSuccess, showWarning } from "@/service/notificationService";
-import { handleApiError } from "@/errorControl/handleApiError";
 import {
   searchUser,
   disableUser,
@@ -202,12 +201,12 @@ async function handleDemote() {
 
 <input
   v-model="identifier"
-  placeholder="User ID or email"
+  placeholder="ID ou email do usuário "
 />
 
 
 <button @click="handleSearch">
-  Search
+  Buscar
 </button>
 
 
@@ -227,7 +226,7 @@ Loading...
 
 
 <h2>
-User Information
+Informações do Usuário
 </h2>
 
 
@@ -238,7 +237,7 @@ ID: {{ user.id }}
 
 
 <p>
-Name: {{ user.name }}
+Nome: {{ user.name }}
 </p>
 
 
@@ -258,7 +257,7 @@ Status: {{ user.status }}
 
 
 <p>
-Created at: {{ user.createdAt }}
+Criado em: {{ user.createdAt }}
 </p>
 
 
@@ -273,7 +272,7 @@ Actions
 <button
 @click="handleDisable"
 >
-Disable
+Desativar
 </button>
 
 
@@ -281,7 +280,7 @@ Disable
 <button
 @click="handleReactivate"
 >
-Reactivate
+Reativar
 </button>
 
 
@@ -289,7 +288,7 @@ Reactivate
 <button
 @click="handlePromote"
 >
-Promote
+Promover
 </button>
 
 
@@ -297,7 +296,7 @@ Promote
 <button
 @click="handleDemote"
 >
-Demote
+Rebaixar
 </button>
 
 

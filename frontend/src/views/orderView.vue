@@ -3,7 +3,6 @@
 import { ref, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { showError, showSuccess } from "@/service/notificationService"
-import { handleApiError } from "@/errorControl/handleApiError"
 
 import {
   addItem,

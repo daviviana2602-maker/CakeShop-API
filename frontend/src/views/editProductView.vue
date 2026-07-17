@@ -3,7 +3,6 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 import { editProduct } from "../service/productService"
-import { handleApiError } from "@/errorControl/handleApiError"
 import { showSuccess, showError } from "@/service/notificationService"
 
 

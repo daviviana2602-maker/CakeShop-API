@@ -5,13 +5,14 @@ import { listProducts } from "../service/productService"
 import { useRouter } from "vue-router"
 import { deleteProduct } from "../service/productService"
 import { showError, showSuccess } from "@/service/notificationService"
-import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const products = ref<any[]>([])
 
 const page = ref(0);
 const totalPages = ref(0);
+
+const role = localStorage.getItem("role");
 
 
 onMounted(() => {loadProducts()})
@@ -92,11 +93,13 @@ async function handleDelete(id: number) {
 
   <p>R$ {{ product.price }}</p>
 
-  <button @click="goToEdit(product.id)">
+  <button @click="goToEdit(product.id)"
+    v-if="role === 'ADMIN'">
     Editar
   </button>  
 
-  <button @click="handleDelete(product.id)">
+  <button @click="handleDelete(product.id)"
+    v-if="role === 'ADMIN'">
     Excluir
   </button>
 

@@ -1,5 +1,5 @@
 import { useToast } from "vue-toastification";
-import { handleApiError } from "@/errorControl/handleApiError";
+import { handleApiError } from "@/errorControl/HandleApiError";
 
 const toast = useToast();
 

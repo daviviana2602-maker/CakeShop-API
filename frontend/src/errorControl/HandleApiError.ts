@@ -19,11 +19,11 @@ export function handleApiError(error: unknown): string {
     }
 
     if (!axios.isAxiosError(error) || !error.response) {
-        return "Ocorreu um erro inesperadoo.";
+        return "Ocorreu um erro inesperado.";
     }
 
     const apiError = error.response.data as ApiError;
 
-    return ErrorMessages[apiError.errorCode] ?? "Ocorreu um erro inesperadooo.";
+    return ErrorMessages[apiError.errorCode] ?? "Ocorreu um erro inesperado.";
 
 }

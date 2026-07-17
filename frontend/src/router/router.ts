@@ -29,11 +29,17 @@ const router = createRouter({
     },
     {
       path: '/create-product',
-      component: createProductView
+      component: createProductView,
+      meta: {
+        requiresAdmin: true
+      }
     },
     {
       path: '/edit-product/:id',
-      component: editProductView
+      component: editProductView,
+      meta: {
+        requiresAdmin: true
+      }
     },
     {
       path: '/products',

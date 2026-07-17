@@ -3,7 +3,6 @@
 import { ref } from "vue"
 import { createProduct } from "../service/productService"
 import { showSuccess, showError } from "@/service/notificationService"
-import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const name = ref("")

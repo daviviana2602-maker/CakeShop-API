@@ -2,7 +2,6 @@
 
 import { ref, onMounted } from "vue";
 import api from "../api/api";
-import { handleApiError } from "@/errorControl/handleApiError";
 import { showError } from "@/service/notificationService";
 
 

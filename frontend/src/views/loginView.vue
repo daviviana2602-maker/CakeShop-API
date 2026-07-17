@@ -3,7 +3,6 @@
 import { ref } from "vue"
 import { login } from "../service/authService"
 import { showSuccess, showError } from "@/service/notificationService"
-import { handleApiError } from "@/errorControl/handleApiError"
 
 
 const email = ref("")
