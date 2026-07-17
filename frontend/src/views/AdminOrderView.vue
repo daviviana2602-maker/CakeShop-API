@@ -38,7 +38,8 @@ async function loadOrders() {
 
   try {
 
-    const response = await api.get( `/order/${status.value}`,
+    const response = await api.get(
+      `/order/${status.value}`,
       {
         params: {
           page: page.value
@@ -48,6 +49,10 @@ async function loadOrders() {
 
     orders.value = response.data.content;
     totalPages.value = response.data.totalPages;
+
+  } catch(error:any) {
+
+    alert(error.response.data.message)
 
   } finally {
 
