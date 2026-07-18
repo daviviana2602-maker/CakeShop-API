@@ -73,6 +73,7 @@ public class SearchUserService {
                 user.getEmail(),
                 user.getRole(),
                 user.getStatus(),
+                user.getEmailVerified(),
                 user.getCreatedAt()
         );
 

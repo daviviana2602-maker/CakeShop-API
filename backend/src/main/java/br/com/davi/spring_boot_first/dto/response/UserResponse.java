@@ -24,6 +24,7 @@ public class UserResponse {
     private String email;
     private UserRoleEnum role;
     private UserStatusEnum status;
+    private boolean verified;
     private LocalDateTime createdAt;
 
 }
