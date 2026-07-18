@@ -1,147 +1,163 @@
-# 🍰 CakeShop API
+# CakeShop API
 
-REST API for an e-commerce platform built with **Java 21** and **Spring Boot**, following a layered architecture and backend engineering best practices focused on security, maintainability and scalability.
+Aplicação completa de e-commerce para venda de bolos e produtos de confeitaria, desenvolvida com **Java 21 e Spring Boot**, com frontend separado utilizando **Vue.js 3, TypeScript, HTML e CSS**, consumindo integralmente a API REST desenvolvida no backend.
 
-## 🚀 Tech Stack
+O projeto implementa autenticação segura, controle de acesso, gerenciamento de pedidos, carrinho de compras, cache, rate limiting, testes automatizados e pipeline de integração contínua.
+
+---
+
+# Tecnologias utilizadas
+
+## Backend
 
 * Java 21
 * Spring Boot
 * Spring Security
-* Spring Data JPA (Hibernate)
+* Spring Data JPA / Hibernate
 * PostgreSQL
 * Redis
 * Flyway
-* Docker & Docker Compose
-* Swagger / OpenAPI
+* Docker
 * JUnit 5
 * Mockito
-* GitHub Actions 
-* Resend API
+* Swagger/OpenAPI
+
+## Frontend
+
+* Vue.js 3
+* TypeScript
+* HTML
+* CSS
+* Axios
+* Vue Router
+* Sistema de notificações Toast
 
 ---
 
-## ✨ Features
+# Funcionalidades
 
-### Authentication & Security
+## Autenticação e usuários
 
-* JWT Authentication with **Access Token** and **Refresh Token**
-* BCrypt password hashing
-* Global exception handling
-* DTO validation
-* Protected endpoints with Spring Security
-
-### Authorization
-
-* Role-Based Access Control (RBAC)
-* USER and ADMIN roles
-* Ownership validation to ensure users can only access their own resources
-
-### User Management
-
-* User registration
-* Login
-* Profile update
-* Password change
-* Account deletion
-* Secure email change flow
-
-### Email Verification
-
-Account creation requires email verification before activation.
-
-Email verification is also required when changing the user's email address.
-
-Implemented through integration with the **Resend API**, using verification tokens with expiration.
-
-### Product Management
-
-* Create products
-* Update products
-* Delete products
-* Paginated product listing with Redis
-
-Only ADMIN users can manage products.
-
-### Order Management
-
-* Create orders
-* Associate products with orders
-* Order status management
-
-Supported statuses:
-
-* PENDING
-* CONCLUDED
-* CANCELED
-
-### Administration
-
-ADMIN users can:
-
-* Promote users
-* Demote users
-* Activate accounts
-* Deactivate accounts
+* Cadastro e gerenciamento de contas
+* Autenticação utilizando JWT
+* Access Token e Refresh Token
+* Renovação automática de sessão
+* Controle de acesso baseado em roles (RBAC)
+* Validação de autorização por propriedade do recurso (ownership)
+* Atualização de perfil
+* Verificação de email utilizando integração com API externa (Resend)
+* Tokens de verificação com expiração
 
 ---
 
-## ⚡ Redis
+# Produtos
 
-Redis is used to improve application performance through caching.
-
-Current implementation includes:
-
-* Product cache
-* Paginated product listing cache
-* Rate Limiting with TTL
+* Cadastro de produtos
+* Edição e exclusão de produtos
+* Listagem paginada
+* Cache das listagens utilizando Redis
+* Controle de acesso para operações administrativas
 
 ---
 
-## 🧪 Automated Tests
+# Carrinho e pedidos
 
-* 48 automated tests
+* Criação de pedidos
+* Gerenciamento de itens do carrinho
+* Adição e remoção de produtos
+* Atualização de quantidade de itens
+* Conclusão de pedidos
+* Cancelamento de pedidos
+* Controle de status dos pedidos
+
+---
+
+# Segurança e performance
+
+## Rate Limiting
+
+Implementação de limite de requisições utilizando Redis com controle por chave e expiração através de TTL.
+
+O mecanismo reduz abuso de endpoints e protege a aplicação contra excesso de requisições.
+
+## Cache
+
+Utilização do Redis para cache de produtos e consultas paginadas, reduzindo chamadas desnecessárias ao banco de dados.
+
+---
+
+# Testes automatizados
+
+O projeto possui **53 testes automatizados** utilizando:
+
 * JUnit 5
 * Mockito
 
-Tests cover business rules and service layer behavior.
+Os testes cobrem principalmente:
+
+* Regras de negócio
+* Camada de serviços
+* Validações
+* Tratamento de exceções
+* Fluxos de autenticação e pedidos
 
 ---
 
-## 🔄 Continuous Integration
+# Arquitetura
 
-GitHub Actions automatically validates every push by:
+O backend segue uma arquitetura organizada em camadas:
 
-* Running the automated test suite
-* Rebuilding the application
-* Building Docker containers
+* Controllers
+* Services
+* Repositories
+* Entities
+* DTOs
+* Exceptions personalizadas
 
-This guarantees that the project remains buildable and tests continue passing after every commit.
+Também possui:
+
+* Tratamento global de exceções
+* Validações utilizando Bean Validation
+* Migrations versionadas com Flyway
+* Separação entre frontend e backend
 
 ---
 
-## 📚 API Documentation
+# DevOps e documentação
 
-Interactive API documentation is available through Swagger / OpenAPI.
+## Docker
+
+Ambiente de desenvolvimento utilizando containers para serviços da aplicação.
+
+## CI/CD
+
+Pipeline automatizado utilizando GitHub Actions para:
+
+* Execução dos testes automatizados
+* Build da aplicação
+* Validação do projeto
+
+## Documentação da API
+
+Documentação dos endpoints utilizando Swagger/OpenAPI.
 
 ---
 
-## 🏗️ Architecture
+# Frontend
 
-Layered architecture with clear separation of responsibilities.
+Frontend desenvolvido em Vue.js 3 com TypeScript, responsável pela interface do usuário e consumo da API REST.
 
-```text
-src
-└── main
-    └── java
-        ├── controller
-        ├── service
-        ├── repository
-        ├── entity
-        ├── security
-        ├── dto
-        │   ├── request
-        │   └── response
-        ├── exception
-        ├── enums
-        ├── normalization
-        └── config
+Principais implementações:
+
+* Autenticação integrada com JWT
+* Controle de rotas
+* Consumo da API utilizando Axios
+* Tratamento de erros vindos do backend
+* Notificações através de Toasts
+* Gerenciamento do fluxo de produtos, carrinho e pedidos
+
+---
+
+# Objetivo do projeto
+
+O objetivo do CakeShop API foi desenvolver uma aplicação próxima de um ambiente profissional, aplicando conceitos utilizados em sistemas reais, como segurança, controle de acesso, cache, testes automatizados, integração contínua e boas práticas de desenvolvimento backend.
