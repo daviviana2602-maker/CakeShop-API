@@ -56,7 +56,7 @@ function logout() {
 
 
     <button @click="go('/')">
-    
+          📋
       <span v-if="isOpen">
         Menu
       </span>
@@ -65,7 +65,7 @@ function logout() {
 
 
     <button @click="go('/update-profile')">
-
+          🪪
       <span v-if="isOpen">
         Conta
       </span>
@@ -76,7 +76,7 @@ function logout() {
       v-if="role === 'ADMIN'"
       @click="go('/admin')"
     >
-    
+        🛠️
       <span v-if="isOpen">
         Administração
       </span>
@@ -84,7 +84,7 @@ function logout() {
     </button>
 
     <button @click="logout">
-      
+        ➜]
       <span v-if="isOpen">
         Sair
       </span>

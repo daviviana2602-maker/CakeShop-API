@@ -22,28 +22,3 @@ import Sidebar from "@/components/Sidebar.vue"
   </div>
 
 </template>
-
-
-<style scoped>
-
-.layout {
-
-  display: flex;
-
-  min-height: 100vh;
-
-}
-
-
-.content {
-
-  flex: 1;
-
-  padding: 40px;
-
-  background: #fff8ed;
-
-}
-
-
-</style>
