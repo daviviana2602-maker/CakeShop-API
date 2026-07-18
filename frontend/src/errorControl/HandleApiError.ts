@@ -11,13 +11,6 @@ export interface ApiError {
 
 export function handleApiError(error: unknown): string {
 
-    console.log("ERRO RECEBIDO:", error);
-    console.log("É AXIOS ERROR?", axios.isAxiosError(error));
-
-    if (axios.isAxiosError(error)) {
-        console.log("RESPONSE:", error.response);
-    }
-
     if (!axios.isAxiosError(error) || !error.response) {
         return "Ocorreu um erro inesperado.";
     }

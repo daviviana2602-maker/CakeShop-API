@@ -37,7 +37,8 @@ async function handleLogin() {
         localStorage.setItem("role", response.role)
 
 
-        showSuccess("Login realizado!")
+        showSuccess("Login realizado!")                              
+                                     
 
         go("/")
 

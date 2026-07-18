@@ -246,9 +246,11 @@ async function handleDemote() {
 
     <p>Email: {{ user.email }}</p>
 
-    <p>Role: {{ user.role }}</p>
+    <p>Cargo: {{ user.role }}</p>
 
     <p>Status: {{ user.status }}</p>
+
+    <p>Email verificado: {{ user.verified }}</p>
 
     <p>Criado em: {{ user.createdAt }}</p>
 
