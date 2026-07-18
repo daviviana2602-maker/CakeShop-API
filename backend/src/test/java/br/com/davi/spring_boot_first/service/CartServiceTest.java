@@ -163,7 +163,7 @@ public class CartServiceTest {
 
 
     @Test
-    void shouldThrowBadRequestWhenFinalQuantityIsNegative() {
+    void shouldRemoveItemWhenFinalQuantityIsNegative() {
 
         UserEntity user = new UserEntity();
         user.setId(1L);
@@ -177,6 +177,8 @@ public class CartServiceTest {
 
         CartItemsEntity cart = new CartItemsEntity();
         cart.setQuantity(2);
+        cart.setOrder(order);
+        cart.setProduct(product);
 
 
         when(orderRepository.findById(1L))
@@ -189,14 +191,14 @@ public class CartServiceTest {
                 .thenReturn(Optional.of(cart));
 
 
-        assertThrows(
-                BadRequestException.class,
-                () -> cartService.editCart(
-                        1L,
-                        10L,
-                        -5
-                )
+        cartService.editCart(
+                1L,
+                10L,
+                -5
         );
+
+
+        verify(cartRepository).delete(cart);
 
     }
 

@@ -44,7 +44,7 @@ public class DeleteAccountService {
         }
 
         if (user.getStatus().equals(UserStatusEnum.DELETED)) {
-            throw new ForbiddenException(ErrorCodeEnum.USER_DELETED, "User is already deleted");
+            throw new ConflictException(ErrorCodeEnum.USER_DELETED, "User is already deleted");
         }
 
 
