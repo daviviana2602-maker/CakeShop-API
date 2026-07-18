@@ -80,8 +80,12 @@ async function handleLogin() {
         >
 
         <button type="submit">
-          Entrar
+        Entrar
         </button>
+
+      <button @click="go('/create-account')">
+      Criar Conta
+      </button>
 
       </form>
 

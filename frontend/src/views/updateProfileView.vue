@@ -3,6 +3,7 @@
 import { ref } from "vue"
 import { updateProfile, updatePassword, deleteProfile } from "../service/profileService"
 import { showSuccess, showError } from "@/service/notificationService"
+import { useRouter } from "vue-router"
 
 
 const name = ref("")
@@ -11,6 +12,15 @@ const newEmail = ref("")
 
 const currentPassword = ref("")
 const newPassword = ref("")
+
+const router = useRouter()
+
+function go(path: string) {
+
+  router.push(path)
+
+
+};
 
 
 async function handleUpdateProfile() {
@@ -86,6 +96,8 @@ async function handleDeleteProfile() {
 
     showSuccess("Conta deletada!")
 
+    go("/login")
+
   } catch(error:any) {
 
     showError(error);
@@ -98,6 +110,8 @@ async function handleDeleteProfile() {
 
 
 <template>
+
+<div class="profile-page">
 
 <h1>Meu perfil</h1>
 
@@ -158,5 +172,168 @@ async function handleDeleteProfile() {
 
 </section>
 
+</div>
 
 </template>
+
+
+
+<style scoped>
+
+h1 {
+
+  color: #5c3b24;
+
+  font-size: 38px;
+
+  margin-bottom: 35px;
+
+}
+
+
+
+section {
+
+  background: white;
+
+  padding: 30px;
+
+  border-radius: 18px;
+
+  margin-bottom: 25px;
+
+  max-width: 700px;
+
+  box-shadow: 0 10px 25px rgba(107, 66, 38, 0.12);
+
+  border: 1px solid #eadbc8;
+
+}
+
+
+
+h2 {
+
+  color: #556b2f;
+
+  font-size: 24px;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+input {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin-bottom: 15px;
+
+  border-radius: 10px;
+
+  border: 1px solid #d8c6b5;
+
+  font-size: 16px;
+
+  background: #fffdf9;
+
+  transition: .2s;
+
+}
+
+
+
+input:focus {
+
+  outline: none;
+
+  border-color: #556b2f;
+
+  box-shadow: 0 0 0 4px rgba(85,107,47,.15);
+
+}
+
+
+
+button {
+
+  padding: 13px 22px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #556b2f;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .25s;
+
+}
+
+
+
+button:hover {
+
+  background: #465a27;
+
+  transform: translateY(-2px);
+
+}
+
+
+
+section:last-child {
+
+  border: 1px solid #e6b8a8;
+
+}
+
+
+
+section:last-child h2 {
+
+  color: #a0402d;
+
+}
+
+
+
+section:last-child button {
+
+  background: #a0402d;
+
+}
+
+
+
+section:last-child button:hover {
+
+  background: #803020;
+
+}
+
+
+.profile-page {
+
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+}
+
+
+</style>
