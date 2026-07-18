@@ -4,6 +4,7 @@ import { ref } from "vue"
 import { updateProfile, updatePassword, deleteProfile } from "../service/profileService"
 import { showSuccess, showError } from "@/service/notificationService"
 import { useRouter } from "vue-router"
+import type { UpdateProfileRequest } from "../service/profileService"
 
 
 const name = ref("")
@@ -25,11 +26,15 @@ function go(path: string) {
 
 async function handleUpdateProfile() {
 
-  const data = {
-  name: name.value,
-  newEmail: newEmail.value
+  const data: UpdateProfileRequest = {}
+
+  if (name.value.trim()) {
+    data.name = name.value
   }
 
+  if (newEmail.value.trim()) {
+    data.newEmail = newEmail.value
+  }
 
   try {
 
@@ -40,10 +45,9 @@ async function handleUpdateProfile() {
     name.value = ""
     newEmail.value = ""
 
+  } catch (error: any) {
 
-  } catch(error:any) {
-
-    showError(error);
+    showError(error)
 
   }
 

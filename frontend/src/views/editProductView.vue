@@ -4,6 +4,7 @@ import { ref } from "vue"
 import { useRoute } from "vue-router"
 import { editProduct } from "../service/productService"
 import { showSuccess, showError } from "@/service/notificationService"
+import type { EditProductRequest } from "../service/productService"
 
 
 const route = useRoute()  
@@ -17,7 +18,16 @@ const price = ref(0)
 
 async function handleSubmit() {
 
-  const data = {name: name.value, price: price.value}
+  const data: EditProductRequest = {}
+
+  if (name.value.trim()) {
+    data.name = name.value
+  }
+
+  if (price.value >= 0) {
+    data.price = price.value
+  }
+
 
   try {
 

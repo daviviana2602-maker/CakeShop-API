@@ -15,8 +15,8 @@ export async function createProduct(data: CreateProductRequest) {
 
 
 export interface EditProductRequest {
-  name: string
-  price: number
+  name?: string
+  price?: number
 }
 
 export async function editProduct(id: number, data: EditProductRequest) {
