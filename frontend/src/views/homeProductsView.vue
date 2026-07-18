@@ -1,22 +1,27 @@
 <script setup lang="ts">
 
 import { onMounted, ref } from "vue"
-import { listProducts } from "../service/productService"
+import { listProducts, deleteProduct } from "../service/productService"
 import { useRouter } from "vue-router"
-import { deleteProduct } from "../service/productService"
 import { showError, showSuccess } from "@/service/notificationService"
+import { createOrder, addItem, listOrder, cancelOrder, concludeOrder } from "../service/orderService"
 
 
 const products = ref<any[]>([])
 
-const page = ref(0);
-const totalPages = ref(0);
+const page = ref(0)
+const totalPages = ref(0)
 
-const role = localStorage.getItem("role");
+const role = localStorage.getItem("role")
+
+const cart = ref<any[]>([])
+
+const orderId = ref<number | null>(null)
 
 
-onMounted(() => {loadProducts()})
-
+onMounted(() => {
+  loadProducts()
+})
 
 const router = useRouter()
 
@@ -24,20 +29,14 @@ function goToEdit(id: number) {
   router.push(`/edit-product/${id}`)
 }
 
-
 function nextPage() {
-
-  page.value++;
-  loadProducts();
-
+  page.value++
+  loadProducts()
 }
 
-
 function previousPage() {
-
-  page.value--;
-  loadProducts();
-
+  page.value--
+  loadProducts()
 }
 
 
@@ -47,12 +46,12 @@ async function loadProducts() {
 
     const response = await listProducts(page.value)
 
-    products.value = response.products;
-    totalPages.value = response.totalPages;
+    products.value = response.products
+    totalPages.value = response.totalPages
 
-  } catch(error:any) {
+  } catch (error: any) {
 
-    showError(error);
+    showError(error)
 
   }
 
@@ -70,9 +69,128 @@ async function handleDelete(id: number) {
 
     loadProducts()
 
+  } catch (error: any) {
+
+    showError(error)
+
+  }
+
+}
+
+
+async function handleCreateOrder() {
+
+  try {
+
+    const response = await createOrder()
+
+    orderId.value = response.id
+
+    await loadCart()
+
+    showSuccess("Pedido iniciado!")
+
   } catch(error:any) {
 
-    showError(error);
+    showError(error)
+
+  }
+
+}
+
+async function loadCart() {
+
+  if (orderId.value === null) {
+    return
+  }
+
+  try {
+
+    cart.value = await listOrder(orderId.value)
+
+  } catch(error:any) {
+
+    showError(error)
+
+  }
+  }
+
+
+  function getQuantity(productId:number) {
+
+  const item = cart.value.find(item => item.productId === productId)
+
+  return item ? item.quantity : 0
+
+}
+
+
+async function updateCart(productId:number, quantity:number) {
+
+  if(orderId.value === null){
+    return
+  }
+
+  try {
+
+    await addItem(orderId.value,{
+      productId,
+      quantity
+    })
+
+    await loadCart()
+
+  } catch(error:any){
+
+    showError(error)
+
+  }
+
+}
+
+
+async function handleConcludeOrder() {
+
+  if (orderId.value === null) {
+    return
+  }
+
+  try {
+
+    await concludeOrder(orderId.value)
+
+    showSuccess("Pedido concluído!")
+
+    orderId.value = null
+    cart.value = []
+
+  } catch(error:any) {
+
+    showError(error)
+
+  }
+
+}
+
+
+async function handleCancelOrder() {
+
+  if (orderId.value === null) {
+    return
+  }
+
+  try {
+
+    await cancelOrder(orderId.value)
+
+    showSuccess("Pedido cancelado!")
+
+    orderId.value = null
+    cart.value = []
+
+  } catch(error:any) {
+
+    showError(error)
 
   }
 
@@ -80,7 +198,6 @@ async function handleDelete(id: number) {
 
 
 </script>
-
 
 
 <template>
@@ -94,6 +211,14 @@ async function handleDelete(id: number) {
       <div class="header">
 
         <h1>Cardápio</h1>
+
+        <button
+          v-if="orderId === null"
+          class="add-button"
+          @click="handleCreateOrder"
+        >
+          Meu doce pedido aqui!
+        </button>
 
       </div>
 
@@ -111,9 +236,30 @@ async function handleDelete(id: number) {
             R$ {{ product.price }}
           </p>
 
-          <button class="add-button">
-            Adicionar ao carrinho
-          </button>
+        <div v-if="orderId !== null"
+        class="cart-controls"
+        >
+
+          <button
+          class="remove-item"
+          @click="updateCart(product.id, -1)"
+        >
+          -
+        </button>
+
+          <span>
+            {{ getQuantity(product.id) }}
+          </span>
+
+          <button
+          class="add-item"
+          @click="updateCart(product.id, 1)"
+        >
+          +
+        </button>
+
+        </div>
+
 
           <button
             v-if="role === 'ADMIN'"
@@ -132,6 +278,28 @@ async function handleDelete(id: number) {
         </div>
 
       </div>
+
+
+      <div
+        v-if="orderId !== null"
+        class="order-actions"
+      >
+
+        <button
+          @click="handleConcludeOrder"
+        >
+          Concluir pedido
+        </button>
+
+
+        <button
+          @click="handleCancelOrder"
+        >
+          Cancelar pedido
+        </button>
+
+      </div>
+
 
       <div class="pagination">
 
@@ -158,6 +326,7 @@ async function handleDelete(id: number) {
 </template>
 
 
+
 <style>
 
 .layout {
@@ -181,6 +350,12 @@ async function handleDelete(id: number) {
 .header {
 
   margin-bottom: 40px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
 
 }
 
@@ -273,5 +448,62 @@ button {
   gap: 20px;
 
 }
+
+.order-actions {
+
+  margin-top: 40px;
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 20px;
+
+}
+
+.remove-item {
+
+  background: #f8d7da;
+
+  color: #b02a37;
+
+}
+
+.remove-item:hover {
+
+  background: #dc3545;
+
+  color: white;
+
+}
+
+
+.add-item {
+
+  background: #d1e7dd;
+
+  color: #146c43;
+
+}
+
+.add-item:hover {
+
+  background: #198754;
+
+  color: white;
+
+}
+
+
+.cart-controls {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+}
+
 
 </style>

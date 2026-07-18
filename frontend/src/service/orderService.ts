@@ -1,5 +1,14 @@
 import api from "../api/api"
 
+export interface OrderResponse {
+  id: number
+  userId: number
+  userName: string
+  userEmail: string
+  status: string
+  price: number
+}
+
 
 
 export async function createOrder() {
