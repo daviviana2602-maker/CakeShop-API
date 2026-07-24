@@ -26,16 +26,18 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes("/auth/refresh")) {
       originalRequest._retry = true
 
       try {
         
 
+        delete originalRequest.headers.Authorization  // repeat the request without an invalid access token
         const response = await api.post("/auth/refresh")
 
-
+        
         const newAccessToken = response.data
+        
 
         localStorage.setItem("accessToken", newAccessToken)
 
@@ -57,7 +59,6 @@ api.interceptors.response.use(
 
   }
 )
-
 
 
 export default api
