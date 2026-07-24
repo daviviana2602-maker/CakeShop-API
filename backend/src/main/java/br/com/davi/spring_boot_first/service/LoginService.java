@@ -11,8 +11,13 @@ import br.com.davi.spring_boot_first.exception.TooManyRequestsException;
 import br.com.davi.spring_boot_first.repository.UserRepository;
 import br.com.davi.spring_boot_first.security.JwtService;
 import br.com.davi.spring_boot_first.security.RateLimitService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 import static br.com.davi.spring_boot_first.normalization.StringNormalizer.normalizeEmail;
 
@@ -44,7 +49,7 @@ public class LoginService {
     }
 
 
-    public LoginResponse systemLogin(String email, String password){
+    public ResponseEntity<LoginResponse> systemLogin(String email, String password){
 
         email = normalizeEmail(email);
 
@@ -82,16 +87,30 @@ public class LoginService {
 
 
         String accessToken = jwtService.generateAccessToken(user.getId(), user.getRole());
-        String refreshToken = jwtService.generateRefreshToken(user.getId(), user.getRole());
 
-        return new LoginResponse(
+        LoginResponse loginResponse = new LoginResponse(
             user.getId(),
             user.getName(),
             user.getEmail(),
             user.getRole(),
-            accessToken,
-            refreshToken
+            accessToken
         );
+
+
+        String refreshToken = jwtService.generateRefreshToken(user.getId(), user.getRole());
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Strict")
+                .path("/v1/auth/refresh")
+                .maxAge(Duration.ofDays(7))
+                .build();
+
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(loginResponse);
 
     }
 

@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -69,16 +70,16 @@ public class LoginServiceTest {
                 .thenReturn(true);
 
 
-        LoginResponse response =
+        ResponseEntity<LoginResponse> response =
                 loginService.systemLogin(
                         "test@gmail.com",
                         "test123"
                 );
 
 
-        assertEquals("Test", response.getName());
-        assertEquals("test@gmail.com", response.getEmail());
-        assertEquals(UserRoleEnum.USER, response.getRole());
+        assertEquals("Test", response.getBody().getName());
+        assertEquals("test@gmail.com", response.getBody().getEmail());
+        assertEquals(UserRoleEnum.USER, response.getBody().getRole());
 
 
         verify(jwtService)
