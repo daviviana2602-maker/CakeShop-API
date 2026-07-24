@@ -1,12 +1,11 @@
 <script setup lang="ts">
 
-import { ref, onMounted } from "vue"
+import { ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { showError, showSuccess } from "@/service/notificationService"
 
 import {
   addItem,
-  listOrder,
   cancelOrder,
   concludeOrder
 } from "../service/orderService"
@@ -21,29 +20,6 @@ const orderId = Number(route.params.id)
 
 const productId = ref<number>(0)
 const quantity = ref<number>(1)
-
-
-const items = ref<any[]>([])
-
-
-onMounted(loadCart)
-
-
-async function loadCart() {
-
-  try {
-
-    const response = await listOrder(orderId)
-
-    items.value = response
-
-  } catch(error:any) {
-
-    showError(error);
-
-  }
-
-}
 
 
 
@@ -65,8 +41,6 @@ async function handleAddItem() {
     productId.value = 0
     quantity.value = 1
 
-
-    await loadCart()
 
 
   } catch(error:any) {
@@ -166,53 +140,6 @@ placeholder="Quantidade"
 <button @click="handleAddItem">
 Adicionar
 </button>
-
-
-</section>
-
-
-
-<section>
-
-
-<h2>
-Itens
-</h2>
-
-
-<p v-if="items.length === 0">
-Carrinho vazio
-</p>
-
-
-
-<div
-v-for="item in items"
-:key="item.id"
->
-
-
-<p>
-{{ item.product?.name ?? item.productName }}
-</p>
-
-<p>
-{{ item.product?.unitPrice ?? item.unitPrice }}
-</p>
-
-<p>
-{{ item.product?.fullPrice ?? item.fullPrice }}
-</p>
-
-<p>
-Quantidade: {{ item.quantity }}
-</p>
-
-
-<hr>
-
-
-</div>
 
 
 </section>
