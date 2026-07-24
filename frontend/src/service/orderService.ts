@@ -39,9 +39,7 @@ export async function addItem(orderId: number, data: CartRequest) {
 
 export async function listOrder(orderId: number) {
 
-  const response = await api.get(
-    `/order/${orderId}/list`
-  )
+  const response = await api.get(`/order/${orderId}/list`)
 
   return response.data
 

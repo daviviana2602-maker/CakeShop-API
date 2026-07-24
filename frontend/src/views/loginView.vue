@@ -33,7 +33,6 @@ async function handleLogin() {
         const response = await login(data)
 
         localStorage.setItem("accessToken", response.accessToken)
-        localStorage.setItem("refreshToken", response.refreshToken)
         localStorage.setItem("role", response.role)
 
 

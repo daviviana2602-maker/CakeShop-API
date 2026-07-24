@@ -3,6 +3,7 @@ import axios from "axios"
 
 const api = axios.create({
   baseURL: "http://localhost:8080/v1",
+  withCredentials: true     
 })
 
 
@@ -29,10 +30,9 @@ api.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const refreshToken = localStorage.getItem("refreshToken")
+        
 
-
-        const response = await axios.post(`http://localhost:8080/v1/auth/${refreshToken}`)
+        const response = await api.post("/auth/refresh")
 
 
         const newAccessToken = response.data
@@ -44,9 +44,10 @@ api.interceptors.response.use(
 
         return api(originalRequest)
 
+
       } catch (refreshError) {
+
         localStorage.removeItem("accessToken")
-        localStorage.removeItem("refreshToken")
 
         return Promise.reject(refreshError)
       }
